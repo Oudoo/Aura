@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Target, BarChart3, Settings, Shield, ArrowRight, ShieldCheck } from "lucide-react";
-import { submitAuditForm } from "./actions";
+import { submitAuditForm } from "@/app/audit/actions";
 
 const QUESTIONS = [
   {

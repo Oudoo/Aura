@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Footer } from "@/components/Footer";
 import { ArrowRight, Bot, Target, Settings, BarChart3, Users, Factory, Server, Lock, ChevronRight, Activity, ArrowUpRight } from "lucide-react";
-import { LanguageContext } from "@/components/LanguageContext";
+
 
 import { LegacyVsAuraSlider } from "@/components/LegacyVsAuraSlider";
 import { InteractiveArchitectureBuilder } from "@/components/InteractiveArchitectureBuilder";

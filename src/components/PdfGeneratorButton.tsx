@@ -22,8 +22,8 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
       const doc = new jsPDF();
       
       // Colors matching Aura Brand
-      const brandColor = [2, 132, 199]; // Cyan-600 approx
-      const darkColor = [15, 23, 42]; // Slate-900
+      const brandColor: [number, number, number] = [2, 132, 199]; // Cyan-600 approx
+      const darkColor: [number, number, number] = [15, 23, 42]; // Slate-900
 
       // Header
       doc.setFillColor(darkColor[0], darkColor[1], darkColor[2]);
