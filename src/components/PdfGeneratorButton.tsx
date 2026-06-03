@@ -21,7 +21,7 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
     try {
       const doc = new jsPDF();
       
-      // Colors matching Aura OS Brand
+      // Colors matching Aura Brand
       const brandColor = [2, 132, 199]; // Cyan-600 approx
       const darkColor = [15, 23, 42]; // Slate-900
 
@@ -32,7 +32,7 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(24);
       doc.setFont("helvetica", "bold");
-      doc.text("AURA OS", 14, 25);
+      doc.text("AURA", 14, 25);
       
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal");
@@ -86,7 +86,7 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
         doc.setFontSize(8);
         doc.setTextColor(150);
         doc.text(
-          `Confidential - Aura OS | Page ${i} of ${pageCount}`,
+          `Confidential - Aura | Page ${i} of ${pageCount}`,
           doc.internal.pageSize.getWidth() / 2,
           doc.internal.pageSize.getHeight() - 10,
           { align: 'center' }

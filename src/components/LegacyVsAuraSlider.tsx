@@ -14,13 +14,13 @@ export function LegacyVsAuraSlider() {
           The <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Chaos</span> vs. The <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-amethyst">Clarity</span>
         </h2>
         <p className="text-slate max-w-2xl mx-auto">
-          Slide to reveal how Aura OS transforms fragmented, disconnected legacy systems into a unified, intelligent enterprise nervous system.
+          Slide to reveal how Aura transforms fragmented, disconnected legacy systems into a unified, intelligent enterprise nervous system.
         </p>
       </div>
 
       <div className="relative h-[400px] md:h-[500px] w-full rounded-3xl overflow-hidden border border-fg/20 select-none">
         
-        {/* Background Layer: Aura OS State (The "After") */}
+        {/* Background Layer: Aura State (The "After") */}
         <div className="absolute inset-0 bg-void flex items-center justify-center overflow-hidden">
           {/* Glowing Aura Network */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan/10 via-void to-void"></div>

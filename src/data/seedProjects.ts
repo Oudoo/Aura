@@ -1,6 +1,6 @@
 export const launchProjectData = {
   title: "Aura Launching",
-  description: "Comprehensive master checklist and project plan for the launch of the Aura OS ecosystem.",
+  description: "Comprehensive master checklist and project plan for the launch of the Aura ecosystem.",
   tasks: [
     {
       title: "Yesy Checklist (Test Checklist)",
@@ -8,7 +8,7 @@ export const launchProjectData = {
       status: "PENDING",
       subTasks: [
         "Test Interactive Architecture Builder: drag/click nodes",
-        "Test Legacy vs. Aura OS Slider",
+        "Test Legacy vs. Aura Slider",
         "Test Cost of Inaction Ticker (verify incrementing)",
         "Test Digital Maturity Audit Quiz flow and submission",
         "Test Exit-Intent Pop-up (mouse leave top viewport)",

@@ -6,7 +6,7 @@
 
 ---
 
-**Project:** Aura OS
+**Project:** Aura
 **Generated:** 2026-06-03 07:13:35
 **Category:** B2B Service
 

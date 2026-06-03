@@ -33,7 +33,7 @@ export function InteractiveArchitectureBuilder() {
           Architect Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-amethyst">Digital Future</span>
         </h2>
         <p className="text-slate max-w-2xl mx-auto">
-          Click the modules below to build your custom Aura OS ecosystem. Watch as data silos dissolve into a unified source of truth.
+          Click the modules below to build your custom Aura ecosystem. Watch as data silos dissolve into a unified source of truth.
         </p>
       </div>
 
@@ -115,7 +115,7 @@ export function InteractiveArchitectureBuilder() {
           {/* Central Orchestrator Overlay */}
           <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-obsidian border border-cyan/30 px-6 py-3 rounded-full flex items-center gap-3 shadow-[0_0_30px_rgba(0,229,255,0.1)]">
             <div className="w-2 h-2 rounded-full bg-cyan animate-pulse"></div>
-            <span className="text-xs font-bold text-cyan tracking-widest uppercase">Aura OS Data Lake Active</span>
+            <span className="text-xs font-bold text-cyan tracking-widest uppercase">Aura Data Lake Active</span>
           </div>
         </div>
       </div>
