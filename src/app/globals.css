@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+@theme {
+  --color-obsidian: #0B0F19;
+  --color-void: #050505;
+  --color-cyan: #00E5FF;
+  --color-amethyst: #8B5CF6;
+  --color-platinum: #F8FAFC;
+  --color-slate: #94A3B8;
+
+  --font-heading: var(--font-plus-jakarta-sans);
+  --font-body: var(--font-inter);
+}
+
+:root {
+  --background: var(--color-void);
+  --foreground: var(--color-platinum);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), sans-serif;
+}
+
+/* Glassmorphism utilities */
+@utility glass {
+  background: color-mix(in srgb, var(--color-obsidian) 60%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid color-mix(in srgb, var(--color-platinum) 5%, transparent);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 20px color-mix(in srgb, currentColor 50%, transparent);
+}
+
+@utility heading {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
