@@ -4,13 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Globe } from "lucide-react";
-import { ecosystem } from "@/data/ecosystem";
 import { ThemeToggle } from "./ThemeToggle";
 import { useLanguage } from "./LanguageContext";
 
 export function Navbar() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const { t, language, toggleLanguage } = useLanguage();
+  const { t, language, toggleLanguage, ecosystem } = useLanguage();
 
   const menus = {
     methodology: {
@@ -44,9 +43,6 @@ export function Navbar() {
                     {language === "ar" && suite.suiteAr ? suite.suiteAr : suite.suite}
                     <ArrowRight className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
                   </h4>
-                  <p className="text-xs text-slate mt-1 line-clamp-1">
-                    {language === "ar" && suite.descAr ? suite.descAr : suite.description}
-                  </p>
                 </Link>
               </div>
             ))}
@@ -57,14 +53,14 @@ export function Navbar() {
     products: {
       title: t("nav.products"),
       content: (
-        <div className="w-[800px] p-6 grid grid-cols-3 gap-6">
-          {ecosystem.slice(0, 3).map((suite) => (
-            <div key={suite.slug} className="space-y-4">
-              <h4 className="text-sm font-semibold text-platinum border-b border-fg/10 pb-2">
+        <div className="w-[800px] p-6 grid grid-cols-4 gap-6 max-h-[400px] overflow-y-auto">
+          {ecosystem.map((suite) => (
+            <div key={suite.slug} className="space-y-3">
+              <h4 className="text-xs font-semibold text-platinum border-b border-fg/10 pb-2">
                 {language === "ar" && suite.suiteAr ? suite.suiteAr : suite.suite}
               </h4>
-              <ul className="space-y-2">
-                {suite.products.slice(0, 4).map((product) => (
+              <ul className="space-y-1.5">
+                {suite.products.map((product) => (
                   <li key={product.slug}>
                     <Link
                       href={`/products/${product.slug}`}
@@ -126,6 +122,12 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center space-x-4">
+          <Link
+            href="/audit"
+            className="hidden md:inline-flex items-center px-4 py-2 border border-fg/20 rounded-full text-sm font-bold text-platinum hover:bg-fg/5 hover:border-cyan hover:shadow-[0_0_15px_rgba(0,229,255,0.3)] transition-all duration-300"
+          >
+            {t("nav.audit")}
+          </Link>
           <button
             onClick={toggleLanguage}
             className="flex items-center space-x-2 text-sm font-medium text-slate hover:text-platinum transition-colors px-2 py-1"
@@ -135,15 +137,7 @@ export function Navbar() {
           </button>
           
           <ThemeToggle />
-          
-          <Link
-            href="https://wa.me/201066221112"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center px-6 py-2.5 font-medium text-platinum transition-all duration-200 bg-transparent border border-cyan/50 rounded-full hover:bg-cyan/10 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)]"
-          >
-            <span className="relative text-sm text-glow">{t("nav.audit")}</span>
-          </Link>
+
         </div>
       </div>
     </header>

@@ -4,7 +4,6 @@ import { useState, use } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CheckCircle2, Server, Workflow, Zap, Database, TrendingUp, Calculator } from "lucide-react";
 import Link from "next/link";
-import { ecosystem } from "@/data/ecosystem";
 import { Card } from "@/components/ui/Card";
 import { notFound } from "next/navigation";
 import { useLanguage } from "@/components/LanguageContext";
@@ -12,7 +11,7 @@ import { useLanguage } from "@/components/LanguageContext";
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
-  const { t, language } = useLanguage();
+  const { t, language, ecosystem } = useLanguage();
   
   const product = ecosystem
     .flatMap((suite) => suite.products.map((p) => ({ ...p, suiteName: suite.suite, suiteNameAr: suite.suiteAr })))

@@ -1,13 +1,50 @@
 "use client";
 
+import { useState } from "react";
+import { Footer } from "@/components/Footer";
+import { ArrowRight, Bot, Target, Settings, BarChart3, Users, Factory, Server, Lock, ChevronRight, Activity, ArrowUpRight } from "lucide-react";
+import { LanguageContext } from "@/components/LanguageContext";
+
+import { LegacyVsAuraSlider } from "@/components/LegacyVsAuraSlider";
+import { InteractiveArchitectureBuilder } from "@/components/InteractiveArchitectureBuilder";
+import { HeroDiagnosisForm } from "@/components/HeroDiagnosisForm";
+import { submitAuditForm } from "@/app/audit/actions";
 import { motion } from "framer-motion";
-import { ArrowRight, Activity, Cpu, Zap } from "lucide-react";
+import { Cpu, Zap, Send, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { useLanguage } from "@/components/LanguageContext";
 
 export default function Home() {
   const { t, language } = useLanguage();
+  const [formLoading, setFormLoading] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+
+  async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setFormLoading(true);
+    const formData = new FormData(e.currentTarget);
+    await submitAuditForm(formData);
+    setFormLoading(false);
+    setFormSubmitted(true);
+  }
+
+  const formT = {
+    title: language === "ar" ? "اطلب تقييماً مؤسسياً" : "Request a Business Audit",
+    subtitle: language === "ar" 
+      ? "تحدث مع خبرائنا لتشخيص معوقاتك التشغيلية وتصميم خارطة طريق استراتيجية لمنصة أورا." 
+      : "Speak with our experts to diagnose your operational bottlenecks and design your strategic Aura roadmap.",
+    name: language === "ar" ? "الاسم الكامل" : "Full Name",
+    email: language === "ar" ? "البريد الإلكتروني للعمل" : "Work Email",
+    company: language === "ar" ? "اسم الشركة" : "Company Name",
+    message: language === "ar" ? "أخبرنا عن التحديات التشغيلية (اختياري)" : "Tell us about your operational challenges (Optional)",
+    submit: language === "ar" ? "إرسال الطلب" : "Submit Request",
+    submitting: language === "ar" ? "جاري الإرسال..." : "Submitting...",
+    successTitle: language === "ar" ? "تم استلام الطلب بنجاح" : "Request Received",
+    successMsg: language === "ar" 
+      ? "سيقوم أحد كبار مهندسينا بالتواصل معك قريباً لتحديد موعد التقييم المبدئي." 
+      : "One of our senior engineers will contact you shortly to schedule your initial diagnostic.",
+  };
 
   return (
     <main className="flex-1 flex flex-col items-center">
@@ -83,8 +120,15 @@ export default function Home() {
                 {t("hero.contact")}
               </Link>
             </div>
+
+            <HeroDiagnosisForm />
           </motion.div>
         </div>
+      </section>
+
+      {/* Interactive Slider Section */}
+      <section className="w-full py-20 bg-void relative overflow-hidden">
+        <LegacyVsAuraSlider />
       </section>
 
       {/* Methodology Section */}
@@ -127,6 +171,11 @@ export default function Home() {
             </Card>
           </div>
         </div>
+      </section>
+
+      {/* Architecture Builder Section */}
+      <section className="w-full py-10 bg-void relative overflow-hidden border-t border-fg/5">
+        <InteractiveArchitectureBuilder />
       </section>
 
       {/* Dashboard Command Center Showcase Section */}
@@ -275,6 +324,122 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Embedded Contact Form Section */}
+      <section className="w-full py-24 bg-void relative overflow-hidden">
+        {/* Animated glow accents */}
+        <motion.div 
+          className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan/8 rounded-full blur-[120px] pointer-events-none"
+          animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amethyst/8 rounded-full blur-[100px] pointer-events-none"
+          animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        <div className="container mx-auto px-4 max-w-3xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cyan/10 border border-cyan/20 mb-6"
+              >
+                <Send className="w-7 h-7 text-cyan" />
+              </motion.div>
+              <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow mb-4">
+                {formT.title}
+              </h2>
+              <p className="text-slate text-lg max-w-xl mx-auto">
+                {formT.subtitle}
+              </p>
+            </div>
+
+            {/* Form Card */}
+            <Card className="p-8 md:p-10 border-cyan/10 bg-obsidian/80 backdrop-blur-xl relative overflow-hidden">
+              {/* Subtle animated border glow */}
+              <div className="absolute inset-0 rounded-2xl border border-cyan/20 pointer-events-none" />
+              
+              {formSubmitted ? (
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="py-12 flex flex-col items-center text-center"
+                >
+                  <div className="w-20 h-20 bg-cyan/10 rounded-full flex items-center justify-center mb-6">
+                    <CheckCircle2 className="w-10 h-10 text-cyan" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-platinum mb-2">{formT.successTitle}</h2>
+                  <p className="text-slate">{formT.successMsg}</p>
+                </motion.div>
+              ) : (
+                <form onSubmit={handleFormSubmit} className="space-y-6 relative z-10">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.name}</label>
+                      <input 
+                        name="name"
+                        required
+                        className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors"
+                        placeholder="Jane Doe"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.email}</label>
+                      <input 
+                        name="email"
+                        type="email"
+                        required
+                        className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors"
+                        placeholder="jane@company.com"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.company}</label>
+                    <input 
+                      name="company"
+                      required
+                      className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors"
+                      placeholder="Acme Corp"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.message}</label>
+                    <textarea 
+                      name="message"
+                      rows={4}
+                      className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors resize-none"
+                      placeholder="..."
+                    />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    disabled={formLoading}
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className="w-full py-4 bg-cyan text-void font-bold rounded-xl hover:bg-cyan/90 transition-colors flex items-center justify-center disabled:opacity-50"
+                  >
+                    {formLoading ? formT.submitting : formT.submit}
+                    {!formLoading && <Send className={`w-4 h-4 ${language === "ar" ? "mr-2 rotate-180" : "ml-2"}`} />}
+                  </motion.button>
+                </form>
+              )}
+            </Card>
           </motion.div>
         </div>
       </section>

@@ -1,13 +1,15 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { ecosystem as defaultEcosystem } from "@/data/ecosystem";
 
-type Language = "en" | "ar";
+export type Language = "en" | "ar";
 
 interface LanguageContextType {
   language: Language;
   toggleLanguage: () => void;
   t: (key: string) => string;
+  ecosystem: typeof defaultEcosystem;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -184,7 +186,7 @@ export const translations: Record<Language, Record<string, string>> = {
   }
 };
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+export function LanguageProvider({ children, initialEcosystem }: { children: React.ReactNode, initialEcosystem: typeof defaultEcosystem }) {
   const [language, setLanguage] = useState<Language>("en");
   const [mounted, setMounted] = useState(false);
 
@@ -205,7 +207,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage, t }}>
+    <LanguageContext.Provider value={{ language, toggleLanguage, t, ecosystem: initialEcosystem }}>
       <div dir={language === "ar" ? "rtl" : "ltr"} className={language === "ar" ? "font-arabic" : ""} style={{ visibility: mounted ? "visible" : "hidden" }}>
         {children}
       </div>

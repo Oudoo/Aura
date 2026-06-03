@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter, Cairo } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { prisma } from "@/lib/db";
 import { LanguageProvider } from "@/components/LanguageContext";
+import { ExitIntentPopup } from "@/components/ExitIntentPopup";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -25,11 +28,17 @@ export const metadata: Metadata = {
   description: "We Diagnose Bottlenecks and Drive Enterprise Growth.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const ecosystemData = await prisma.suite.findMany({
+    include: {
+      products: true,
+    },
+  });
+
   return (
     <html
       lang="en"
@@ -38,9 +47,13 @@ export default function RootLayout({
     >
       <body className="font-body bg-void text-platinum antialiased min-h-screen flex flex-col transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          <LanguageProvider>
+          <LanguageProvider initialEcosystem={ecosystemData as any}>
             <Navbar />
-            {children}
+            <div className="flex-1 flex flex-col">
+              {children}
+            </div>
+            <ExitIntentPopup />
+            <Footer />
           </LanguageProvider>
         </ThemeProvider>
       </body>

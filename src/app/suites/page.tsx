@@ -3,12 +3,11 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Box, Layers, Package } from "lucide-react";
 import Link from "next/link";
-import { ecosystem } from "@/data/ecosystem";
 import { Card } from "@/components/ui/Card";
 import { useLanguage } from "@/components/LanguageContext";
 
 export default function SuitesPage() {
-  const { t, language } = useLanguage();
+  const { t, language, ecosystem } = useLanguage();
   
   // The ultimate bundle is our spotlight product
   const bundle = ecosystem.find((s) => s.slug === "ultimate-bundle");

@@ -4,14 +4,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft } from "lucide-react";
-import { ecosystem } from "@/data/ecosystem";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/components/LanguageContext";
 
 export default function ProductsPage() {
   const [activeSuite, setActiveSuite] = useState<string>("all");
-  const { t, language } = useLanguage();
+  const { t, language, ecosystem } = useLanguage();
 
   const allProducts = ecosystem.flatMap((suite) =>
     suite.products.map((p) => ({ ...p, suiteSlug: suite.slug, suiteName: suite.suite, suiteNameAr: suite.suiteAr }))
