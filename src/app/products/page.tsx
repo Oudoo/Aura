@@ -3,16 +3,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import { ecosystem } from "@/data/ecosystem";
 import { Card } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function ProductsPage() {
   const [activeSuite, setActiveSuite] = useState<string>("all");
+  const { t, language } = useLanguage();
 
   const allProducts = ecosystem.flatMap((suite) =>
-    suite.products.map((p) => ({ ...p, suiteSlug: suite.slug, suiteName: suite.suite }))
+    suite.products.map((p) => ({ ...p, suiteSlug: suite.slug, suiteName: suite.suite, suiteNameAr: suite.suiteAr }))
   );
 
   const filteredProducts =
@@ -22,25 +24,26 @@ export default function ProductsPage() {
 
   return (
     <main className="flex-1 flex flex-col items-center">
-      <section className="w-full py-16 bg-void border-b border-white/5">
+      <section className="w-full py-16 bg-void border-b border-fg/5">
         <div className="container mx-auto px-4 text-center">
           <h1 className="font-heading text-4xl md:text-5xl font-bold text-platinum mb-4">
-            Product Directory
+            {t("products.title")}
           </h1>
           <p className="text-slate text-lg max-w-2xl mx-auto">
-            Explore the components of the Aura ecosystem.
+            {t("products.subtitle")}
           </p>
         </div>
       </section>
 
-      <section className="w-full py-8 sticky top-20 z-40 bg-void/80 backdrop-blur-xl border-b border-white/5">
+      <section className="w-full py-8 sticky top-20 z-40 bg-void/80 backdrop-blur-xl border-b border-fg/5">
         <div className="container mx-auto px-4">
           <div className="flex overflow-x-auto pb-4 hide-scrollbar space-x-2">
             <button
               onClick={() => setActiveSuite("all")}
               className={cn(
                 "relative px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
-                activeSuite === "all" ? "text-void" : "text-slate hover:text-platinum bg-white/5"
+                activeSuite === "all" ? "text-void" : "text-slate hover:text-platinum bg-fg/5",
+                language === "ar" && "ml-2"
               )}
             >
               {activeSuite === "all" && (
@@ -50,7 +53,7 @@ export default function ProductsPage() {
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
-              <span className="relative z-10">All Products</span>
+              <span className="relative z-10">{t("products.filter.all")}</span>
             </button>
             {ecosystem.map((suite) => (
               <button
@@ -58,7 +61,8 @@ export default function ProductsPage() {
                 onClick={() => setActiveSuite(suite.slug)}
                 className={cn(
                   "relative px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors",
-                  activeSuite === suite.slug ? "text-void" : "text-slate hover:text-platinum bg-white/5"
+                  activeSuite === suite.slug ? "text-void" : "text-slate hover:text-platinum bg-fg/5",
+                  language === "ar" && "ml-2"
                 )}
               >
                 {activeSuite === suite.slug && (
@@ -68,7 +72,7 @@ export default function ProductsPage() {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
                 )}
-                <span className="relative z-10">{suite.suite}</span>
+                <span className="relative z-10">{language === "ar" && suite.suiteAr ? suite.suiteAr : suite.suite}</span>
               </button>
             ))}
           </div>
@@ -92,18 +96,22 @@ export default function ProductsPage() {
                     <Card className="h-full p-6 group hover:border-cyan/50 cursor-pointer flex flex-col justify-between">
                       <div>
                         <div className="text-xs font-semibold text-cyan mb-2 uppercase tracking-wider">
-                          {product.suiteName}
+                          {language === "ar" && product.suiteNameAr ? product.suiteNameAr : product.suiteName}
                         </div>
                         <h3 className="text-xl font-heading font-bold text-platinum mb-3 group-hover:text-cyan transition-colors">
-                          {product.name}
+                          {language === "ar" && product.nameAr ? product.nameAr : product.name}
                         </h3>
                         <p className="text-slate text-sm">
-                          {product.description}
+                          {language === "ar" && product.descAr ? product.descAr : product.description}
                         </p>
                       </div>
                       <div className="mt-6 flex items-center text-sm font-medium text-slate group-hover:text-cyan transition-colors">
-                        View Details
-                        <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        {t("products.view_details")}
+                        {language === "ar" ? (
+                          <ChevronLeft className="w-4 h-4 mr-1 group-hover:-translate-x-1 transition-transform" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                        )}
                       </div>
                     </Card>
                   </Link>

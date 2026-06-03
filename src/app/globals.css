@@ -1,34 +1,63 @@
 @import "tailwindcss";
 
-@theme {
-  --color-obsidian: #0B0F19;
-  --color-void: #050505;
-  --color-cyan: #00E5FF;
-  --color-amethyst: #8B5CF6;
-  --color-platinum: #F8FAFC;
-  --color-slate: #94A3B8;
-
+@theme inline {
+  --color-obsidian: var(--obsidian);
+  --color-void: var(--void);
+  --color-cyan: var(--cyan);
+  --color-amethyst: var(--amethyst);
+  --color-platinum: var(--platinum);
+  --color-slate: var(--slate);
+  --color-fg: var(--fg);
+  
   --font-heading: var(--font-plus-jakarta-sans);
   --font-body: var(--font-inter);
+  --font-arabic: var(--font-cairo);
+}
+
+/* Override fonts when Arabic (RTL) is active */
+[dir="rtl"] {
+  --font-heading: var(--font-arabic);
+  --font-body: var(--font-arabic);
 }
 
 :root {
-  --background: var(--color-void);
-  --foreground: var(--color-platinum);
+  /* Light mode palette */
+  --obsidian: #F1F5F9; /* slate-100 */
+  --void: #FFFFFF; /* white */
+  --cyan: #0284C7; /* sky-600 */
+  --amethyst: #7C3AED; /* violet-600 */
+  --platinum: #0F172A; /* slate-900 */
+  --slate: #475569; /* slate-600 */
+  --fg: #000000;
+  
+  --background: var(--void);
+  --foreground: var(--platinum);
+}
+
+.dark {
+  /* Dark mode palette */
+  --obsidian: #0B0F19;
+  --void: #050505;
+  --cyan: #00E5FF;
+  --amethyst: #8B5CF6;
+  --platinum: #F8FAFC;
+  --slate: #94A3B8;
+  --fg: #ffffff;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Glassmorphism utilities */
 @utility glass {
-  background: color-mix(in srgb, var(--color-obsidian) 60%, transparent);
+  background: color-mix(in srgb, var(--obsidian) 60%, transparent);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid color-mix(in srgb, var(--color-platinum) 5%, transparent);
+  border: 1px solid color-mix(in srgb, var(--platinum) 5%, transparent);
 }
 
 @utility text-glow {

@@ -3,68 +3,75 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import { ChevronDown, ArrowRight, Globe } from "lucide-react";
 import { ecosystem } from "@/data/ecosystem";
+import { ThemeToggle } from "./ThemeToggle";
+import { useLanguage } from "./LanguageContext";
 
 export function Navbar() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
+  const { t, language, toggleLanguage } = useLanguage();
 
   const menus = {
     methodology: {
-      title: "Methodology",
+      title: t("nav.methodology"),
       content: (
-        <div className="grid grid-cols-3 gap-6 p-6">
+        <div className="grid grid-cols-2 gap-8 p-6 w-[500px]">
           <div className="space-y-3">
-            <h4 className="text-cyan font-semibold">1. Diagnose</h4>
-            <p className="text-sm text-slate">Identify enterprise bottlenecks and architectural flaws.</p>
+            <h4 className="text-platinum font-semibold">{t("methodology.1.title")}</h4>
+            <p className="text-sm text-slate">{t("methodology.1.desc")}</p>
           </div>
           <div className="space-y-3">
-            <h4 className="text-amethyst font-semibold">2. Strategize</h4>
-            <p className="text-sm text-slate">Develop a prescriptive roadmap for digital transformation.</p>
+            <h4 className="text-platinum font-semibold">{t("methodology.2.title")}</h4>
+            <p className="text-sm text-slate">{t("methodology.2.desc")}</p>
           </div>
-          <div className="space-y-3">
-            <h4 className="text-platinum font-semibold">3. Execute</h4>
-            <p className="text-sm text-slate">Deploy the Aura ecosystem to drive growth.</p>
+          <div className="col-span-2 space-y-3">
+            <h4 className="text-platinum font-semibold">{t("methodology.3.title")}</h4>
+            <p className="text-sm text-slate">{t("methodology.3.desc")}</p>
           </div>
         </div>
       ),
     },
     suites: {
-      title: "Suites & Packages",
+      title: t("nav.suites"),
       content: (
-        <div className="grid grid-cols-2 gap-4 p-6">
-          {ecosystem.map((suite) => (
-            <Link
-              key={suite.slug}
-              href={`/suites`}
-              className="flex items-center space-x-2 text-sm text-slate hover:text-cyan transition-colors"
-              onClick={() => setActiveMenu(null)}
-            >
-              <ArrowRight className="w-4 h-4" />
-              <span>{suite.suite}</span>
-            </Link>
-          ))}
+        <div className="w-[600px] p-6">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+            {ecosystem.map((suite) => (
+              <div key={suite.slug} className="group cursor-pointer" onClick={() => setActiveMenu(null)}>
+                <Link href="/suites" className="block">
+                  <h4 className="text-platinum font-medium group-hover:text-cyan transition-colors flex items-center">
+                    {language === "ar" && suite.suiteAr ? suite.suiteAr : suite.suite}
+                    <ArrowRight className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                  </h4>
+                  <p className="text-xs text-slate mt-1 line-clamp-1">
+                    {language === "ar" && suite.descAr ? suite.descAr : suite.description}
+                  </p>
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       ),
     },
     products: {
-      title: "All Products",
+      title: t("nav.products"),
       content: (
-        <div className="grid grid-cols-3 gap-6 p-6 max-h-[60vh] overflow-y-auto">
-          {ecosystem.map((suite) => (
-            <div key={suite.slug} className="space-y-3">
-              <h4 className="text-sm font-semibold text-platinum border-b border-white/10 pb-2">
-                {suite.suite}
+        <div className="w-[800px] p-6 grid grid-cols-3 gap-6">
+          {ecosystem.slice(0, 3).map((suite) => (
+            <div key={suite.slug} className="space-y-4">
+              <h4 className="text-sm font-semibold text-platinum border-b border-fg/10 pb-2">
+                {language === "ar" && suite.suiteAr ? suite.suiteAr : suite.suite}
               </h4>
               <ul className="space-y-2">
-                {suite.products.map((product) => (
+                {suite.products.slice(0, 4).map((product) => (
                   <li key={product.slug}>
                     <Link
                       href={`/products/${product.slug}`}
                       className="text-xs text-slate hover:text-cyan transition-colors line-clamp-1"
                       onClick={() => setActiveMenu(null)}
                     >
-                      {product.name}
+                      {language === "ar" && product.nameAr ? product.nameAr : product.name}
                     </Link>
                   </li>
                 ))}
@@ -77,15 +84,10 @@ export function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-[#0B0F19]/60 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-fg/5 bg-obsidian/60 backdrop-blur-md">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-3 group">
-          <div className="relative w-8 h-8 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full border border-cyan/50 shadow-[0_0_15px_rgba(0,229,255,0.5)] group-hover:shadow-[0_0_25px_rgba(0,229,255,0.8)] transition-shadow duration-300" />
-            <div className="absolute w-full h-[1px] bg-amethyst/70 rotate-45" />
-            <div className="absolute w-full h-[1px] bg-amethyst/70 -rotate-45" />
-            <div className="w-3 h-3 bg-cyan rounded-full animate-pulse" />
-          </div>
+          <img src="/logo.png" alt="Aura" className="h-8 w-auto" />
           <span className="font-heading font-bold text-xl tracking-tight text-platinum">
             AURA
           </span>
@@ -110,11 +112,11 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0, rotateX: 0 }}
                     exit={{ opacity: 0, y: 10, rotateX: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 w-screen max-w-3xl pt-2 perspective-[2000px]"
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-4 perspective-1000"
                   >
-                    <div className="bg-[#0B0F19] border border-white/10 rounded-2xl shadow-2xl overflow-hidden relative">
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
-                      {menu.content}
+                    <div className="bg-obsidian border border-fg/10 rounded-2xl shadow-2xl overflow-hidden relative">
+                      <div className="absolute inset-0 bg-gradient-to-b from-fg/5 to-transparent pointer-events-none" />
+                      <div className="relative z-10">{menu.content}</div>
                     </div>
                   </motion.div>
                 )}
@@ -123,15 +125,24 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center">
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={toggleLanguage}
+            className="flex items-center space-x-2 text-sm font-medium text-slate hover:text-platinum transition-colors px-2 py-1"
+          >
+            <Globe className="w-4 h-4" />
+            <span className="uppercase">{language === "en" ? "AR" : "EN"}</span>
+          </button>
+          
+          <ThemeToggle />
+          
           <Link
             href="https://wa.me/201066221112"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center justify-center px-6 py-2.5 font-medium text-white transition-all duration-200 bg-transparent border border-cyan/50 rounded-full hover:bg-cyan/10 overflow-hidden"
+            className="group relative inline-flex items-center justify-center px-6 py-2.5 font-medium text-platinum transition-all duration-200 bg-transparent border border-cyan/50 rounded-full hover:bg-cyan/10 hover:shadow-[0_0_15px_rgba(0,229,255,0.3)]"
           >
-            <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-cyan" />
-            <span className="relative text-sm text-glow">Request a Business Audit</span>
+            <span className="relative text-sm text-glow">{t("nav.audit")}</span>
           </Link>
         </div>
       </div>

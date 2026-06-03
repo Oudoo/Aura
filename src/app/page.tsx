@@ -4,8 +4,11 @@ import { motion } from "framer-motion";
 import { ArrowRight, Activity, Cpu, Zap } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/Card";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function Home() {
+  const { t, language } = useLanguage();
+
   return (
     <main className="flex-1 flex flex-col items-center">
       {/* Hero Section */}
@@ -33,14 +36,14 @@ export default function Home() {
             />
             <defs>
               <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#0B0F19" />
-                <stop offset="50%" stopColor="#00E5FF" />
-                <stop offset="100%" stopColor="#0B0F19" />
+                <stop offset="0%" stopColor="var(--obsidian)" />
+                <stop offset="50%" stopColor="var(--cyan)" />
+                <stop offset="100%" stopColor="var(--obsidian)" />
               </linearGradient>
               <linearGradient id="amethyst-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#0B0F19" />
-                <stop offset="50%" stopColor="#8B5CF6" />
-                <stop offset="100%" stopColor="#0B0F19" />
+                <stop offset="0%" stopColor="var(--obsidian)" />
+                <stop offset="50%" stopColor="var(--amethyst)" />
+                <stop offset="100%" stopColor="var(--obsidian)" />
               </linearGradient>
             </defs>
           </svg>
@@ -54,12 +57,12 @@ export default function Home() {
             className="max-w-4xl mx-auto space-y-6"
           >
             <h1 className="font-heading text-5xl md:text-7xl font-bold tracking-tighter text-platinum text-glow leading-tight">
-              We Diagnose Bottlenecks and Drive Enterprise Growth.
+              {t("hero.title")}
             </h1>
             <p className="text-xl md:text-2xl text-slate font-body max-w-2xl mx-auto">
-              Stop patching your business with fragmented tools. Experience the{" "}
+              {t("hero.subtitle")}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-amethyst font-semibold">
-                One Eco System
+                {t("hero.subtitle.highlight")}
               </span>.
             </p>
 
@@ -68,16 +71,16 @@ export default function Home() {
                 href="/suites"
                 className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-void transition-all duration-200 bg-cyan border border-transparent rounded-full hover:bg-cyan/90 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]"
               >
-                Explore the Ecosystem
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {t("hero.explore")}
+                <ArrowRight className={`w-5 h-5 transition-transform ${language === "ar" ? "mr-2 group-hover:-translate-x-1 rotate-180" : "ml-2 group-hover:translate-x-1"}`} />
               </Link>
               <Link
                 href="https://wa.me/201066221112"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-8 py-4 font-bold text-platinum transition-all duration-200 bg-transparent border border-white/10 rounded-full hover:bg-white/5"
+                className="inline-flex items-center justify-center px-8 py-4 font-bold text-platinum transition-all duration-200 bg-transparent border border-fg/10 rounded-full hover:bg-fg/5"
               >
-                Contact Sales
+                {t("hero.contact")}
               </Link>
             </div>
           </motion.div>
@@ -88,8 +91,8 @@ export default function Home() {
       <section className="w-full py-24 bg-void relative">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum">The Aura Methodology</h2>
-            <p className="text-slate text-lg max-w-2xl mx-auto">Our proprietary framework for digital transformation.</p>
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum">{t("methodology.title")}</h2>
+            <p className="text-slate text-lg max-w-2xl mx-auto">{t("methodology.subtitle")}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
@@ -97,9 +100,9 @@ export default function Home() {
               <div className="w-12 h-12 rounded-full bg-cyan/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Activity className="w-6 h-6 text-cyan" />
               </div>
-              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">1. Diagnose</h3>
+              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">{t("methodology.1.title")}</h3>
               <p className="text-slate leading-relaxed">
-                We embed within your organization to map existing processes, identify operational bottlenecks, and analyze technical debt.
+                {t("methodology.1.desc")}
               </p>
             </Card>
 
@@ -107,19 +110,19 @@ export default function Home() {
               <div className="w-12 h-12 rounded-full bg-amethyst/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Cpu className="w-6 h-6 text-amethyst" />
               </div>
-              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">2. Strategize</h3>
+              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">{t("methodology.2.title")}</h3>
               <p className="text-slate leading-relaxed">
-                Our architects design a comprehensive, bespoke digital roadmap using the Aura ecosystem, tailored specifically to your objectives.
+                {t("methodology.2.desc")}
               </p>
             </Card>
 
-            <Card className="p-8 group hover:border-white/30 transition-all duration-300">
-              <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <Card className="p-8 group hover:border-fg/30 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-fg/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Zap className="w-6 h-6 text-platinum" />
               </div>
-              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">3. Execute</h3>
+              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">{t("methodology.3.title")}</h3>
               <p className="text-slate leading-relaxed">
-                We deploy the solution with precision, ensuring seamless integration, employee training, and continuous growth tracking.
+                {t("methodology.3.desc")}
               </p>
             </Card>
           </div>
@@ -133,8 +136,8 @@ export default function Home() {
 
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 space-y-4">
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow">The Convergence Command Center</h2>
-            <p className="text-slate text-lg max-w-2xl mx-auto">Witness the unification of siloed data streams into actionable intelligence.</p>
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow">{t("dashboard.title")}</h2>
+            <p className="text-slate text-lg max-w-2xl mx-auto">{t("dashboard.subtitle")}</p>
           </div>
 
           <motion.div
@@ -144,21 +147,21 @@ export default function Home() {
             transition={{ duration: 1 }}
             className="max-w-6xl mx-auto"
           >
-            <div className="rounded-xl border border-white/10 bg-[#0B0F19]/60 backdrop-blur-2xl shadow-[0_0_50px_rgba(139,92,246,0.15)] overflow-hidden">
+            <div className="rounded-xl border border-fg/10 bg-obsidian/60 backdrop-blur-2xl shadow-[0_0_50px_rgba(139,92,246,0.15)] overflow-hidden">
               
               {/* Top KPI Bar */}
-              <div className="grid grid-cols-3 border-b border-white/5 bg-white/[0.02]">
-                <div className="p-6 border-r border-white/5 text-center">
-                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">System Unification</div>
-                  <div className="text-3xl font-bold text-cyan text-glow">100% Data Parity</div>
+              <div className="grid grid-cols-3 border-b border-fg/5 bg-fg/[0.02]">
+                <div className={`p-6 border-fg/5 text-center ${language === "ar" ? "border-l" : "border-r"}`}>
+                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">{t("dashboard.kpi1.label")}</div>
+                  <div className="text-3xl font-bold text-cyan text-glow" dir="ltr">{t("dashboard.kpi1.value")}</div>
                 </div>
-                <div className="p-6 border-r border-white/5 text-center">
-                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">Capital Efficiency</div>
-                  <div className="text-3xl font-bold text-platinum text-glow">$12.4M Saved (YTD)</div>
+                <div className={`p-6 border-fg/5 text-center ${language === "ar" ? "border-l" : "border-r"}`}>
+                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">{t("dashboard.kpi2.label")}</div>
+                  <div className="text-3xl font-bold text-platinum text-glow" dir="ltr">{t("dashboard.kpi2.value")}</div>
                 </div>
                 <div className="p-6 text-center">
-                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">Agentic Actions</div>
-                  <div className="text-3xl font-bold text-amethyst text-glow">14,029 Executed</div>
+                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">{t("dashboard.kpi3.label")}</div>
+                  <div className="text-3xl font-bold text-amethyst text-glow" dir="ltr">{t("dashboard.kpi3.value")}</div>
                 </div>
               </div>
 
@@ -166,24 +169,24 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-3 min-h-[400px]">
                 
                 {/* Center Widget: The Convergence Map */}
-                <div className="col-span-2 p-8 relative flex items-center justify-center border-r border-white/5">
+                <div className={`col-span-2 p-8 relative flex items-center justify-center border-fg/5 ${language === "ar" ? "border-l" : "border-r"}`}>
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan/5 via-transparent to-transparent pointer-events-none" />
                   
                   {/* SVG Convergence Node Graph */}
-                  <div className="relative w-full max-w-md aspect-video">
+                  <div className="relative w-full max-w-md aspect-video" dir="ltr">
                     <svg className="w-full h-full overflow-visible" viewBox="0 0 400 200">
                       <defs>
                         <linearGradient id="hr-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#00E5FF" stopOpacity="0.8" />
-                          <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
+                          <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.8" />
+                          <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.2" />
                         </linearGradient>
                         <linearGradient id="log-grad" x1="0%" y1="100%" x2="100%" y2="0%">
                           <stop offset="0%" stopColor="#F43F5E" stopOpacity="0.8" />
-                          <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
+                          <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.2" />
                         </linearGradient>
                         <linearGradient id="fin-grad" x1="0%" y1="50%" x2="100%" y2="50%">
                           <stop offset="0%" stopColor="#10B981" stopOpacity="0.8" />
-                          <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.2" />
+                          <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.2" />
                         </linearGradient>
                         <filter id="glow">
                           <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
@@ -224,76 +227,49 @@ export default function Home() {
                       />
 
                       {/* Origin Nodes */}
-                      <circle cx="50" cy="40" r="6" fill="#00E5FF" filter="url(#glow)" />
-                      <text x="10" y="44" fill="#94A3B8" fontSize="10" fontFamily="monospace">HR_API</text>
+                      <circle cx="50" cy="40" r="6" fill="var(--cyan)" filter="url(#glow)" />
+                      <text x="10" y="44" fill="var(--slate)" fontSize="10" fontFamily="monospace">HR_API</text>
                       
                       <circle cx="50" cy="100" r="6" fill="#10B981" filter="url(#glow)" />
-                      <text x="10" y="104" fill="#94A3B8" fontSize="10" fontFamily="monospace">FIN_DB</text>
+                      <text x="10" y="104" fill="var(--slate)" fontSize="10" fontFamily="monospace">FIN_DB</text>
                       
                       <circle cx="50" cy="160" r="6" fill="#F43F5E" filter="url(#glow)" />
-                      <text x="10" y="164" fill="#94A3B8" fontSize="10" fontFamily="monospace">LOG_SYS</text>
+                      <text x="10" y="164" fill="var(--slate)" fontSize="10" fontFamily="monospace">LOG_SYS</text>
 
                       {/* Central Core */}
                       <motion.circle 
                         cx="250" cy="100" r="20" 
-                        fill="#8B5CF6" 
+                        fill="var(--amethyst)" 
                         filter="url(#glow)"
                         animate={{ scale: [1, 1.2, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
                       />
-                      <circle cx="250" cy="100" r="10" fill="#F8FAFC" />
-                      <text x="285" y="104" fill="#F8FAFC" fontSize="14" fontWeight="bold" filter="url(#glow)">AURA CORE</text>
+                      <circle cx="250" cy="100" r="10" fill="var(--platinum)" />
+                      <text x="285" y="104" fill="var(--platinum)" fontSize="14" fontWeight="bold" filter="url(#glow)">AURA CORE</text>
                     </svg>
                   </div>
                 </div>
 
                 {/* Right Sidebar: Live AI Feed */}
-                <div className="col-span-1 p-6 flex flex-col bg-[#050505]/50">
+                <div className="col-span-1 p-6 flex flex-col bg-void/50">
                   <h3 className="text-sm font-semibold text-platinum mb-4 flex items-center">
-                    <div className="w-2 h-2 rounded-full bg-cyan animate-pulse mr-2" />
-                    Live Agent Feed
+                    <div className={`w-2 h-2 rounded-full bg-cyan animate-pulse ${language === "ar" ? "ml-2" : "mr-2"}`} />
+                    {t("dashboard.live_feed")}
                   </h3>
                   
                   <div className="flex-1 overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] z-10 pointer-events-none" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-void via-transparent to-void z-10 pointer-events-none" />
                     
                     <motion.div 
-                      className="space-y-4 font-mono text-xs absolute w-full"
+                      className="space-y-4 font-body text-xs absolute w-full"
                       animate={{ y: ["0%", "-50%"] }}
                       transition={{ duration: 20, ease: "linear", repeat: Infinity }}
                     >
-                      <div className="p-3 rounded bg-white/5 border border-white/5 text-slate">
-                        <span className="text-amethyst font-bold">[14:02:41]</span> Aura Agent synchronized Payroll discrepancies with Operations.
-                      </div>
-                      <div className="p-3 rounded bg-cyan/5 border border-cyan/10 text-cyan/90">
-                        <span className="text-cyan font-bold">[14:02:44]</span> Predictive Engine rerouted Logistics Fleet 4 to avoid projected delay.
-                      </div>
-                      <div className="p-3 rounded bg-white/5 border border-white/5 text-slate">
-                        <span className="text-amethyst font-bold">[14:02:51]</span> Procurement anomaly detected and automatically flagged for CFO review.
-                      </div>
-                      <div className="p-3 rounded bg-white/5 border border-white/5 text-slate">
-                        <span className="text-amethyst font-bold">[14:03:02]</span> CRM pipeline velocity adjusted based on real-time market sentiment.
-                      </div>
-                      <div className="p-3 rounded bg-cyan/5 border border-cyan/10 text-cyan/90">
-                        <span className="text-cyan font-bold">[14:03:15]</span> ITSM ticket resolved automatically via Agentic diagnostic workflow.
-                      </div>
-                      
-                      {/* Duplicates for infinite scrolling illusion */}
-                      <div className="p-3 rounded bg-white/5 border border-white/5 text-slate">
-                        <span className="text-amethyst font-bold">[14:02:41]</span> Aura Agent synchronized Payroll discrepancies with Operations.
-                      </div>
-                      <div className="p-3 rounded bg-cyan/5 border border-cyan/10 text-cyan/90">
-                        <span className="text-cyan font-bold">[14:02:44]</span> Predictive Engine rerouted Logistics Fleet 4 to avoid projected delay.
-                      </div>
-                      <div className="p-3 rounded bg-white/5 border border-white/5 text-slate">
-                        <span className="text-amethyst font-bold">[14:02:51]</span> Procurement anomaly detected and automatically flagged for CFO review.
-                      </div>
-                      <div className="p-3 rounded bg-white/5 border border-white/5 text-slate">
-                        <span className="text-amethyst font-bold">[14:03:02]</span> CRM pipeline velocity adjusted based on real-time market sentiment.
-                      </div>
-                      <div className="p-3 rounded bg-cyan/5 border border-cyan/10 text-cyan/90">
-                        <span className="text-cyan font-bold">[14:03:15]</span> ITSM ticket resolved automatically via Agentic diagnostic workflow.
-                      </div>
+                      {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item, idx) => (
+                        <div key={idx} className={`p-3 rounded border ${idx % 2 === 0 ? "bg-fg/5 border-fg/5 text-slate" : "bg-cyan/5 border-cyan/10 text-cyan/90"}`}>
+                          <span className={`${idx % 2 === 0 ? "text-amethyst" : "text-cyan"} font-bold`} dir="ltr">[{14}:0{item + 2}:{10 + item * 3}]</span> {t(`dashboard.feed.${item}`)}
+                        </div>
+                      ))}
                     </motion.div>
                   </div>
                 </div>

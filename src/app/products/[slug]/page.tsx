@@ -2,28 +2,30 @@
 
 import { useState, use } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle2, Server, Workflow, Zap, Database, TrendingUp, Calculator } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Server, Workflow, Zap, Database, TrendingUp, Calculator } from "lucide-react";
 import Link from "next/link";
 import { ecosystem } from "@/data/ecosystem";
 import { Card } from "@/components/ui/Card";
 import { notFound } from "next/navigation";
+import { useLanguage } from "@/components/LanguageContext";
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = use(params);
   const slug = resolvedParams.slug;
+  const { t, language } = useLanguage();
   
   const product = ecosystem
-    .flatMap((suite) => suite.products.map((p) => ({ ...p, suiteName: suite.suite })))
+    .flatMap((suite) => suite.products.map((p) => ({ ...p, suiteName: suite.suite, suiteNameAr: suite.suiteAr })))
     .find((p) => p.slug === slug);
 
   if (!product) {
     notFound();
   }
 
-  const [employees, setEmployees] = useState(500);
-  const [legacySpend, setLegacySpend] = useState(25000); // monthly
-  const [manualHours, setManualHours] = useState(15); // per week per employee
-  const [hourlyRate, setHourlyRate] = useState(45); // hourly
+  const [employees, setEmployees] = useState(25);
+  const [legacySpend, setLegacySpend] = useState(2000); // monthly
+  const [manualHours, setManualHours] = useState(2); // per week per employee
+  const [hourlyRate, setHourlyRate] = useState(32); // hourly
 
   // Hard Savings: 60% of legacy stack spend eliminated through consolidation
   const monthlyHardSavings = legacySpend * 0.6;
@@ -43,35 +45,35 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const ttv = netMonthlyBenefit > 0 ? (implementationCost / netMonthlyBenefit).toFixed(1) : "N/A";
 
   const features = [
-    { title: "Real-time Synchronization", icon: <Zap className="w-5 h-5 text-cyan" /> },
-    { title: "Distributed Architecture", icon: <Server className="w-5 h-5 text-amethyst" /> },
-    { title: "Automated Workflows", icon: <Workflow className="w-5 h-5 text-cyan" /> },
-    { title: "Unified Data Lake", icon: <Database className="w-5 h-5 text-amethyst" /> },
-    { title: "Predictive Analytics", icon: <TrendingUp className="w-5 h-5 text-cyan" /> },
-    { title: "Enterprise Compliance", icon: <CheckCircle2 className="w-5 h-5 text-green-400" /> },
+    { title: language === "ar" ? "مزامنة في الوقت الفعلي" : "Real-time Synchronization", icon: <Zap className="w-5 h-5 text-cyan" /> },
+    { title: language === "ar" ? "بنية موزعة" : "Distributed Architecture", icon: <Server className="w-5 h-5 text-amethyst" /> },
+    { title: language === "ar" ? "سير عمل آلي" : "Automated Workflows", icon: <Workflow className="w-5 h-5 text-cyan" /> },
+    { title: language === "ar" ? "بحيرة بيانات موحدة" : "Unified Data Lake", icon: <Database className="w-5 h-5 text-amethyst" /> },
+    { title: language === "ar" ? "تحليلات تنبؤية" : "Predictive Analytics", icon: <TrendingUp className="w-5 h-5 text-cyan" /> },
+    { title: language === "ar" ? "امتثال مؤسسي" : "Enterprise Compliance", icon: <CheckCircle2 className="w-5 h-5 text-green-400" /> },
   ];
 
   return (
     <main className="flex-1 flex flex-col items-center pb-24">
       {/* Hero Section */}
-      <section className="relative w-full py-24 flex items-center justify-center overflow-hidden border-b border-white/5">
+      <section className="relative w-full py-24 flex items-center justify-center overflow-hidden border-b border-fg/5">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan/10 via-void to-void" />
         
         <div className="relative z-10 container mx-auto px-4">
           <Link href="/products" className="inline-flex items-center text-slate hover:text-cyan transition-colors mb-8 text-sm font-medium">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Products
+            {language === "ar" ? <ArrowRight className="w-4 h-4 ml-2" /> : <ArrowLeft className="w-4 h-4 mr-2" />}
+            {t("product.back")}
           </Link>
           
           <div className="max-w-4xl space-y-6">
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate text-xs font-medium uppercase tracking-wider">
-              {product.suiteName}
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-fg/5 border border-fg/10 text-slate text-xs font-medium uppercase tracking-wider">
+              {language === "ar" && product.suiteNameAr ? product.suiteNameAr : product.suiteName}
             </div>
             <h1 className="font-heading text-4xl md:text-6xl font-bold tracking-tighter text-platinum text-glow">
-              {product.name}
+              {language === "ar" && product.nameAr ? product.nameAr : product.name}
             </h1>
             <p className="text-xl text-slate max-w-2xl">
-              {product.description}
+              {language === "ar" && product.descAr ? product.descAr : product.description}
             </p>
           </div>
         </div>
@@ -81,19 +83,19 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
       <section className="w-full py-24 bg-void">
         <div className="container mx-auto px-4">
           <div className="mb-12">
-            <h2 className="font-heading text-3xl font-bold text-platinum">Technical Capabilities</h2>
-            <p className="text-slate">Built for scale, security, and performance.</p>
+            <h2 className="font-heading text-3xl font-bold text-platinum">{t("product.capabilities.title")}</h2>
+            <p className="text-slate">{t("product.capabilities.subtitle")}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, idx) => (
               <Card key={idx} className="p-6 flex items-start space-x-4">
-                <div className="p-3 rounded-lg bg-white/5">
+                <div className={`p-3 rounded-lg bg-fg/5 ${language === "ar" ? "ml-4" : "mr-4"}`}>
                   {feature.icon}
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-platinum mb-2">{feature.title}</h3>
-                  <p className="text-sm text-slate">Seamlessly integrate with the core Aura to unlock this capability across your organization.</p>
+                  <p className="text-sm text-slate">{t("product.capabilities.desc")}</p>
                 </div>
               </Card>
             ))}
@@ -102,22 +104,22 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
       </section>
 
       {/* Integration Architecture */}
-      <section className="w-full py-24 bg-[#0B0F19] relative overflow-hidden">
+      <section className="w-full py-24 bg-obsidian relative overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="font-heading text-3xl font-bold text-platinum mb-4">Integration Architecture</h2>
-            <p className="text-slate">How {product.name} connects to the Core OS.</p>
+            <h2 className="font-heading text-3xl font-bold text-platinum mb-4">{t("product.arch.title")}</h2>
+            <p className="text-slate">{t("product.arch.subtitle")}</p>
           </div>
 
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between relative">
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between relative" dir="ltr">
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[2px] bg-gradient-to-r from-cyan/20 via-amethyst/50 to-cyan/20 hidden md:block" />
             
             <div className="relative z-10 p-8 rounded-2xl bg-void border border-cyan/30 shadow-[0_0_30px_rgba(0,229,255,0.1)] text-center mb-8 md:mb-0 w-full md:w-64">
               <div className="w-12 h-12 mx-auto bg-cyan/10 rounded-full flex items-center justify-center mb-4">
                 <Database className="w-6 h-6 text-cyan" />
               </div>
-              <h4 className="font-bold text-platinum">{product.name}</h4>
-              <p className="text-xs text-slate mt-2">Edge Node</p>
+              <h4 className="font-bold text-platinum">{language === "ar" && product.nameAr ? product.nameAr : product.name}</h4>
+              <p className="text-xs text-slate mt-2">{t("product.arch.edge")}</p>
             </div>
 
             <div className="relative z-10 flex flex-col items-center justify-center mb-8 md:mb-0">
@@ -128,15 +130,15 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               >
                 <div className="w-8 h-8 rounded-full bg-amethyst/20" />
               </motion.div>
-              <span className="text-xs text-amethyst mt-4 font-mono">SYNC / DATA_LAKE</span>
+              <span className="text-xs text-amethyst mt-4 font-mono">{t("product.arch.sync")}</span>
             </div>
 
             <div className="relative z-10 p-8 rounded-2xl bg-void border border-platinum/20 shadow-[0_0_30px_rgba(255,255,255,0.05)] text-center w-full md:w-64">
               <div className="w-12 h-12 mx-auto bg-platinum/10 rounded-full flex items-center justify-center mb-4">
                 <Server className="w-6 h-6 text-platinum" />
               </div>
-              <h4 className="font-bold text-platinum">Aura Core</h4>
-              <p className="text-xs text-slate mt-2">Central Database</p>
+              <h4 className="font-bold text-platinum">{t("product.arch.core")}</h4>
+              <p className="text-xs text-slate mt-2">{t("product.arch.core.desc")}</p>
             </div>
           </div>
         </div>
@@ -152,70 +154,70 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
             <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cyan/10 mb-6">
               <Calculator className="w-8 h-8 text-cyan" />
             </div>
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow mb-4">Enterprise Transformation Calculator</h2>
-            <p className="text-slate text-lg max-w-2xl mx-auto">Discover the hidden costs of legacy operations and visualize the financial impact of unifying your enterprise with Aura.</p>
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow mb-4">{t("roi.title")}</h2>
+            <p className="text-slate text-lg max-w-2xl mx-auto">{t("roi.subtitle")}</p>
           </div>
 
           <div className="grid lg:grid-cols-12 gap-8">
             {/* Inputs Panel */}
-            <div className="lg:col-span-5 space-y-8 p-8 rounded-2xl bg-[#0B0F19]/60 border border-white/5 backdrop-blur-2xl">
-              <h3 className="text-xl font-bold text-platinum mb-6 border-b border-white/10 pb-4">Current Operational State</h3>
+            <div className="lg:col-span-5 space-y-8 p-8 rounded-2xl bg-obsidian/60 border border-fg/5 backdrop-blur-2xl">
+              <h3 className="text-xl font-bold text-platinum mb-6 border-b border-fg/10 pb-4">{t("roi.inputs.title")}</h3>
               
               <div className="space-y-6">
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <label className="text-sm font-medium text-slate">Company Size (Employees)</label>
-                    <span className="text-sm font-bold text-platinum">{employees.toLocaleString()}</span>
+                    <label className="text-sm font-medium text-slate">{t("roi.inputs.employees")}</label>
+                    <span className="text-sm font-bold text-platinum" dir="ltr">{employees.toLocaleString()}</span>
                   </div>
                   <input 
                     type="range" 
-                    min="50" max="5000" step="50"
+                    min="10" max="5000" step="10"
                     value={employees} 
                     onChange={(e) => setEmployees(parseInt(e.target.value))}
-                    className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
+                    className="w-full h-1.5 bg-fg/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
                   />
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <label className="text-sm font-medium text-slate">Legacy Tech Stack Spend / Month</label>
-                    <span className="text-sm font-bold text-platinum">${legacySpend.toLocaleString()}</span>
+                    <label className="text-sm font-medium text-slate">{t("roi.inputs.spend")}</label>
+                    <span className="text-sm font-bold text-platinum" dir="ltr">${legacySpend.toLocaleString()}</span>
                   </div>
                   <input 
                     type="range" 
-                    min="5000" max="250000" step="5000"
+                    min="500" max="250000" step="500"
                     value={legacySpend} 
                     onChange={(e) => setLegacySpend(parseInt(e.target.value))}
-                    className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
+                    className="w-full h-1.5 bg-fg/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
                   />
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <label className="text-sm font-medium text-slate">Manual Ops Hours / Week (per Emp.)</label>
-                    <span className="text-sm font-bold text-platinum">{manualHours} hrs</span>
+                    <label className="text-sm font-medium text-slate">{t("roi.inputs.hours")}</label>
+                    <span className="text-sm font-bold text-platinum" dir="ltr">{manualHours}</span>
                   </div>
                   <input 
                     type="range" 
                     min="1" max="30" step="1"
                     value={manualHours} 
                     onChange={(e) => setManualHours(parseInt(e.target.value))}
-                    className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
+                    className="w-full h-1.5 bg-fg/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
                   />
-                  <p className="text-xs text-slate/50">Data entry, compliance checks, reporting across fragmented systems.</p>
+                  <p className="text-xs text-slate/50">{t("roi.inputs.hours.desc")}</p>
                 </div>
 
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <label className="text-sm font-medium text-slate">Average Blended Hourly Rate</label>
-                    <span className="text-sm font-bold text-platinum">${hourlyRate}</span>
+                    <label className="text-sm font-medium text-slate">{t("roi.inputs.rate")}</label>
+                    <span className="text-sm font-bold text-platinum" dir="ltr">${hourlyRate}</span>
                   </div>
                   <input 
                     type="range" 
-                    min="20" max="150" step="5"
+                    min="10" max="150" step="2"
                     value={hourlyRate} 
                     onChange={(e) => setHourlyRate(parseInt(e.target.value))}
-                    className="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
+                    className="w-full h-1.5 bg-fg/10 rounded-lg appearance-none cursor-pointer accent-amethyst"
                   />
                 </div>
               </div>
@@ -225,32 +227,32 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
             <div className="lg:col-span-7 grid grid-rows-3 gap-6">
               
               {/* Primary Output */}
-              <div className="row-span-2 rounded-2xl bg-gradient-to-br from-cyan/10 via-[#0B0F19] to-[#0B0F19] p-10 border border-cyan/20 flex flex-col justify-center relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity">
+              <div className="row-span-2 rounded-2xl bg-gradient-to-br from-cyan/10 via-obsidian to-obsidian p-10 border border-cyan/20 flex flex-col justify-center relative overflow-hidden group">
+                <div className={`absolute top-0 ${language === "ar" ? "left-0" : "right-0"} p-6 opacity-20 group-hover:opacity-40 transition-opacity`}>
                   <TrendingUp className="w-32 h-32 text-cyan" />
                 </div>
-                <h4 className="text-sm font-medium text-cyan uppercase tracking-wider mb-2">Annual Capital Recovered</h4>
-                <div className="text-5xl md:text-7xl font-bold text-platinum text-glow mb-4">
+                <h4 className="text-sm font-medium text-cyan uppercase tracking-wider mb-2">{t("roi.outputs.annual")}</h4>
+                <div className="text-5xl md:text-7xl font-bold text-platinum text-glow mb-4" dir="ltr">
                   ${annualCapitalRecovered.toLocaleString(undefined, { maximumFractionDigits: 0 })}
                 </div>
                 <p className="text-slate text-sm max-w-md">
-                  Combines hard savings from retiring legacy software licenses and soft savings from automating {annualHoursSaved.toLocaleString()} hours of manual labor.
+                  {t("roi.outputs.annual.desc")}
                 </p>
               </div>
 
               {/* Secondary Outputs */}
               <div className="row-span-1 grid grid-cols-2 gap-6">
-                <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/5 p-6 flex flex-col justify-center">
-                  <h4 className="text-xs font-medium text-slate uppercase tracking-wider mb-1">Reclaimed Strategic Time</h4>
-                  <div className="text-3xl font-bold text-amethyst text-glow">
-                    {annualHoursSaved.toLocaleString()} <span className="text-lg text-slate font-normal">hrs/yr</span>
+                <div className="rounded-2xl bg-obsidian/60 border border-fg/5 p-6 flex flex-col justify-center">
+                  <h4 className="text-xs font-medium text-slate uppercase tracking-wider mb-1">{t("roi.outputs.time")}</h4>
+                  <div className="text-3xl font-bold text-amethyst text-glow" dir="ltr">
+                    {annualHoursSaved.toLocaleString()} <span className="text-lg text-slate font-normal">{t("roi.outputs.time.unit")}</span>
                   </div>
                 </div>
                 
-                <div className="rounded-2xl bg-[#0B0F19]/60 border border-white/5 p-6 flex flex-col justify-center">
-                  <h4 className="text-xs font-medium text-slate uppercase tracking-wider mb-1">Ecosystem Time-to-Value</h4>
-                  <div className="text-3xl font-bold text-platinum text-glow">
-                    {ttv} <span className="text-lg text-slate font-normal">months</span>
+                <div className="rounded-2xl bg-obsidian/60 border border-fg/5 p-6 flex flex-col justify-center">
+                  <h4 className="text-xs font-medium text-slate uppercase tracking-wider mb-1">{t("roi.outputs.ttv")}</h4>
+                  <div className="text-3xl font-bold text-platinum text-glow" dir="ltr">
+                    {ttv} <span className="text-lg text-slate font-normal">{t("roi.outputs.ttv.unit")}</span>
                   </div>
                 </div>
               </div>

@@ -1,77 +1,85 @@
 export const ecosystem = [
   {
     suite: "The Ultimate Bundle",
+    suiteAr: "الباقة الشاملة",
     slug: "ultimate-bundle",
     products: [
-      { name: "One Eco System Bundle", slug: "one-eco-system", description: "The complete, unified enterprise digital transformation package. All suites, one source of truth." }
+      { name: "One Eco System Bundle", nameAr: "باقة النظام البيئي الموحد", slug: "one-eco-system", description: "The complete, unified enterprise digital transformation package. All suites, one source of truth.", descAr: "باقة التحول الرقمي المؤسسي الموحدة والشاملة. جميع الحزم، مصدر واحد للحقيقة." }
     ]
   },
   {
     suite: "Operations & Logistics",
+    suiteAr: "العمليات والخدمات اللوجستية",
     slug: "operations-logistics",
     products: [
-      { name: "Transportation Management System (TMS)", slug: "tms", description: "AI-driven routing and freight optimization." },
-      { name: "Fleet Management System", slug: "fleet-management", description: "Real-time telemetry and preventative maintenance." },
-      { name: "Supply Chain Management (SCM)", slug: "scm", description: "End-to-end visibility and vendor synchronization." },
-      { name: "Inventory & Warehouse Management System (WMS)", slug: "wms", description: "Automated stock tracking and facility mapping." }
+      { name: "Transportation Management System (TMS)", nameAr: "نظام إدارة النقل (TMS)", slug: "tms", description: "AI-driven routing and freight optimization.", descAr: "توجيه مدفوع بالذكاء الاصطناعي وتحسين الشحن." },
+      { name: "Fleet Management System", nameAr: "نظام إدارة الأسطول", slug: "fleet-management", description: "Real-time telemetry and preventative maintenance.", descAr: "القياس عن بعد في الوقت الفعلي والصيانة الوقائية." },
+      { name: "Supply Chain Management (SCM)", nameAr: "إدارة سلسلة التوريد (SCM)", slug: "scm", description: "End-to-end visibility and vendor synchronization.", descAr: "رؤية شاملة ومزامنة مع الموردين." },
+      { name: "Inventory & Warehouse Management System (WMS)", nameAr: "نظام إدارة المخزون والمستودعات (WMS)", slug: "wms", description: "Automated stock tracking and facility mapping.", descAr: "تتبع آلي للمخزون ورسم خرائط المرافق." }
     ]
   },
   {
     suite: "HR & Performance",
+    suiteAr: "الموارد البشرية والأداء",
     slug: "hr-performance",
     products: [
-      { name: "Payroll System", slug: "payroll", description: "Automated compliance and global disbursement." },
-      { name: "People Management System (Attendances, Leaves, Employee Requests)", slug: "people-management", description: "Core HR operations unified." },
-      { name: "Performance Management System", slug: "performance", description: "KPI tracking and growth trajectory mapping." },
-      { name: "Learning Management System (LMS)", slug: "lms", description: "Upskilling pathways and training deployment." },
-      { name: "Quality Management System (QMS)", slug: "qms", description: "Standard operating procedure enforcement." },
-      { name: "Employee Intranet & Portal", slug: "intranet", description: "Secure corporate communications hub." }
+      { name: "Payroll System", nameAr: "نظام مسيرات الرواتب", slug: "payroll", description: "Automated compliance and global disbursement.", descAr: "الامتثال الآلي والصرف العالمي." },
+      { name: "People Management System", nameAr: "نظام إدارة الموارد البشرية", slug: "people-management", description: "Core HR operations unified.", descAr: "العمليات الأساسية للموارد البشرية الموحدة." },
+      { name: "Performance Management System", nameAr: "نظام إدارة الأداء", slug: "performance", description: "KPI tracking and growth trajectory mapping.", descAr: "تتبع مؤشرات الأداء الرئيسية ورسم مسار النمو." },
+      { name: "Learning Management System (LMS)", nameAr: "نظام إدارة التعلم (LMS)", slug: "lms", description: "Upskilling pathways and training deployment.", descAr: "مسارات صقل المهارات ونشر التدريب." },
+      { name: "Quality Management System (QMS)", nameAr: "نظام إدارة الجودة (QMS)", slug: "qms", description: "Standard operating procedure enforcement.", descAr: "إنفاذ إجراءات التشغيل القياسية." },
+      { name: "Employee Intranet & Portal", nameAr: "بوابة وإنترانت الموظفين", slug: "intranet", description: "Secure corporate communications hub.", descAr: "مركز اتصالات مؤسسي آمن." }
     ]
   },
   {
     suite: "Finance & Core ERP",
+    suiteAr: "المالية ونظام تخطيط موارد المؤسسات",
     slug: "finance-erp",
     products: [
-      { name: "Finance Management System", slug: "finance", description: "Real-time ledger and cash flow prediction." },
-      { name: "Enterprise Resource Planning (Odoo/Core ERP Implementation)", slug: "core-erp", description: "The foundational core operational database." },
-      { name: "Procurement & Expenses Management System", slug: "procurement", description: "Spend controls and automated approvals." }
+      { name: "Finance Management System", nameAr: "نظام الإدارة المالية", slug: "finance", description: "Real-time ledger and cash flow prediction.", descAr: "دفتر الأستاذ في الوقت الفعلي والتنبؤ بالتدفقات النقدية." },
+      { name: "Enterprise Resource Planning", nameAr: "تخطيط موارد المؤسسات", slug: "core-erp", description: "The foundational core operational database.", descAr: "قاعدة البيانات التشغيلية الأساسية." },
+      { name: "Procurement & Expenses Management System", nameAr: "نظام إدارة المشتريات والنفقات", slug: "procurement", description: "Spend controls and automated approvals.", descAr: "ضوابط الإنفاق والموافقات الآلية." }
     ]
   },
   {
     suite: "Customer & Sales",
+    suiteAr: "العملاء والمبيعات",
     slug: "customer-sales",
     products: [
-      { name: "Customer Relationship Management (CRM)", slug: "crm", description: "Pipeline velocity and relationship intelligence." },
-      { name: "Customer Support & Ticketing System", slug: "ticketing", description: "Omnichannel issue resolution." },
-      { name: "Configure, Price, Quote (CPQ) Software", slug: "cpq", description: "Complex pricing matrix automation." }
+      { name: "Customer Relationship Management (CRM)", nameAr: "إدارة علاقات العملاء (CRM)", slug: "crm", description: "Pipeline velocity and relationship intelligence.", descAr: "سرعة خط الأنابيب وذكاء العلاقات." },
+      { name: "Customer Support & Ticketing System", nameAr: "نظام دعم العملاء والتذاكر", slug: "ticketing", description: "Omnichannel issue resolution.", descAr: "حل المشكلات عبر قنوات متعددة." },
+      { name: "Configure, Price, Quote (CPQ)", nameAr: "أداة التسعير وعروض الأسعار (CPQ)", slug: "cpq", description: "Complex pricing matrix automation.", descAr: "أتمتة مصفوفة التسعير المعقدة." }
     ]
   },
   {
     suite: "AI Transformation",
+    suiteAr: "تحول الذكاء الاصطناعي",
     slug: "ai-transformation",
     products: [
-      { name: "Aura Chatbot", slug: "aura-chatbot", description: "Conversational intelligence for internal and external queries." },
-      { name: "AI Recruitment System", slug: "ai-recruitment", description: "Candidate screening and skill-matching algorithms." },
-      { name: "Ready/Customized Skills for AI Agents", slug: "ai-skills", description: "Pre-trained functional behaviors for autonomous agents." },
-      { name: "Agents OS", slug: "agents-os", description: "The operating environment for deploying autonomous workflows." },
-      { name: "AI Document Processing (Intelligent OCR)", slug: "intelligent-ocr", description: "Unstructured data extraction and digitization." }
+      { name: "Aura Chatbot", nameAr: "روبوت محادثة Aura", slug: "aura-chatbot", description: "Conversational intelligence for internal and external queries.", descAr: "الذكاء الحواري للاستفسارات الداخلية والخارجية." },
+      { name: "AI Recruitment System", nameAr: "نظام التوظيف بالذكاء الاصطناعي", slug: "ai-recruitment", description: "Candidate screening and skill-matching algorithms.", descAr: "فحص المرشحين وخوارزميات مطابقة المهارات." },
+      { name: "Ready/Customized Skills for AI Agents", nameAr: "مهارات مخصصة لوكلاء الذكاء الاصطناعي", slug: "ai-skills", description: "Pre-trained functional behaviors for autonomous agents.", descAr: "سلوكيات وظيفية مدربة مسبقًا للوكلاء المستقلين." },
+      { name: "Agents OS", nameAr: "نظام تشغيل الوكلاء", slug: "agents-os", description: "The operating environment for deploying autonomous workflows.", descAr: "بيئة التشغيل لنشر سير العمل المستقل." },
+      { name: "AI Document Processing (Intelligent OCR)", nameAr: "معالجة المستندات بالذكاء الاصطناعي (OCR الذكي)", slug: "intelligent-ocr", description: "Unstructured data extraction and digitization.", descAr: "استخراج البيانات غير المنظمة ورقمنتها." }
     ]
   },
   {
     suite: "Data & Analytics",
+    suiteAr: "البيانات والتحليلات",
     slug: "data-analytics",
     products: [
-      { name: "Business Intelligence (BI) Dashboards", slug: "bi-dashboards", description: "Real-time visual data storytelling." },
-      { name: "Enterprise Data Lake/Warehouse Management", slug: "data-lake", description: "Unified, secure storage for all operational data." },
-      { name: "Predictive/Forecast Analytics Engine", slug: "predictive-analytics", description: "Machine learning for future trend modeling." }
+      { name: "Business Intelligence (BI) Dashboards", nameAr: "لوحات معلومات ذكاء الأعمال (BI)", slug: "bi-dashboards", description: "Real-time visual data storytelling.", descAr: "سرد بيانات مرئي في الوقت الفعلي." },
+      { name: "Enterprise Data Lake/Warehouse", nameAr: "مستودع/بحيرة بيانات المؤسسة", slug: "data-lake", description: "Unified, secure storage for all operational data.", descAr: "تخزين موحد وآمن لجميع البيانات التشغيلية." },
+      { name: "Predictive/Forecast Analytics Engine", nameAr: "محرك التحليلات التنبؤية/التوقعات", slug: "predictive-analytics", description: "Machine learning for future trend modeling.", descAr: "التعلم الآلي لنمذجة الاتجاهات المستقبلية." }
     ]
   },
   {
     suite: "IT & Security",
+    suiteAr: "تكنولوجيا المعلومات والأمن",
     slug: "it-security",
     products: [
-      { name: "Identity and Access Management (IAM)", slug: "iam", description: "Zero-trust security and role-based permissions." },
-      { name: "IT Service Management (ITSM)", slug: "itsm", description: "Internal tech support and hardware lifecycle tracking." }
+      { name: "Identity and Access Management (IAM)", nameAr: "إدارة الهوية والوصول (IAM)", slug: "iam", description: "Zero-trust security and role-based permissions.", descAr: "أمان مبني على انعدام الثقة وأذونات قائمة على الأدوار." },
+      { name: "IT Service Management (ITSM)", nameAr: "إدارة خدمات تكنولوجيا المعلومات (ITSM)", slug: "itsm", description: "Internal tech support and hardware lifecycle tracking.", descAr: "الدعم الفني الداخلي وتتبع دورة حياة الأجهزة." }
     ]
   }
 ];

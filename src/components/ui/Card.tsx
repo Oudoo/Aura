@@ -49,7 +49,7 @@ export function Card({ children, className, ...props }: CardProps) {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-white/5 bg-[#0B0F19]/60 backdrop-blur-2xl transition-colors duration-300",
+        "relative overflow-hidden rounded-2xl border border-fg/5 bg-obsidian/60 backdrop-blur-2xl transition-colors duration-300",
         className
       )}
       {...props}
