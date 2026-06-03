@@ -4,18 +4,23 @@ import { ClientFinanceManager } from "./ClientFinanceManager";
 export const dynamic = "force-dynamic";
 
 export default async function FinanceHubPage() {
-  // Automatically update overdue invoices
-  await prisma.invoice.updateMany({
-    where: {
-      status: { notIn: ["PAID", "OVERDUE"] },
-      dueDate: { lt: new Date() }
-    },
-    data: { status: "OVERDUE" }
-  });
+  let invoices: any[] = [];
+  try {
+    // Automatically update overdue invoices
+    await prisma.invoice.updateMany({
+      where: {
+        status: { notIn: ["PAID", "OVERDUE"] },
+        dueDate: { lt: new Date() }
+      },
+      data: { status: "OVERDUE" }
+    });
 
-  const invoices = await prisma.invoice.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+    invoices = await prisma.invoice.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e) {
+    console.error("Finance DB query failed:", e);
+  }
 
   return (
     <div className="p-10">

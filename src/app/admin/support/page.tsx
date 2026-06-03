@@ -4,9 +4,14 @@ import { ClientSupportManager } from "./ClientSupportManager";
 export const dynamic = "force-dynamic";
 
 export default async function SupportHubPage() {
-  const tickets = await prisma.ticket.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  let tickets: any[] = [];
+  try {
+    tickets = await prisma.ticket.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e) {
+    console.error("Support DB query failed:", e);
+  }
 
   return (
     <div className="p-10">
