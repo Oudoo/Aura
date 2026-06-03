@@ -63,6 +63,16 @@ export async function updateTaskAssigneeAction(id: string, projectId: string, as
   revalidatePath(`/admin/projects/${projectId}`);
 }
 
+export async function updateTaskTitleAction(id: string, projectId: string, title: string) {
+  if (!title) return;
+  await prisma.task.update({
+    where: { id },
+    data: { title },
+  });
+  revalidatePath(`/admin/projects/${projectId}`);
+  revalidatePath("/admin/projects");
+}
+
 export async function deleteTaskAction(id: string, projectId: string) {
   await prisma.task.delete({
     where: { id },
@@ -90,6 +100,15 @@ export async function toggleSubTaskAction(id: string, projectId: string, isCompl
   await prisma.subTask.update({
     where: { id },
     data: { isCompleted },
+  });
+  revalidatePath(`/admin/projects/${projectId}`);
+}
+
+export async function updateSubTaskTitleAction(id: string, projectId: string, title: string) {
+  if (!title) return;
+  await prisma.subTask.update({
+    where: { id },
+    data: { title },
   });
   revalidatePath(`/admin/projects/${projectId}`);
 }

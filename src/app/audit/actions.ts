@@ -40,6 +40,7 @@ export async function submitAuditForm(formData: FormData) {
     email: sanitize(formData.get("email") as string),
     company: sanitize(formData.get("company") as string),
     message: sanitize(formData.get("message") as string),
+    status: sanitize(formData.get("status") as string) || "new",
   };
 
   // 3. Database Insertion

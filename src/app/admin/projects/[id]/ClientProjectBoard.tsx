@@ -12,7 +12,9 @@ import {
   deleteSubTaskAction,
   addCommentAction,
   addAttachmentAction,
-  deleteAttachmentAction
+  deleteAttachmentAction,
+  updateTaskTitleAction,
+  updateSubTaskTitleAction
 } from "../actions";
 
 const TEAM_MEMBERS = ["Mahmoud Hassan", "Ahmed El-Tamawy", "Mohamed Khaled", "Unassigned"];
@@ -120,7 +122,12 @@ export function ClientProjectBoard({ project }: { project: any }) {
           {currentActiveTask ? (
             <div className="bg-obsidian border border-fg/10 rounded-2xl p-6 sticky top-6">
               <div className="flex justify-between items-start mb-4">
-                <h2 className="text-xl font-bold text-platinum">{currentActiveTask.title}</h2>
+                <input 
+                  defaultValue={currentActiveTask.title}
+                  onBlur={(e) => updateTaskTitleAction(currentActiveTask.id, project.id, e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+                  className="text-xl font-bold text-platinum bg-transparent border-none outline-none focus:ring-1 focus:ring-cyan rounded px-1 w-full mr-2"
+                />
                 <button 
                   onClick={() => {
                     deleteTaskAction(currentActiveTask.id, project.id);
@@ -185,9 +192,12 @@ export function ClientProjectBoard({ project }: { project: any }) {
                         onChange={(e) => toggleSubTaskAction(sub.id, project.id, e.target.checked)}
                         className="accent-cyan w-4 h-4"
                       />
-                      <span className={`text-sm flex-1 ${sub.isCompleted ? 'text-slate line-through' : 'text-platinum'}`}>
-                        {sub.title}
-                      </span>
+                      <input 
+                        defaultValue={sub.title}
+                        onBlur={(e) => updateSubTaskTitleAction(sub.id, project.id, e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+                        className={`text-sm flex-1 bg-transparent border-none outline-none focus:ring-1 focus:ring-cyan rounded px-1 ${sub.isCompleted ? 'text-slate line-through' : 'text-platinum'}`}
+                      />
                       <button onClick={() => deleteSubTaskAction(sub.id, project.id)} className="opacity-0 group-hover:opacity-100 text-slate hover:text-red-400">
                         <Trash2 className="w-3 h-3" />
                       </button>

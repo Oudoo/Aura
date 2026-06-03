@@ -14,8 +14,8 @@ export default async function AdminProductsPage() {
     <div className="p-10">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-heading font-bold text-platinum mb-2">Ecosystem Manager</h1>
-          <p className="text-slate">Manage the suites and products in the Aura ecosystem.</p>
+          <h1 className="text-3xl font-heading font-bold text-platinum mb-2">Content Management</h1>
+          <p className="text-slate">Manage the suites, products, and features in the Aura ecosystem.</p>
         </div>
       </div>
 

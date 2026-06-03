@@ -22,6 +22,9 @@ model Product {
   slug        String @unique
   description String
   descAr      String
+  status      String @default("PUBLISHED") // PUBLISHED, DRAFT
+  order       Int    @default(0)
+  features    String? @db.Text
   suiteId     String
   suite       Suite  @relation(fields: [suiteId], references: [id], onDelete: Cascade)
 }
@@ -33,9 +36,13 @@ model Submission {
   company String
   message String   @db.Text
   date    DateTime @default(now())
-  status  String   @default("new")
-  called  String   @default("no")
-  notes   String?  @db.Text
+  status        String    @default("new")
+  called        String    @default("no")
+  notes         String?   @db.Text
+  priority      String    @default("MEDIUM") // HOT, WARM, COLD, MEDIUM
+  dealValue     Int       @default(0)
+  source        String    @default("Website") // Website, Referral, LinkedIn, WhatsApp, Direct
+  nextFollowUp  DateTime?
 }
 
 // Project Management Models
@@ -89,4 +96,30 @@ model Attachment {
   taskId    String
   task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
+}
+
+// Finance & Invoicing
+model Invoice {
+  id          String   @id @default(uuid())
+  invoiceNo   String   @unique
+  clientName  String
+  amount      Float
+  status      String   @default("DRAFT") // DRAFT, SENT, PAID, OVERDUE
+  issueDate   DateTime @default(now())
+  dueDate     DateTime?
+  notes       String?  @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Support & Ticketing
+model Ticket {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  clientName  String
+  status      String   @default("OPEN") // OPEN, IN_PROGRESS, RESOLVED, CLOSED
+  priority    String   @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

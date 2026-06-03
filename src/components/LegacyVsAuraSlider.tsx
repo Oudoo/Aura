@@ -24,29 +24,33 @@ export function LegacyVsAuraSlider() {
         <div className="absolute inset-0 bg-void flex items-center justify-center overflow-hidden">
           {/* Glowing Aura Network */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan/10 via-void to-void"></div>
-          <div className="relative z-10 flex flex-col items-center">
-            <motion.div 
-              animate={{ boxShadow: ["0 0 40px rgba(0, 229, 255, 0.2)", "0 0 80px rgba(139, 92, 246, 0.4)", "0 0 40px rgba(0, 229, 255, 0.2)"] }}
-              transition={{ repeat: Infinity, duration: 4 }}
-              className="w-32 h-32 bg-obsidian rounded-full border border-cyan/50 flex items-center justify-center relative mb-8"
-            >
-              <Cpu className="w-12 h-12 text-cyan" />
-              <div className="absolute inset-0 rounded-full border border-cyan animate-ping opacity-20"></div>
-            </motion.div>
-            
-            <div className="flex gap-16 md:gap-32">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="relative">
-                  {/* Connection Line */}
-                  <div className="absolute -top-16 left-1/2 w-[2px] h-16 bg-gradient-to-b from-cyan to-amethyst opacity-50"></div>
-                  <div className="w-16 h-16 bg-obsidian border border-amethyst/50 rounded-xl flex items-center justify-center">
-                    <Network className="w-6 h-6 text-amethyst" />
-                  </div>
+          <div className="relative z-10 w-full h-full flex flex-col justify-center">
+            {/* Distributed Network Pattern */}
+            <div className="flex justify-between items-center w-full px-8 md:px-24">
+              {/* Subtle Connection Line */}
+              <div className="absolute left-8 right-8 md:left-24 md:right-24 h-[2px] bg-gradient-to-r from-cyan/20 via-amethyst to-cyan/20 z-0"></div>
+              
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="relative z-10">
+                  {i === 3 ? (
+                    <motion.div 
+                      animate={{ boxShadow: ["0 0 40px rgba(0, 229, 255, 0.2)", "0 0 80px rgba(139, 92, 246, 0.4)", "0 0 40px rgba(0, 229, 255, 0.2)"] }}
+                      transition={{ repeat: Infinity, duration: 4 }}
+                      className="w-20 h-20 md:w-32 md:h-32 bg-void rounded-full border border-cyan/50 flex items-center justify-center relative shadow-[0_0_30px_rgba(0,229,255,0.15)]"
+                    >
+                      <Cpu className="w-10 h-10 md:w-12 md:h-12 text-cyan" />
+                      <div className="absolute inset-0 rounded-full border border-cyan animate-ping opacity-20"></div>
+                    </motion.div>
+                  ) : (
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-void border border-amethyst/50 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+                      <Network className="w-6 h-6 md:w-8 md:h-8 text-amethyst" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
             
-            <h3 className="absolute bottom-10 text-2xl font-bold text-cyan tracking-widest uppercase">Unified Intelligence</h3>
+            <h3 className="absolute bottom-10 right-10 text-xl md:text-2xl font-bold text-cyan tracking-widest uppercase text-right">Unified Intelligence</h3>
           </div>
         </div>
 
@@ -57,24 +61,31 @@ export function LegacyVsAuraSlider() {
         >
           {/* Messy Red Network */}
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/noise-lines.png')] opacity-10"></div>
-          <div className="relative z-10 flex flex-col items-center">
+          <div className="relative z-10 w-full h-full flex flex-col justify-center">
             
-            <div className="flex flex-wrap justify-center gap-8 md:gap-12 relative w-full px-10">
+            <div className="flex justify-between items-center w-full px-8 md:px-24 relative">
               {/* Tangled SVG Lines */}
-              <svg className="absolute inset-0 w-full h-full" style={{ zIndex: -1 }}>
-                <path d="M 100,100 Q 200,50 300,150 T 500,100" stroke="#EF4444" strokeWidth="2" fill="none" className="opacity-50" strokeDasharray="5,5" />
-                <path d="M 150,200 Q 250,300 400,200 T 600,250" stroke="#F59E0B" strokeWidth="2" fill="none" className="opacity-50" />
-                <path d="M 50,150 Q 300,0 450,150 T 700,50" stroke="#EF4444" strokeWidth="3" fill="none" className="opacity-30" />
+              <svg className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-24 pointer-events-none z-0">
+                <path d="M 0,48 Q 200,0 400,96 T 800,0 T 1200,48" stroke="#EF4444" strokeWidth="2" fill="none" className="opacity-40" strokeDasharray="5,5" />
+                <path d="M 0,24 Q 200,96 400,0 T 800,96 T 1200,24" stroke="#F59E0B" strokeWidth="2" fill="none" className="opacity-40" />
               </svg>
 
               {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="w-20 h-20 bg-[#2A2A2A] border border-red-500/30 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-                  <ServerCrash className="w-8 h-8 text-red-400" />
+                <div key={i} className="relative z-10">
+                  {i === 3 ? (
+                    <div className="w-20 h-20 md:w-32 md:h-32 bg-[#1A1A1A] rounded-full border border-red-500/30 flex items-center justify-center relative shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                      <ServerCrash className="w-10 h-10 md:w-12 md:h-12 text-red-500" />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-[#1A1A1A] border border-red-500/30 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+                      <ServerCrash className="w-6 h-6 md:w-8 md:h-8 text-red-400 opacity-80" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
             
-            <h3 className="absolute bottom-10 text-2xl font-bold text-red-500 tracking-widest uppercase line-through">Fragmented Silos</h3>
+            <h3 className="absolute bottom-10 left-10 text-xl md:text-2xl font-bold text-red-500 tracking-widest uppercase line-through text-left">Fragmented Silos</h3>
           </div>
         </div>
 

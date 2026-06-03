@@ -56,28 +56,35 @@ export default function AuditQuizPage() {
   const handleEmailSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
-    const totalScore = scores.reduce((a, b) => a + b, 0);
     
-    // Add score to message
-    formData.append("message", `[DIGITAL MATURITY AUDIT]\nScore: ${totalScore}/120\nNeeds comprehensive review.`);
-    
-    await submitAuditForm(formData);
-    
-    // Simulate webhook
-    await fetch('/api/webhooks/whatsapp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: formData.get("name"),
-        email: formData.get("email"),
-        company: formData.get("company"),
-        message: `AUDIT COMPLETED. Score: ${totalScore}/120`
-      })
-    });
+    try {
+      const formData = new FormData(e.currentTarget);
+      const totalScore = scores.reduce((a, b) => a + b, 0);
+      
+      // Add score to message
+      formData.append("message", `[DIGITAL MATURITY AUDIT]\nScore: ${totalScore}/120\nNeeds comprehensive review.`);
+      
+      await submitAuditForm(formData);
+      
+      // Simulate webhook
+      await fetch('/api/webhooks/whatsapp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          company: formData.get("company"),
+          message: `AUDIT COMPLETED. Score: ${totalScore}/120`
+        })
+      });
 
-    setLoading(false);
-    setStep(4);
+      setStep(4);
+    } catch (error) {
+      console.error("Audit submission error:", error);
+      alert("There was an issue processing your audit. Please try again or contact us directly.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const totalScore = scores.reduce((a, b) => a + b, 0);

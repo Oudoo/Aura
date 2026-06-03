@@ -22,7 +22,7 @@ export default function LoginPage() {
     if (success) {
       router.push("/admin");
     } else {
-      setError("Invalid security clearance code.");
+      setError("Invalid security access code.");
       setLoading(false);
     }
   }
@@ -41,14 +41,14 @@ export default function LoginPage() {
             <ShieldCheck className="w-8 h-8 text-cyan" />
           </div>
           <h1 className="text-2xl font-heading font-bold text-platinum">Aura Core Access</h1>
-          <p className="text-slate text-sm mt-2">Enter staff clearance code to access the command center.</p>
+          <p className="text-slate text-sm mt-2">Enter staff access code to access the command center.</p>
         </div>
 
         <Card className="p-8 border-fg/10 bg-obsidian/80 backdrop-blur-xl">
           <form onSubmit={handleSubmit} className="space-y-6" autoComplete="off">
             <div>
               <label className="block text-xs font-bold text-slate uppercase tracking-wider mb-2">
-                Clearance Code
+                access code
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

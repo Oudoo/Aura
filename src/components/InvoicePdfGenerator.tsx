@@ -3,18 +3,16 @@
 import { FileText, Download } from "lucide-react";
 import { useState } from "react";
 
-interface LeadData {
-  name: string;
-  email: string;
-  company: string;
-  message: string;
-  date: string;
-  priority?: string;
-  dealValue?: number;
-  source?: string;
+interface InvoiceData {
+  invoiceNo: string;
+  clientName: string;
+  amount: number;
+  status: string;
+  issueDate: string;
+  dueDate?: string;
 }
 
-export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
+export function InvoicePdfGenerator({ invoice }: { invoice: InvoiceData }) {
   const [generating, setGenerating] = useState(false);
 
   const generatePDF = async () => {
@@ -41,48 +39,34 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
       
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal");
-      doc.text("Strategic Diagnosis & Proposal", 120, 25);
+      doc.text("Official Invoice", 160, 25);
 
-      // Client Information Section
+      // Invoice Information Section
       doc.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
       doc.setFontSize(16);
       doc.setFont("helvetica", "bold");
-      doc.text("Client Executive Summary", 14, 60);
+      doc.text("Invoice Details", 14, 60);
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal");
-      doc.text(`Prepared for: ${lead.name}`, 14, 70);
-      doc.text(`Organization: ${lead.company}`, 14, 78);
-      doc.text(`Contact: ${lead.email}`, 14, 86);
-      doc.text(`Date of Inquiry: ${new Date(lead.date).toLocaleDateString()}`, 14, 94);
-      doc.text(`Priority Segment: ${lead.priority || 'MEDIUM'}`, 14, 102);
-      doc.text(`Est. Value: $${(lead.dealValue || 0).toLocaleString()}`, 14, 110);
+      doc.text(`Invoice No: ${invoice.invoiceNo}`, 14, 70);
+      doc.text(`Client: ${invoice.clientName}`, 14, 78);
+      doc.text(`Issue Date: ${new Date(invoice.issueDate).toLocaleDateString()}`, 14, 86);
+      if (invoice.dueDate) {
+        doc.text(`Due Date: ${new Date(invoice.dueDate).toLocaleDateString()}`, 14, 94);
+      }
+      doc.text(`Status: ${invoice.status}`, 14, 102);
 
-      // Operational Bottleneck Section
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "bold");
-      doc.text("Identified Operational Bottlenecks", 14, 130);
-
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal");
-      
-      const splitMessage = doc.splitTextToSize(lead.message || "No specific details provided during initial inquiry.", 180);
-      doc.text(splitMessage, 14, 140);
-
-      // Proposed Aura Ecosystem Roadmap (Table)
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "bold");
-      doc.text("Recommended Aura Modules", 14, 170);
-
+      // Table
       autoTable(doc, {
-        startY: 180,
-        head: [['Phase', 'Module', 'Strategic Impact']],
+        startY: 120,
+        head: [['Description', 'Amount']],
         body: [
-          ['Phase 1', 'Aura Core / ERP Foundation', 'Unify fractured datasets into a single source of truth.'],
-          ['Phase 2', 'Aura HR & Payroll', 'Automate compliance and slash processing time by 80%.'],
-          ['Phase 3', 'Aura AI Analytics', 'Real-time predictive forecasting & BI dashboards.']
+          ['Professional Services rendered', `$${invoice.amount.toLocaleString()}`]
         ],
+        foot: [['Total', `$${invoice.amount.toLocaleString()}`]],
         headStyles: { fillColor: brandColor },
+        footStyles: { fillColor: darkColor },
         theme: 'striped',
       });
 
@@ -100,7 +84,7 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
         );
       }
 
-      doc.save(`Aura_Proposal_${lead.company.replace(/\s+/g, '_')}.pdf`);
+      doc.save(`${invoice.invoiceNo}_${invoice.clientName.replace(/\s+/g, '_')}.pdf`);
     } catch (error) {
       console.error("Failed to generate PDF:", error);
     } finally {
@@ -112,8 +96,8 @@ export function PdfGeneratorButton({ lead }: { lead: LeadData }) {
     <button 
       onClick={generatePDF}
       disabled={generating}
-      title="Generate Strategy PDF"
-      className="p-2 rounded-lg text-slate hover:text-cyan hover:bg-cyan/10 transition-colors disabled:opacity-50 flex items-center justify-center"
+      title="Download PDF"
+      className="p-2 text-slate hover:text-cyan hover:bg-cyan/10 rounded-md transition-colors disabled:opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100"
     >
       {generating ? <Download className="w-4 h-4 animate-pulse" /> : <FileText className="w-4 h-4" />}
     </button>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Inbox, Package, LogOut, Moon, Sun, Briefcase } from "lucide-react";
+import { Inbox, Package, LogOut, Moon, Sun, Briefcase, CreditCard, LifeBuoy, BarChart2 } from "lucide-react";
 import { logoutAction } from "./actions";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -20,8 +20,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const links = [
-    { name: "Submissions", href: "/admin", icon: Inbox },
-    { name: "Ecosystem Manager", href: "/admin/products", icon: Package },
+    { name: "Analytics & Reports", href: "/admin/analytics", icon: BarChart2 },
+    { name: "Aura CRM", href: "/admin", icon: Inbox },
+    { name: "Finance Hub", href: "/admin/finance", icon: CreditCard },
+    { name: "Help Desk", href: "/admin/support", icon: LifeBuoy },
+    { name: "Content Management", href: "/admin/products", icon: Package },
     { name: "Project Management", href: "/admin/projects", icon: Briefcase },
   ];
 

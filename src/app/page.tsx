@@ -277,13 +277,13 @@ export default function Home() {
 
                       {/* Origin Nodes */}
                       <circle cx="50" cy="40" r="6" fill="var(--cyan)" filter="url(#glow)" />
-                      <text x="10" y="44" fill="var(--slate)" fontSize="10" fontFamily="monospace">HR_API</text>
+                      <text x="35" y="44" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">HR_API</text>
                       
                       <circle cx="50" cy="100" r="6" fill="#10B981" filter="url(#glow)" />
-                      <text x="10" y="104" fill="var(--slate)" fontSize="10" fontFamily="monospace">FIN_DB</text>
+                      <text x="35" y="104" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">FIN_DB</text>
                       
                       <circle cx="50" cy="160" r="6" fill="#F43F5E" filter="url(#glow)" />
-                      <text x="10" y="164" fill="var(--slate)" fontSize="10" fontFamily="monospace">LOG_SYS</text>
+                      <text x="35" y="164" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">LOG_SYS</text>
 
                       {/* Central Core */}
                       <motion.circle 
