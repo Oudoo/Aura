@@ -16,21 +16,29 @@
 
 ### Color Palette
 
-| Role | Hex | CSS Variable |
-|------|-----|--------------|
-| Primary | `#0F172A` | `--color-primary` |
-| Secondary | `#334155` | `--color-secondary` |
-| CTA/Accent | `#0369A1` | `--color-cta` |
-| Background | `#F8FAFC` | `--color-background` |
-| Text | `#020617` | `--color-text` |
+The shipped product is **dark-first** (a "command center" aesthetic) with a
+light mode available. These are the actual CSS variables defined in
+`src/app/globals.css`.
 
-**Color Notes:** Professional navy + blue CTA
+| Role | Dark (default) | Light | CSS Variable |
+|------|----------------|-------|--------------|
+| Background | `#050505` | `#FFFFFF` | `--void` |
+| Surface | `#0B0F19` | `#F1F5F9` | `--obsidian` |
+| Primary text | `#F8FAFC` | `#0F172A` | `--platinum` |
+| Muted text | `#94A3B8` | `#475569` | `--slate` |
+| Accent (CTA) | `#00E5FF` | `#0284C7` | `--cyan` |
+| Accent (secondary) | `#8B5CF6` | `#7C3AED` | `--amethyst` |
+
+**Color Notes:** Dark-first command-center aesthetic. Cyan is the primary CTA;
+amethyst is the secondary brand accent. Cyan/amethyst gradients are an
+intentional part of the brand identity.
 
 ### Typography
 
-- **Heading Font:** Plus Jakarta Sans
-- **Body Font:** Plus Jakarta Sans
-- **Mood:** friendly, modern, saas, clean, approachable, professional
+- **Heading Font:** Plus Jakarta Sans (`--font-heading`)
+- **Body Font:** Inter (`--font-body`)
+- **Arabic Font:** Cairo (`--font-arabic`, applied under `[dir="rtl"]`)
+- **Mood:** modern, technical, premium, enterprise
 - **Google Fonts:** [Plus Jakarta Sans + Plus Jakarta Sans](https://fonts.google.com/share?selection.family=Plus+Jakarta+Sans:wght@300;400;500;600;700)
 
 **CSS Import:**
@@ -175,7 +183,7 @@
 
 - ❌ Playful design
 - ❌ Hidden credentials
-- ❌ AI purple/pink gradients
+- ❌ Generic/AI pink gradients (the cyan→amethyst brand gradient is intentional and allowed)
 
 ### Additional Forbidden Patterns
 

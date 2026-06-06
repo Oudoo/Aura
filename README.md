@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aura
 
-## Getting Started
+Marketing site and internal operations console for **Aura**, a B2B enterprise
+software studio. The public site presents the product ecosystem (bilingual
+EN/AR with full RTL support); the authenticated `/admin` area is a lightweight
+business console: CRM pipeline, finance/invoicing, support tickets, project
+management (kanban), content management, and analytics.
 
-First, run the development server:
+## Tech stack
+
+- **Next.js 16** (App Router, React 19, Turbopack)
+- **Prisma 5** ORM on **MySQL/MariaDB**
+- **Tailwind CSS 4** with a custom dark-first theme
+- **framer-motion** for animation, **recharts** for analytics, **jspdf** for PDF export
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. Install dependencies
+npm install
+
+# 2. Configure environment
+cp .env.example .env        # then fill in the values (see below)
+
+# 3. Set up the database
+npx prisma generate
+npx prisma db push          # create tables from prisma/schema.prisma
+npm run seed                # optional: seed the product ecosystem + demo project
+
+# 4. Run the dev server
+npm run dev                 # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+See [`.env.example`](./.env.example) for the full list. The essentials:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Purpose |
+|---|---|---|
+| `DATABASE_URL` | yes | MySQL/MariaDB connection string |
+| `AUTH_SECRET` | yes (prod) | Signs admin session cookies (HMAC-SHA256). Use `openssl rand -hex 32` |
+| `ADMIN_PASSWORD_HASH` *or* `ADMIN_PASSWORD` | yes | Admin login credential (see below) |
+| `NEXT_PUBLIC_SITE_URL` | recommended | Canonical URL for SEO metadata, sitemap, robots |
 
-## Learn More
+### Admin access
 
-To learn more about Next.js, take a look at the following resources:
+The `/admin` area is gated by a single shared password. Generate a hash and put
+it in the environment (preferred over storing a plaintext password):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+node scripts/hash-password.mjs "your-strong-password"
+# copy the printed ADMIN_PASSWORD_HASH=... line into .env
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Sessions are signed, expiring tokens — set a strong `AUTH_SECRET` in production
+so they cannot be forged.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Command | Description |
+|---|---|
+| `npm run dev` | Start the dev server |
+| `npm run build` | `prisma generate` + production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run seed` | Seed the database (`prisma/seed.ts`) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment
+
+The app expects a reachable `DATABASE_URL` at runtime. The root layout degrades
+gracefully (falls back to bundled ecosystem data) if the database is briefly
+unreachable, so a DB blip will not take the whole site down. Remember to set
+`AUTH_SECRET` and the admin credential in the production environment.
