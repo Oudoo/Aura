@@ -4,11 +4,16 @@ import { ClientProductsManager } from "./ClientProductsManager";
 export const dynamic = "force-dynamic";
 
 export default async function AdminProductsPage() {
-  const ecosystem = await prisma.suite.findMany({
-    include: {
-      products: true,
-    },
-  });
+  let ecosystem: any[] = [];
+  try {
+    ecosystem = await prisma.suite.findMany({
+      include: {
+        products: true,
+      },
+    });
+  } catch (e) {
+    console.error("Products DB query failed:", e);
+  }
 
   return (
     <div className="p-10">
