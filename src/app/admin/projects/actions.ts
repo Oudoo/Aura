@@ -1,9 +1,11 @@
 "use server";
 
+import { assertAuthenticated } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
 export async function createProjectAction(formData: FormData) {
+  await assertAuthenticated();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
 
@@ -20,6 +22,7 @@ export async function createProjectAction(formData: FormData) {
 }
 
 export async function deleteProjectAction(id: string) {
+  await assertAuthenticated();
   await prisma.project.delete({
     where: { id },
   });
@@ -27,6 +30,7 @@ export async function deleteProjectAction(id: string) {
 }
 
 export async function createTaskAction(projectId: string, formData: FormData) {
+  await assertAuthenticated();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const assignee = formData.get("assignee") as string;
@@ -47,6 +51,7 @@ export async function createTaskAction(projectId: string, formData: FormData) {
 }
 
 export async function updateTaskStatusAction(id: string, projectId: string, status: string) {
+  await assertAuthenticated();
   await prisma.task.update({
     where: { id },
     data: { status },
@@ -56,6 +61,7 @@ export async function updateTaskStatusAction(id: string, projectId: string, stat
 }
 
 export async function updateTaskAssigneeAction(id: string, projectId: string, assignee: string) {
+  await assertAuthenticated();
   await prisma.task.update({
     where: { id },
     data: { assignee },
@@ -64,6 +70,7 @@ export async function updateTaskAssigneeAction(id: string, projectId: string, as
 }
 
 export async function updateTaskTitleAction(id: string, projectId: string, title: string) {
+  await assertAuthenticated();
   if (!title) return;
   await prisma.task.update({
     where: { id },
@@ -74,6 +81,7 @@ export async function updateTaskTitleAction(id: string, projectId: string, title
 }
 
 export async function deleteTaskAction(id: string, projectId: string) {
+  await assertAuthenticated();
   await prisma.task.delete({
     where: { id },
   });
@@ -82,8 +90,9 @@ export async function deleteTaskAction(id: string, projectId: string) {
 }
 
 export async function createSubTaskAction(taskId: string, projectId: string, formData: FormData) {
+  await assertAuthenticated();
   const title = formData.get("title") as string;
-  
+
   if (!title) return;
 
   await prisma.subTask.create({
@@ -92,11 +101,12 @@ export async function createSubTaskAction(taskId: string, projectId: string, for
       taskId,
     },
   });
-  
+
   revalidatePath(`/admin/projects/${projectId}`);
 }
 
 export async function toggleSubTaskAction(id: string, projectId: string, isCompleted: boolean) {
+  await assertAuthenticated();
   await prisma.subTask.update({
     where: { id },
     data: { isCompleted },
@@ -105,6 +115,7 @@ export async function toggleSubTaskAction(id: string, projectId: string, isCompl
 }
 
 export async function updateSubTaskTitleAction(id: string, projectId: string, title: string) {
+  await assertAuthenticated();
   if (!title) return;
   await prisma.subTask.update({
     where: { id },
@@ -114,6 +125,7 @@ export async function updateSubTaskTitleAction(id: string, projectId: string, ti
 }
 
 export async function deleteSubTaskAction(id: string, projectId: string) {
+  await assertAuthenticated();
   await prisma.subTask.delete({
     where: { id },
   });
@@ -121,8 +133,9 @@ export async function deleteSubTaskAction(id: string, projectId: string) {
 }
 
 export async function addCommentAction(taskId: string, projectId: string, author: string, formData: FormData) {
+  await assertAuthenticated();
   const content = formData.get("content") as string;
-  
+
   if (!content) return;
 
   await prisma.comment.create({
@@ -132,14 +145,15 @@ export async function addCommentAction(taskId: string, projectId: string, author
       taskId,
     },
   });
-  
+
   revalidatePath(`/admin/projects/${projectId}`);
 }
 
 export async function addAttachmentAction(taskId: string, projectId: string, formData: FormData) {
+  await assertAuthenticated();
   const name = formData.get("name") as string;
   const url = formData.get("url") as string;
-  
+
   if (!name || !url) return;
 
   await prisma.attachment.create({
@@ -149,11 +163,12 @@ export async function addAttachmentAction(taskId: string, projectId: string, for
       taskId,
     },
   });
-  
+
   revalidatePath(`/admin/projects/${projectId}`);
 }
 
 export async function deleteAttachmentAction(id: string, projectId: string) {
+  await assertAuthenticated();
   await prisma.attachment.delete({
     where: { id },
   });

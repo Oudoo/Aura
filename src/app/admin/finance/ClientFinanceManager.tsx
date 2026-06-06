@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { Card } from "@/components/ui/Card";
-import { Plus, Trash2, CreditCard, DollarSign, Calendar, CheckCircle, Clock } from "lucide-react";
+import { Plus, Trash2, CreditCard, DollarSign, Calendar, Clock } from "lucide-react";
 import { createInvoiceAction, deleteInvoiceAction, updateInvoiceStatusAction } from "./actions";
 import { InvoicePdfGenerator } from "@/components/InvoicePdfGenerator";
+import type { Invoice } from "@prisma/client";
 
-export function ClientFinanceManager({ initialInvoices }: { initialInvoices: any[] }) {
+export function ClientFinanceManager({ initialInvoices }: { initialInvoices: Invoice[] }) {
   const [invoices, setInvoices] = useState(initialInvoices);
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);

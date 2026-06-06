@@ -77,14 +77,17 @@ async function main() {
 
     // Seed subtasks
     for (const subTitle of taskData.subTasks) {
-      await prisma.subTask.findFirst({
+      const existingSubTask = await prisma.subTask.findFirst({
         where: { title: subTitle, taskId: task.id }
-      }) || await prisma.subTask.create({
-        data: {
-          title: subTitle,
-          taskId: task.id,
-        }
       });
+      if (!existingSubTask) {
+        await prisma.subTask.create({
+          data: {
+            title: subTitle,
+            taskId: task.id,
+          }
+        });
+      }
     }
   }
 

@@ -8,7 +8,7 @@ interface LeadData {
   email: string;
   company: string;
   message: string;
-  date: string;
+  date: string | Date;
   priority?: string;
   dealValue?: number;
   source?: string;

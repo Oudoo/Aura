@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { ecosystem as defaultEcosystem } from "@/data/ecosystem";
+import type { EcosystemSuite } from "@/lib/types";
 
 export type Language = "en" | "ar";
 
@@ -9,7 +9,7 @@ interface LanguageContextType {
   language: Language;
   toggleLanguage: () => void;
   t: (key: string) => string;
-  ecosystem: typeof defaultEcosystem;
+  ecosystem: EcosystemSuite[];
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -299,14 +299,18 @@ export const translations: Record<Language, Record<string, string>> = {
   }
 };
 
-export function LanguageProvider({ children, initialEcosystem }: { children: React.ReactNode, initialEcosystem: typeof defaultEcosystem }) {
+export function LanguageProvider({ children, initialEcosystem }: { children: React.ReactNode, initialEcosystem: EcosystemSuite[] }) {
   const [language, setLanguage] = useState<Language>("en");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // Hydration guard: restoring the persisted language and revealing content on
+    // mount must run client-side, so setting state here is intentional.
+    /* eslint-disable react-hooks/set-state-in-effect */
     const savedLang = localStorage.getItem("aura-lang") as Language;
     if (savedLang) setLanguage(savedLang);
     setMounted(true);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
   const toggleLanguage = () => {

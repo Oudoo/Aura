@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/db";
 import { ClientFinanceManager } from "./ClientFinanceManager";
+import type { Invoice } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
 export default async function FinanceHubPage() {
-  let invoices: any[] = [];
+  let invoices: Invoice[] = [];
   try {
     // Automatically update overdue invoices
     await prisma.invoice.updateMany({

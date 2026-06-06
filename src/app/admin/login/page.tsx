@@ -18,13 +18,17 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    const success = await loginAction(password);
-    if (success) {
-      router.push("/admin");
-    } else {
-      setError("Invalid security access code.");
-      setLoading(false);
+    try {
+      const result = await loginAction(password);
+      if (result.success) {
+        router.push("/admin");
+        return;
+      }
+      setError(result.error || "Invalid security access code.");
+    } catch {
+      setError("Something went wrong. Please try again.");
     }
+    setLoading(false);
   }
 
   return (

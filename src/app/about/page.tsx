@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Server, Activity, Shield, Crosshair } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { useLanguage } from "@/components/LanguageContext";
 
@@ -194,10 +195,12 @@ export default function AboutPage() {
                 >
                   <div className="aspect-square rounded-3xl bg-obsidian border border-fg/10 mb-6 overflow-hidden relative flex items-center justify-center glass group-hover:border-cyan/50 transition-colors duration-500">
                     {/* The actual photo */}
-                    <img 
+                    <Image
                       src={`/team/${leader.id}.jpg`}
                       alt={leader.name}
-                      className="w-full h-full object-cover relative z-10 transition-transform duration-700 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      className="object-cover relative z-10 transition-transform duration-700 group-hover:scale-105"
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = 'none';
                       }}

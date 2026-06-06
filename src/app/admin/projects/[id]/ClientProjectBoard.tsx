@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, CheckCircle2, Circle, MessageSquare, Paperclip, User, Clock, ChevronDown, Briefcase } from "lucide-react";
+import { Plus, Trash2, CheckCircle2, Circle, MessageSquare, Paperclip, User, Clock, Briefcase } from "lucide-react";
 import { 
   createTaskAction, 
   updateTaskStatusAction, 
@@ -16,23 +16,30 @@ import {
   updateTaskTitleAction,
   updateSubTaskTitleAction
 } from "../actions";
+import type { Project, Task, SubTask, Comment, Attachment } from "@prisma/client";
 
 const TEAM_MEMBERS = ["Mahmoud Hassan", "Ahmed El-Tamawy", "Mohamed Khaled", "Unassigned"];
-const STATUSES = ["PENDING", "IN_PROGRESS", "DONE"];
 
-export function ClientProjectBoard({ project }: { project: any }) {
-  const [activeTask, setActiveTask] = useState<any>(null);
+type TaskWithRelations = Task & {
+  subTasks: SubTask[];
+  comments: Comment[];
+  attachments: Attachment[];
+};
+type ProjectWithTasks = Project & { tasks: TaskWithRelations[] };
 
-  const pendingTasks = project.tasks.filter((t: any) => t.status === "PENDING");
-  const inProgressTasks = project.tasks.filter((t: any) => t.status === "IN_PROGRESS");
-  const doneTasks = project.tasks.filter((t: any) => t.status === "DONE");
+export function ClientProjectBoard({ project }: { project: ProjectWithTasks }) {
+  const [activeTask, setActiveTask] = useState<TaskWithRelations | null>(null);
+
+  const pendingTasks = project.tasks.filter((t) => t.status === "PENDING");
+  const inProgressTasks = project.tasks.filter((t) => t.status === "IN_PROGRESS");
+  const doneTasks = project.tasks.filter((t) => t.status === "DONE");
 
   const totalTasks = project.tasks.length;
   const completedTasks = doneTasks.length;
   const projectProgress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
   // Re-find active task if project data updates (after a server action)
-  const currentActiveTask = activeTask ? project.tasks.find((t: any) => t.id === activeTask.id) : null;
+  const currentActiveTask = activeTask ? project.tasks.find((t) => t.id === activeTask.id) : null;
 
   return (
     <div className="space-y-8">
@@ -84,7 +91,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
               </button>
             </form>
 
-            {pendingTasks.map((task: any) => (
+            {pendingTasks.map((task) => (
               <TaskCard key={task.id} task={task} onClick={() => setActiveTask(task)} />
             ))}
           </div>
@@ -97,7 +104,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
               </h3>
               <span className="bg-void text-slate text-xs px-2 py-1 rounded-full">{inProgressTasks.length}</span>
             </div>
-            {inProgressTasks.map((task: any) => (
+            {inProgressTasks.map((task) => (
               <TaskCard key={task.id} task={task} onClick={() => setActiveTask(task)} />
             ))}
           </div>
@@ -110,7 +117,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
               </h3>
               <span className="bg-void text-slate text-xs px-2 py-1 rounded-full">{doneTasks.length}</span>
             </div>
-            {doneTasks.map((task: any) => (
+            {doneTasks.map((task) => (
               <TaskCard key={task.id} task={task} onClick={() => setActiveTask(task)} />
             ))}
           </div>
@@ -174,7 +181,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
                 {/* Progress bar for subtasks */}
                 {currentActiveTask.subTasks.length > 0 && (() => {
                   const subTotal = currentActiveTask.subTasks.length;
-                  const subDone = currentActiveTask.subTasks.filter((s: any) => s.isCompleted).length;
+                  const subDone = currentActiveTask.subTasks.filter((s) => s.isCompleted).length;
                   const subProg = Math.round((subDone / subTotal) * 100);
                   return (
                     <div className="w-full bg-void rounded-full h-1.5 mb-3 overflow-hidden">
@@ -184,7 +191,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
                 })()}
 
                 <div className="space-y-2 mb-3 max-h-40 overflow-y-auto pr-1">
-                  {currentActiveTask.subTasks.map((sub: any) => (
+                  {currentActiveTask.subTasks.map((sub) => (
                     <div key={sub.id} className="flex items-center gap-2 group">
                       <input 
                         type="checkbox" 
@@ -217,7 +224,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
                   <Paperclip className="w-4 h-4" /> Links & Attachments
                 </h3>
                 <div className="space-y-2 mb-3 max-h-32 overflow-y-auto">
-                  {currentActiveTask.attachments.map((att: any) => (
+                  {currentActiveTask.attachments.map((att) => (
                     <div key={att.id} className="flex items-center justify-between bg-void p-2 rounded-lg group">
                       <a href={att.url} target="_blank" rel="noreferrer" className="text-cyan text-xs truncate max-w-[200px] hover:underline">
                         {att.name}
@@ -241,7 +248,7 @@ export function ClientProjectBoard({ project }: { project: any }) {
                   <MessageSquare className="w-4 h-4" /> Comments
                 </h3>
                 <div className="space-y-3 mb-3 max-h-48 overflow-y-auto">
-                  {currentActiveTask.comments.map((comment: any) => (
+                  {currentActiveTask.comments.map((comment) => (
                     <div key={comment.id} className="bg-void p-3 rounded-xl border border-fg/5">
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-xs font-bold text-cyan">{comment.author}</span>
@@ -271,9 +278,9 @@ export function ClientProjectBoard({ project }: { project: any }) {
 }
 
 // Helper Component for Task Cards in the Kanban Board
-function TaskCard({ task, onClick }: { task: any, onClick: () => void }) {
+function TaskCard({ task, onClick }: { task: TaskWithRelations, onClick: () => void }) {
   const subTotal = task.subTasks.length;
-  const subDone = task.subTasks.filter((s: any) => s.isCompleted).length;
+  const subDone = task.subTasks.filter((s) => s.isCompleted).length;
   const subProg = subTotal === 0 ? 0 : Math.round((subDone / subTotal) * 100);
 
   return (

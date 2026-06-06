@@ -1,7 +1,8 @@
 "use client";
 
 import { Card } from "@/components/ui/Card";
-import { DollarSign, Briefcase, LifeBuoy, AlertCircle, CheckCircle, Clock, BarChart2 } from "lucide-react";
+import { DollarSign, Briefcase, LifeBuoy, CheckCircle, Clock } from "lucide-react";
+import type { AnalyticsData, NamedValue } from "@/lib/types";
 import { 
   PieChart, 
   Pie, 
@@ -15,7 +16,7 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
-export function ClientAnalyticsDashboard({ data }: { data: any }) {
+export function ClientAnalyticsDashboard({ data }: { data: AnalyticsData }) {
   const COLORS = ['#0891b2', '#a855f7', '#10b981', '#f59e0b', '#ef4444']; // Cyan, Amethyst, Emerald, Amber, Red
 
   const operationsData = [
@@ -64,8 +65,8 @@ export function ClientAnalyticsDashboard({ data }: { data: any }) {
                       paddingAngle={5}
                       dataKey="value"
                     >
-                      {data.leadSources.map((entry: any, index: number) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      {data.leadSources.map((entry: NamedValue, index: number) => (
+                        <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
                     <Tooltip 
@@ -75,7 +76,7 @@ export function ClientAnalyticsDashboard({ data }: { data: any }) {
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="flex justify-center space-x-4 mt-2 flex-wrap">
-                  {data.leadSources.map((entry: any, index: number) => (
+                  {data.leadSources.map((entry: NamedValue, index: number) => (
                     <div key={entry.name} className="flex items-center text-xs text-slate">
                       <div className="w-3 h-3 rounded-full mr-1" style={{ backgroundColor: COLORS[index % COLORS.length] }}></div>
                       {entry.name} ({entry.value})

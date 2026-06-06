@@ -8,8 +8,8 @@ interface InvoiceData {
   clientName: string;
   amount: number;
   status: string;
-  issueDate: string;
-  dueDate?: string;
+  issueDate: string | Date;
+  dueDate?: string | Date | null;
 }
 
 export function InvoicePdfGenerator({ invoice }: { invoice: InvoiceData }) {

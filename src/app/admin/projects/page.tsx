@@ -1,12 +1,15 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Plus, Briefcase, ChevronRight, Calendar, CheckCircle2 } from "lucide-react";
-import { createProjectAction, deleteProjectAction } from "./actions";
+import { createProjectAction } from "./actions";
+import type { Project, Task } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
+type ProjectWithTasks = Project & { tasks: Task[] };
+
 export default async function ProjectsDashboard() {
-  let projects: any = [];
+  let projects: ProjectWithTasks[] = [];
   try {
     projects = await prisma.project.findMany({
       include: {
@@ -15,7 +18,7 @@ export default async function ProjectsDashboard() {
       orderBy: { createdAt: "desc" },
     });
   } catch (e) {
-    console.error("DB failed, using fallback");
+    console.error("Projects DB query failed:", e);
   }
 
   return (
@@ -26,7 +29,7 @@ export default async function ProjectsDashboard() {
             <Briefcase className="w-8 h-8 text-cyan" />
             Project Management
           </h1>
-          <p className="text-slate">Manage your team's projects, tasks, and progress.</p>
+          <p className="text-slate">Manage your team&apos;s projects, tasks, and progress.</p>
         </div>
       </div>
 
@@ -72,9 +75,9 @@ export default async function ProjectsDashboard() {
               No projects found. Create one to get started.
             </div>
           ) : (
-            projects.map((project: any) => {
+            projects.map((project) => {
               const totalTasks = project.tasks?.length || 0;
-              const completedTasks = project.tasks?.filter((t: any) => t.status === "DONE").length || 0;
+              const completedTasks = project.tasks?.filter((t) => t.status === "DONE").length || 0;
               const progress = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
 
               return (

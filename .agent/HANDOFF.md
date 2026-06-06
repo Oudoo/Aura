@@ -1,28 +1,50 @@
 ## LAST_AGENT
-Antigravity 2.0
+Claude Code
 
 ## BRANCH
-main
+claude/serene-knuth-tSERc
 
 ## LAST_COMMIT
-66f54fd
+(see git log — top of branch)
 
 ## UPDATED
-2026-06-06T23:54:00+03:00
+2026-06-06T00:00:00+03:00
 
 ## GOAL
-Stabilize Content Management tab, sync projects, resolve PostCSS security warning.
+Full hardening pass (P0→P2) following a project assessment: fix the broken
+admin auth model, stop site-wide DB crashes, and clean up security, types,
+docs, and tooling.
 
 ## CURRENT_STATE
-All requested fixes are implemented and pushed. Content Management tab is stabilized with try-catch. PostCSS patched to ^8.5.10. Database seeded successfully with project data.
+All P0–P2 work implemented, verified, and committed (4 commits on this branch).
+- Typecheck: clean. Lint: 0 errors (4 intentional <img> warnings). Build:
+  succeeds even with no DATABASE_URL (graceful fallback proven).
+- P0: HMAC-signed expiring sessions (Web Crypto, edge-safe), PBKDF2 password
+  hashing, removed hardcoded password/secret, assertAuthenticated() on every
+  admin server action, root layout DB call guarded with static fallback.
+- P1: shared rate limiter; public ticket form sanitized + throttled; audit
+  email validation; login brute-force throttle; landing form error handling;
+  removed unused @prisma/adapter-mariadb + mariadb deps.
+- P2: replaced all 'any' with Prisma/shared types; README + .env.example;
+  password-hash script; robots.ts + sitemap.ts; expanded SEO metadata; real
+  (env-gated) Twilio WhatsApp webhook; GitHub Actions CI; MASTER.md aligned to
+  the dark theme; removed replace.py / root handoff.md / data/db.json.
 
 ## BLOCKER
-None. Waiting for user to pull latest changes to Hostinger and redeploy.
+None. ACTION REQUIRED before deploy: set AUTH_SECRET and ADMIN_PASSWORD_HASH
+(or ADMIN_PASSWORD) in the Hostinger environment, or admin login will be
+disabled. Use `node scripts/hash-password.mjs "<password>"`.
 
 ## NEXT_STEP
-User must deploy latest code to Hostinger to activate Prisma client fixes, patched dependencies, and new gracefully degrading UI logic.
+Open/await PR review for branch claude/serene-knuth-tSERc, then set the new env
+vars on Hostinger and deploy. Optional future work: upgrade Prisma 5 -> 6,
+migrate rate limiting to a shared store if scaling horizontally, convert the
+4 remaining <img> tags to next/image.
 
 ## FILES
-- package.json
-- src/app/admin/products/page.tsx
-- prisma/seed.ts
+- src/lib/auth.ts
+- src/lib/rateLimit.ts
+- src/lib/types.ts
+- src/app/layout.tsx
+- .env.example
+- scripts/hash-password.mjs

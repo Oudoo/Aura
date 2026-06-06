@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Target, BarChart3, Settings, Shield, ArrowRight, ShieldCheck } from "lucide-react";
 import { submitAuditForm } from "@/app/audit/actions";
@@ -173,7 +174,7 @@ export default function AuditQuizPage() {
                 <Settings className="w-12 h-12 text-cyan mx-auto mb-6 animate-spin-slow" />
                 <h2 className="text-3xl font-heading font-bold text-platinum mb-4 text-glow">Audit Complete</h2>
                 <p className="text-slate mb-8 max-w-md mx-auto">
-                  We've calculated your digital maturity score. Enter your details to reveal your personalized strategic roadmap.
+                  We&apos;ve calculated your digital maturity score. Enter your details to reveal your personalized strategic roadmap.
                 </p>
 
                 <form onSubmit={handleEmailSubmit} className="space-y-4 max-w-sm mx-auto relative z-10 text-left">
@@ -219,12 +220,12 @@ export default function AuditQuizPage() {
                   Your infrastructure is currently in the <strong>{getMaturityLevel()}</strong> phase. 
                   A senior Aura architect has been notified and will email you a comprehensive gap analysis and implementation roadmap within 24 hours.
                 </p>
-                <a 
+                <Link
                   href="/"
                   className="inline-flex px-8 py-3 bg-fg/5 hover:bg-fg/10 border border-fg/10 rounded-full text-platinum font-bold transition-colors"
                 >
                   Return to Command Center
-                </a>
+                </Link>
               </motion.div>
             )}
 

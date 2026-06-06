@@ -55,7 +55,7 @@ export function ExitIntentPopup() {
             </h2>
             
             <p className="text-slate mb-8 max-w-sm mx-auto leading-relaxed">
-              Every month spent on legacy systems compounds technical debt. Don't leave without uncovering your structural bottlenecks.
+              Every month spent on legacy systems compounds technical debt. Don&apos;t leave without uncovering your structural bottlenecks.
             </p>
 
             <div className="flex flex-col space-y-3">
@@ -71,7 +71,7 @@ export function ExitIntentPopup() {
                 onClick={() => setIsVisible(false)}
                 className="w-full py-4 bg-transparent text-slate hover:text-platinum font-medium transition-colors text-sm"
               >
-                I'm okay with my current systems
+                I&apos;m okay with my current systems
               </button>
             </div>
           </motion.div>
