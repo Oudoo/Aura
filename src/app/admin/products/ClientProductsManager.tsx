@@ -12,10 +12,11 @@ import {
   editSuiteAction,
   deleteSuiteAction
 } from "../actions";
+import type { EcosystemSuite } from "@/lib/types";
 
-export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: any[] }) {
-  const [ecosystem, setEcosystem] = useState(initialEcosystem);
-  const [activeSuite, setActiveSuite] = useState(ecosystem[0]?.slug);
+export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: EcosystemSuite[] }) {
+  const [ecosystem, setEcosystem] = useState<EcosystemSuite[]>(initialEcosystem);
+  const [activeSuite, setActiveSuite] = useState<string>(ecosystem[0]?.slug ?? "");
   const [adding, setAdding] = useState(false);
   const [addingSuite, setAddingSuite] = useState(false);
   const [editingSuite, setEditingSuite] = useState<string | null>(null);
@@ -43,7 +44,7 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
     
     const updatedEcosystem = ecosystem.map(s => {
       if (s.slug === activeSuite) {
-        return { ...s, products: [...(s.products || []), newProduct].sort((a: any, b: any) => a.order - b.order) };
+        return { ...s, products: [...(s.products || []), newProduct].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)) };
       }
       return s;
     });
@@ -73,8 +74,8 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
       if (s.slug === activeSuite) {
         return { 
           ...s, 
-          products: s.products.map((p: any) => p.slug === originalSlug ? { ...p, ...updatedProduct } : p)
-            .sort((a: any, b: any) => a.order - b.order) 
+          products: s.products.map((p) => p.slug === originalSlug ? { ...p, ...updatedProduct } : p)
+            .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
         };
       }
       return s;
@@ -91,7 +92,7 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
       if (s.slug === activeSuite) {
         return { 
           ...s, 
-          products: s.products.map((p: any) => p.slug === productSlug ? { ...p, status: newStatus } : p) 
+          products: s.products.map((p) => p.slug === productSlug ? { ...p, status: newStatus } : p)
         };
       }
       return s;
@@ -105,7 +106,7 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
     
     const updatedEcosystem = ecosystem.map(s => {
       if (s.slug === suiteSlug) {
-        return { ...s, products: s.products.filter((p: any) => p.slug !== productSlug) };
+        return { ...s, products: s.products.filter((p) => p.slug !== productSlug) };
       }
       return s;
     });
@@ -344,7 +345,7 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4">
-                {sortedProducts.map((product: any) => (
+                {sortedProducts.map((product) => (
                   <Card key={product.slug} className={`p-5 border-fg/10 bg-obsidian group ${product.status === 'DRAFT' ? 'opacity-70' : ''}`}>
                     {editingProduct === product.slug ? (
                       <form onSubmit={(e) => handleEditProduct(e, product.slug)} className="space-y-4">

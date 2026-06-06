@@ -37,7 +37,7 @@ export function CalledSelect({ id, defaultValue, className }: { id: string, defa
   );
 }
 
-export function NotesInput({ id, defaultValue, className }: { id: string, defaultValue: string, className: string }) {
+export function NotesInput({ id, defaultValue, className }: { id: string, defaultValue: string | null, className: string }) {
   const [isPending, startTransition] = useTransition();
   return (
     <input

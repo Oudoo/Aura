@@ -42,3 +42,26 @@ export interface SuiteInput {
   suiteAr?: string;
   slug: string;
 }
+
+export interface NamedValue {
+  name: string;
+  value: number;
+}
+
+export interface AnalyticsData {
+  financials: {
+    pipelineValue: number;
+    revenueCollected: number;
+    revenueAtRisk: number;
+  };
+  leadSources: NamedValue[];
+  operations: {
+    completedTasks: number;
+    pendingTasks: number;
+  };
+  support: {
+    openTickets: number;
+    resolvedTickets: number;
+    ticketPriorities: NamedValue[];
+  };
+}

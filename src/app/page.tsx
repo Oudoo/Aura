@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Footer } from "@/components/Footer";
-import { ArrowRight, Bot, Target, Settings, BarChart3, Users, Factory, Server, Lock, ChevronRight, Activity, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Activity } from "lucide-react";
 
 
 import { LegacyVsAuraSlider } from "@/components/LegacyVsAuraSlider";

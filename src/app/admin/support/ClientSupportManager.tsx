@@ -4,8 +4,9 @@ import { useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Plus, Trash2, LifeBuoy, AlertCircle, CheckCircle, Clock } from "lucide-react";
 import { createTicketAction, deleteTicketAction, updateTicketStatusAction } from "./actions";
+import type { Ticket } from "@prisma/client";
 
-export function ClientSupportManager({ initialTickets }: { initialTickets: any[] }) {
+export function ClientSupportManager({ initialTickets }: { initialTickets: Ticket[] }) {
   const [tickets, setTickets] = useState(initialTickets);
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);

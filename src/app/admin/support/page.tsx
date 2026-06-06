@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/db";
 import { ClientSupportManager } from "./ClientSupportManager";
+import type { Ticket } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
 export default async function SupportHubPage() {
-  let tickets: any[] = [];
+  let tickets: Ticket[] = [];
   try {
     tickets = await prisma.ticket.findMany({
       orderBy: { createdAt: "desc" },

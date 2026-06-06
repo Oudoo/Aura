@@ -20,8 +20,8 @@ export default function SupportPage() {
       const formData = new FormData(e.currentTarget);
       await submitPublicTicketAction(formData);
       setSubmitted(true);
-    } catch (err: any) {
-      setError(err.message || "Failed to submit ticket. Please try again.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to submit ticket. Please try again.");
     } finally {
       setLoading(false);
     }

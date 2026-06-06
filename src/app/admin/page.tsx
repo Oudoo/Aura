@@ -1,20 +1,21 @@
 import { prisma } from "@/lib/db";
 import { Card } from "@/components/ui/Card";
-import { Mail, Calendar, Trash2, Phone, StickyNote } from "lucide-react";
+import { Mail, Calendar, Trash2, StickyNote } from "lucide-react";
 import { deleteSubmissionAction } from "./actions";
 import { PdfGeneratorButton } from "@/components/PdfGeneratorButton";
 import { StatusSelect, CalledSelect, NotesInput, PrioritySelect, SourceSelect, DealValueInput, NextFollowUpInput } from "./AdminFields";
+import type { Submission } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  let submissions: any = [];
+  let submissions: Submission[] = [];
   try {
     submissions = await prisma.submission.findMany({
       orderBy: { date: "desc" },
     });
   } catch (e) {
-    console.error("DB failed, using fallback");
+    console.error("CRM DB query failed:", e);
   }
 
   const statusColors: Record<string, string> = {
@@ -22,13 +23,6 @@ export default async function AdminDashboard() {
     reviewed: "bg-amethyst/10 text-amethyst",
     "in-progress": "bg-yellow-500/10 text-yellow-400",
     closed: "bg-green-500/10 text-green-400",
-  };
-
-  const calledLabels: Record<string, string> = {
-    no: "Not Called",
-    "yes-answered": "Called — Answered",
-    "yes-no-answer": "Called — No Answer",
-    scheduled: "Meeting Scheduled",
   };
 
   return (
@@ -57,7 +51,7 @@ export default async function AdminDashboard() {
             <div className="col-span-1 text-right">Actions</div>
           </div>
 
-          {submissions.map((sub: any) => (
+          {submissions.map((sub) => (
             <Card key={sub.id} className="p-0 border-fg/10 bg-obsidian overflow-hidden">
               <div className="grid grid-cols-12 gap-4 items-start px-6 py-4">
                 {/* Contact & Source */}

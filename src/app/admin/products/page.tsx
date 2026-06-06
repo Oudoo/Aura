@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/db";
 import { ClientProductsManager } from "./ClientProductsManager";
+import type { EcosystemSuite } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminProductsPage() {
-  let ecosystem: any[] = [];
+  let ecosystem: EcosystemSuite[] = [];
   try {
     ecosystem = await prisma.suite.findMany({
       include: {
@@ -24,7 +25,7 @@ export default async function AdminProductsPage() {
         </div>
       </div>
 
-      <ClientProductsManager initialEcosystem={ecosystem as any} />
+      <ClientProductsManager initialEcosystem={ecosystem} />
     </div>
   );
 }
