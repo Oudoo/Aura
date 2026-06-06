@@ -19,14 +19,21 @@ export default function Home() {
   const { t, language } = useLanguage();
   const [formLoading, setFormLoading] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formError, setFormError] = useState("");
 
   async function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setFormLoading(true);
+    setFormError("");
     const formData = new FormData(e.currentTarget);
-    await submitAuditForm(formData);
-    setFormLoading(false);
-    setFormSubmitted(true);
+    try {
+      await submitAuditForm(formData);
+      setFormSubmitted(true);
+    } catch (err) {
+      setFormError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setFormLoading(false);
+    }
   }
 
   const formT = {
@@ -426,6 +433,12 @@ export default function Home() {
                       placeholder="..."
                     />
                   </div>
+
+                  {formError && (
+                    <p className="text-sm text-red-400 text-center" role="alert">
+                      {formError}
+                    </p>
+                  )}
 
                   <motion.button
                     type="submit"
