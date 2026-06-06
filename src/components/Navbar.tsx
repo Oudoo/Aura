@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ArrowRight, Globe } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
@@ -100,7 +101,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-fg/5 bg-obsidian/60 backdrop-blur-md">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between relative">
         <Link href="/" className="flex items-center space-x-3 group z-10">
-          <img src="/logo.png" alt="Aura" className="h-8 w-auto" />
+          <Image src="/logo.png" alt="Aura" width={32} height={32} className="h-8 w-auto" />
           <span className="font-heading font-bold text-xl tracking-tight text-platinum">
             AURA
           </span>

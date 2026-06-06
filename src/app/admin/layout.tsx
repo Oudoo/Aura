@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Inbox, Package, LogOut, Moon, Sun, Briefcase, CreditCard, LifeBuoy, BarChart2 } from "lucide-react";
 import { logoutAction } from "./actions";
@@ -35,7 +36,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className="w-64 bg-obsidian border-r border-fg/5 flex flex-col">
         <div className="h-20 flex items-center justify-center px-6 border-b border-fg/5 relative overflow-hidden">
-          <img src="/logo.png" alt="" className="absolute -left-4 -top-4 h-24 w-auto opacity-10 pointer-events-none" />
+          <Image src="/logo.png" alt="" width={96} height={96} className="absolute -left-4 -top-4 h-24 w-auto opacity-10 pointer-events-none" />
           <span className="font-heading font-bold text-xl text-platinum relative z-10 text-glow">AURA ADMIN</span>
         </div>
         
