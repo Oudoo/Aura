@@ -26,10 +26,14 @@ export default function Home() {
     setFormError("");
     const formData = new FormData(e.currentTarget);
     try {
-      await submitAuditForm(formData);
-      setFormSubmitted(true);
-    } catch (err) {
-      setFormError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+      const res = await submitAuditForm(formData);
+      if (res?.success) {
+        setFormSubmitted(true);
+      } else {
+        setFormError(res?.error ?? "Something went wrong. Please try again.");
+      }
+    } catch {
+      setFormError("Something went wrong. Please try again.");
     } finally {
       setFormLoading(false);
     }
