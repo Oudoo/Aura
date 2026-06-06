@@ -1,50 +1,48 @@
 ## LAST_AGENT
-Claude Code
+Claude Code (claude-sonnet-4-6)
 
 ## BRANCH
-claude/serene-knuth-tSERc
+feat/admin-fixes-iam-whitelabel
 
 ## LAST_COMMIT
-(see git log — top of branch)
+75341306a9b1a3cb0b1f7eb7d132ce9ca9535234
 
 ## UPDATED
-2026-06-06T00:00:00+03:00
+2026-06-06T22:55:00Z
 
 ## GOAL
-Full hardening pass (P0→P2) following a project assessment: fix the broken
-admin auth model, stop site-wide DB crashes, and clean up security, types,
-docs, and tooling.
+Fix empty admin tabs, build IAM portal, white-label config, and hot-upgrade the admin dashboard.
 
 ## CURRENT_STATE
-All P0–P2 work implemented, verified, and committed (4 commits on this branch).
-- Typecheck: clean. Lint: 0 errors (4 intentional <img> warnings). Build:
-  succeeds even with no DATABASE_URL (graceful fallback proven).
-- P0: HMAC-signed expiring sessions (Web Crypto, edge-safe), PBKDF2 password
-  hashing, removed hardcoded password/secret, assertAuthenticated() on every
-  admin server action, root layout DB call guarded with static fallback.
-- P1: shared rate limiter; public ticket form sanitized + throttled; audit
-  email validation; login brute-force throttle; landing form error handling;
-  removed unused @prisma/adapter-mariadb + mariadb deps.
-- P2: replaced all 'any' with Prisma/shared types; README + .env.example;
-  password-hash script; robots.ts + sitemap.ts; expanded SEO metadata; real
-  (env-gated) Twilio WhatsApp webhook; GitHub Actions CI; MASTER.md aligned to
-  the dark theme; removed replace.py / root handoff.md / data/db.json.
+All work committed and pushed. PR #2 open (draft). CI in_progress.
+
+Implemented:
+- Content Management: "Seed from Default Catalog" button when DB empty
+- Project Management: "Seed Default Project" button when no projects
+- IAM Portal at /admin/iam: CRUD for AdminUser; one-click seed of info@getaura.business as Super Admin
+- White-Label at /admin/whitelabel: TenantConfig form + implementation questionnaire
+- CRM upgraded: 5-stat bar, overdue follow-up highlighting, hot lead icons
+- Admin sidebar: IAM Portal + White-Label links added
+- Prisma schema: AdminUser + TenantConfig models added
+- Lint: 0 errors; tsc: 0 errors; vitest: 8/8; build: clean
+
+Pending on Hostinger after deploy:
+- Run `npx prisma migrate deploy` for new tables
 
 ## BLOCKER
-None. ACTION REQUIRED before deploy: set AUTH_SECRET and ADMIN_PASSWORD_HASH
-(or ADMIN_PASSWORD) in the Hostinger environment, or admin login will be
-disabled. Use `node scripts/hash-password.mjs "<password>"`.
+None. Awaiting CI green on PR #2.
 
 ## NEXT_STEP
-Open/await PR review for branch claude/serene-knuth-tSERc, then set the new env
-vars on Hostinger and deploy. Optional future work: upgrade Prisma 5 -> 6,
-migrate rate limiting to a shared store if scaling horizontally, convert the
-4 remaining <img> tags to next/image.
+Monitor CI. If green, merge into main and deploy to Hostinger.
+After deploy: run `npx prisma migrate deploy` then seed DB via admin UI.
 
 ## FILES
-- src/lib/auth.ts
-- src/lib/rateLimit.ts
-- src/lib/types.ts
-- src/app/layout.tsx
-- .env.example
-- scripts/hash-password.mjs
+- prisma/schema.prisma
+- src/app/admin/actions.ts
+- src/app/admin/products/ClientProductsManager.tsx
+- src/app/admin/projects/actions.ts
+- src/app/admin/projects/page.tsx
+- src/app/admin/iam/actions.ts, page.tsx, IamClient.tsx
+- src/app/admin/whitelabel/actions.ts, page.tsx, WhitelabelClient.tsx
+- src/app/admin/layout.tsx
+- src/app/admin/page.tsx
