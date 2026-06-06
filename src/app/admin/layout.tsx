@@ -12,6 +12,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  // Hydration guard for theme-dependent rendering.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setMounted(true); }, []);
 
   // Hide sidebar on the login page
