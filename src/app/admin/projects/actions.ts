@@ -174,3 +174,27 @@ export async function deleteAttachmentAction(id: string, projectId: string) {
   });
   revalidatePath(`/admin/projects/${projectId}`);
 }
+
+export async function seedProjectsAction() {
+  await assertAuthenticated();
+  const { launchProjectData } = await import("@/data/seedProjects");
+
+  const existing = await prisma.project.findFirst({ where: { title: launchProjectData.title } });
+  const project = existing ?? await prisma.project.create({
+    data: { title: launchProjectData.title, description: launchProjectData.description },
+  });
+
+  for (const taskData of launchProjectData.tasks) {
+    const task = await prisma.task.findFirst({ where: { title: taskData.title, projectId: project.id } })
+      ?? await prisma.task.create({
+        data: { title: taskData.title, status: taskData.status, assignee: taskData.assignee, projectId: project.id },
+      });
+
+    for (const subTitle of taskData.subTasks) {
+      const exists = await prisma.subTask.findFirst({ where: { title: subTitle, taskId: task.id } });
+      if (!exists) await prisma.subTask.create({ data: { title: subTitle, taskId: task.id } });
+    }
+  }
+
+  revalidatePath("/admin/projects");
+}

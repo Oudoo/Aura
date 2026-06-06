@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Card } from "@/components/ui/Card";
-import { Plus, Trash2, Box, Layers, Edit2, Eye, EyeOff, FolderPlus } from "lucide-react";
-import { 
-  addProductAction, 
-  deleteProductAction, 
-  editProductAction, 
+import { Plus, Trash2, Box, Layers, Edit2, Eye, EyeOff, FolderPlus, DatabaseZap } from "lucide-react";
+import {
+  addProductAction,
+  deleteProductAction,
+  editProductAction,
   toggleProductStatusAction,
   addSuiteAction,
   editSuiteAction,
-  deleteSuiteAction
+  deleteSuiteAction,
+  seedEcosystemAction
 } from "../actions";
 import type { EcosystemSuite } from "@/lib/types";
 
@@ -22,6 +23,7 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
   const [editingSuite, setEditingSuite] = useState<string | null>(null);
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [seeding, startSeed] = useTransition();
 
   // ---------- PRODUCT ACTIONS ----------
   async function handleAddProduct(e: React.FormEvent<HTMLFormElement>) {
@@ -174,13 +176,33 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
   const currentSuiteData = ecosystem.find(s => s.slug === activeSuite);
   const sortedProducts = [...(currentSuiteData?.products || [])].sort((a, b) => (a.order || 0) - (b.order || 0));
 
+  if (ecosystem.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24 border border-dashed border-fg/10 rounded-3xl text-center space-y-6">
+        <DatabaseZap className="w-16 h-16 text-slate/30" />
+        <div>
+          <h3 className="text-2xl font-bold text-platinum mb-2">Database is empty</h3>
+          <p className="text-slate max-w-md">No suites or products found. Click below to seed the database with the default Aura ecosystem catalog.</p>
+        </div>
+        <button
+          onClick={() => startSeed(async () => { await seedEcosystemAction(); window.location.reload(); })}
+          disabled={seeding}
+          className="px-8 py-3 bg-cyan text-void font-bold rounded-xl hover:bg-cyan/90 disabled:opacity-50 flex items-center gap-2"
+        >
+          <DatabaseZap className="w-5 h-5" />
+          {seeding ? "Seeding…" : "Seed from Default Catalog"}
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
       {/* Sidebar Suites List */}
       <div className="lg:col-span-1 space-y-4">
         <div className="flex items-center justify-between px-2">
           <h2 className="text-sm font-bold text-slate uppercase tracking-wider">Suites</h2>
-          <button 
+          <button
             onClick={() => { setAddingSuite(true); setEditingSuite(null); setAdding(false); setEditingProduct(null); }}
             className="p-1 rounded bg-cyan/10 text-cyan hover:bg-cyan hover:text-void transition-colors"
             title="Add Suite"
