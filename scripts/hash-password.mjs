@@ -25,5 +25,11 @@ const hash = pbkdf2Sync(password, salt, ITERATIONS, KEYLEN, DIGEST);
 
 const value = `pbkdf2$${ITERATIONS}$${toBase64Url(salt)}$${toBase64Url(hash)}`;
 
-console.log("\nAdd this to your environment (.env):\n");
+console.log("\n— For a .env file (keep the quotes):\n");
 console.log(`ADMIN_PASSWORD_HASH="${value}"\n`);
+console.log("— For a hosting panel (Hostinger, etc.) paste the RAW value below into the");
+console.log("  value field with NO quotes and no trailing spaces:\n");
+console.log(`${value}\n`);
+console.log("Heads-up: this value uses '$' as separators. Some panels expand '$' as a");
+console.log("shell variable and silently corrupt it. If login fails, either disable");
+console.log("expansion or set the plaintext ADMIN_PASSWORD env var as a fallback.\n");

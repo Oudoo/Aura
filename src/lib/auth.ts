@@ -118,22 +118,38 @@ async function verifyPassword(password: string): Promise<boolean> {
   if (!password) return false;
 
   // Preferred: a PBKDF2 hash, format "pbkdf2$<iterations>$<saltB64url>$<hashB64url>".
-  const hash = process.env.ADMIN_PASSWORD_HASH;
+  // Tolerate common hosting-panel entry mistakes: surrounding quotes and stray
+  // whitespace/newlines that would otherwise silently break verification.
+  const rawHash = process.env.ADMIN_PASSWORD_HASH;
+  const hash = rawHash?.trim().replace(/^["']|["']$/g, '');
   if (hash) {
     const [scheme, iterStr, saltB64, hashB64] = hash.split('$');
-    if (scheme !== 'pbkdf2' || !iterStr || !saltB64 || !hashB64) return false;
-    const iterations = parseInt(iterStr, 10);
-    if (!Number.isFinite(iterations) || iterations < 1) return false;
-    const actual = await pbkdf2(password, base64UrlToBytes(saltB64), iterations);
-    return timingSafeEqual(bytesToBase64Url(actual), hashB64);
+    const iterations = parseInt(iterStr ?? '', 10);
+    if (
+      scheme === 'pbkdf2' &&
+      saltB64 &&
+      hashB64 &&
+      Number.isFinite(iterations) &&
+      iterations >= 1
+    ) {
+      const actual = await pbkdf2(password, base64UrlToBytes(saltB64), iterations);
+      return timingSafeEqual(bytesToBase64Url(actual), hashB64);
+    }
+    // The hash is present but malformed — often because an env-var panel expanded
+    // the "$" separators or kept surrounding quotes. Don't hard-fail; fall through
+    // to the plaintext ADMIN_PASSWORD fallback so a configured backup still works.
+    console.warn(
+      'SECURITY WARNING: ADMIN_PASSWORD_HASH is set but malformed (check for ' +
+        'shell-expanded "$" or stray quotes). Falling back to ADMIN_PASSWORD.'
+    );
   }
 
   // Fallback: a plaintext password supplied only via the environment.
-  const plain = process.env.ADMIN_PASSWORD;
+  const plain = process.env.ADMIN_PASSWORD?.trim();
   if (plain) return timingSafeEqual(password, plain);
 
   console.warn(
-    'SECURITY WARNING: Neither ADMIN_PASSWORD_HASH nor ADMIN_PASSWORD is set. Admin login is disabled.'
+    'SECURITY WARNING: Neither ADMIN_PASSWORD_HASH nor ADMIN_PASSWORD is usable. Admin login is disabled.'
   );
   return false;
 }
