@@ -81,17 +81,8 @@ export function BusinessAuditEngine() {
         setLoading(false);
         return;
       }
-      // Best-effort sales notification; never blocks the result reveal.
-      fetch("/api/webhooks/whatsapp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.get("name"),
-          email: formData.get("email"),
-          company: formData.get("company"),
-          message: `AUDIT COMPLETED — ${overall}% (${tier.label})`,
-        }),
-      }).catch(() => {});
+      // Lead is captured in the CRM by submitAuditForm above. No external
+      // WhatsApp/Twilio API call — sales reviews new leads in the admin CRM.
       setStep(RESULT_STEP);
     } catch {
       setError("We couldn't reach our servers. Please try again in a moment.");
