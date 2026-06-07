@@ -2,51 +2,49 @@
 Claude Code
 
 ## BRANCH
-claude/serene-knuth-tSERc
+main (pushed directly per owner's standing instruction; auto-deploys to Hostinger)
 
 ## LAST_COMMIT
-(see git log — top of branch)
+6bade9a revert(ui): restore previous marketing design; harden admin auth
 
 ## UPDATED
-2026-06-07T00:00:00+03:00
+2026-06-07T05:10:00+03:00
 
 ## GOAL
-Phase 1 public marketing website hot-upgrade: bolder, premium editorial redesign.
-Keep all existing section ideas and content; change only the visual design to be
-premium and human-crafted. Merge with main (PR #2/#3 backend work) cleanly.
+Get the public marketing site + admin/ERP dashboard demo-ready. Roll back the
+bold editorial redesign to the previous design (keep all section ideas/features)
+until a Framer-based UI template is supplied. Fix admin login lockout.
 
 ## CURRENT_STATE
-Phase 1 redesign complete AND merged with origin/main (IAM portal, white-label,
-real BusinessAuditEngine, auto schema sync via scripts/start.mjs, seed buttons).
-
-Redesign changes:
-- globals.css: heading-editorial, text-gradient, surface utilities
-- Navbar.tsx: transparent->blur-on-scroll, mobile hamburger, numbered mega-menu
-- Footer.tsx: multi-column brand/links/contact layout
-- page.tsx: editorial hero, numbered methodology, two-column intelligence section
-- about/page.tsx: editorial hero, numbered phases, flashlight philosophy, dark CTA
-- suites/page.tsx: editorial header, bundle spotlight, cleaner grid, assessment CTA
-
-Merge resolution (origin/main work preserved):
-- audit-quiz/page.tsx: uses real <BusinessAuditEngine /> from PR #2
-- audit/actions.ts: kept priority/source CRM lead fields from PR #2
-- page.tsx: defensive res?.success handling
-
-Build: clean. TypeCheck: clean. Tests: 8/8 passing.
+- Design REVERTED to pre-redesign (commit 4eb6876) for: Navbar, Footer, page.tsx,
+  about, suites. globals.css kept (superset; text-gradient used by auditFramework).
+  All ideas/features preserved: LegacyVsAuraSlider, InteractiveArchitectureBuilder,
+  HeroDiagnosisForm, methodology, CRM lead capture (submitAuditForm).
+- AUTH HARDENED (src/lib/auth.ts): ADMIN_PASSWORD_HASH is now trimmed and has
+  surrounding quotes stripped; a malformed hash (e.g. "$" expanded by an env panel)
+  falls through to the plaintext ADMIN_PASSWORD fallback instead of hard-failing.
+- hash-password.mjs now prints a panel-safe raw value (no quotes) + "$" warning.
+- Audit: typecheck clean, eslint clean, 8/8 tests, production build 15/15 routes.
 
 ## BLOCKER
-None. Env vars must be set on Hostinger (DATABASE_URL, AUTH_SECRET,
-ADMIN_PASSWORD_HASH, NEXT_PUBLIC_SITE_URL) for full DB-backed functionality.
+- Admin login: both prior passwords failed because the ADMIN_PASSWORD_HASH value in
+  Hostinger is mangled (quotes kept, or "$" shell-expanded). Both hashes were
+  verified mathematically correct, so the fault is env-side, not the hash.
+- Hostinger MCP returns "Unauthenticated": the session's HOSTINGER_API_TOKEN is the
+  OLD (rotated) token. Must be updated in the Claude Code web environment settings.
 
 ## NEXT_STEP
-Merge to main -> Hostinger auto-deploys (scripts/start.mjs runs prisma db push).
-Phase 2: admin dashboard / ERP console hot-upgrade.
-Pending: IAM permissions gating routes; white-label re-theming live site.
+1. In Hostinger env vars: DELETE ADMIN_PASSWORD_HASH, SET ADMIN_PASSWORD=AuraDemo2026
+   (plaintext, no "$"), then redeploy/restart. Login code = AuraDemo2026.
+   Post-demo: regenerate a proper hash and paste the RAW value (no quotes).
+2. Update HOSTINGER_API_TOKEN in the Claude Code environment settings to re-enable MCP.
+3. Awaiting Framer "Arqos Portfolio" template (user to upload zip) to build the new UI.
 
 ## FILES
-- src/app/globals.css
-- src/components/Navbar.tsx
-- src/components/Footer.tsx
+- src/lib/auth.ts
+- scripts/hash-password.mjs
 - src/app/page.tsx
 - src/app/about/page.tsx
 - src/app/suites/page.tsx
+- src/components/Navbar.tsx
+- src/components/Footer.tsx
