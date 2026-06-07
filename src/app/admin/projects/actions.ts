@@ -8,6 +8,7 @@ export async function createProjectAction(formData: FormData) {
   await assertAuthenticated();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
+  const clientName = (formData.get("clientName") as string)?.trim();
 
   if (!title) return;
 
@@ -15,6 +16,7 @@ export async function createProjectAction(formData: FormData) {
     data: {
       title,
       description,
+      clientName: clientName || null,
     },
   });
 
@@ -34,6 +36,7 @@ export async function createTaskAction(projectId: string, formData: FormData) {
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const assignee = formData.get("assignee") as string;
+  const dueDateStr = formData.get("dueDate") as string;
 
   if (!title) return;
 
@@ -42,10 +45,21 @@ export async function createTaskAction(projectId: string, formData: FormData) {
       title,
       description,
       assignee: assignee || "Unassigned",
+      dueDate: dueDateStr ? new Date(dueDateStr) : null,
       projectId,
     },
   });
 
+  revalidatePath(`/admin/projects/${projectId}`);
+  revalidatePath("/admin/projects");
+}
+
+export async function updateTaskDueDateAction(id: string, projectId: string, dueDate: string | null) {
+  await assertAuthenticated();
+  await prisma.task.update({
+    where: { id },
+    data: { dueDate: dueDate ? new Date(dueDate) : null },
+  });
   revalidatePath(`/admin/projects/${projectId}`);
   revalidatePath("/admin/projects");
 }

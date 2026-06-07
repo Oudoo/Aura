@@ -8,7 +8,7 @@ export function LegacyVsAuraSlider() {
   const [sliderPosition, setSliderPosition] = useState(50);
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto my-20">
+    <div className="relative w-full max-w-5xl mx-auto my-12 md:my-20 px-4 md:px-0">
       <div className="text-center mb-10">
         <h2 className="text-3xl md:text-5xl font-heading font-bold text-platinum mb-4">
           The <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">Chaos</span> vs. The <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-amethyst">Clarity</span>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Inbox, Package, LogOut, Moon, Sun, Briefcase, CreditCard, LifeBuoy, BarChart2, Shield, Paintbrush } from "lucide-react";
+import { Inbox, Package, LogOut, Moon, Sun, Briefcase, CreditCard, LifeBuoy, BarChart2, Shield, Paintbrush, Users, Sparkles, Bell } from "lucide-react";
 import { logoutAction } from "./actions";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
@@ -24,11 +24,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const links = [
     { name: "Analytics & Reports", href: "/admin/analytics", icon: BarChart2 },
+    { name: "Aura Copilot", href: "/admin/copilot", icon: Sparkles },
     { name: "Aura CRM", href: "/admin", icon: Inbox },
+    { name: "Smart Alerts", href: "/admin/alerts", icon: Bell },
     { name: "Finance Hub", href: "/admin/finance", icon: CreditCard },
     { name: "Help Desk", href: "/admin/support", icon: LifeBuoy },
     { name: "Content Management", href: "/admin/products", icon: Package },
     { name: "Project Management", href: "/admin/projects", icon: Briefcase },
+    { name: "Client Portals", href: "/admin/clients", icon: Users },
     { name: "IAM Portal", href: "/admin/iam", icon: Shield },
     { name: "White-Label", href: "/admin/whitelabel", icon: Paintbrush },
   ];

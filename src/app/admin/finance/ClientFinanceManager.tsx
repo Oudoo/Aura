@@ -5,9 +5,16 @@ import { Card } from "@/components/ui/Card";
 import { Plus, Trash2, CreditCard, DollarSign, Calendar, Clock } from "lucide-react";
 import { createInvoiceAction, deleteInvoiceAction, updateInvoiceStatusAction } from "./actions";
 import { InvoicePdfGenerator } from "@/components/InvoicePdfGenerator";
+import { InvoiceEmailButton } from "./InvoiceEmailButton";
 import type { Invoice } from "@prisma/client";
 
-export function ClientFinanceManager({ initialInvoices }: { initialInvoices: Invoice[] }) {
+export function ClientFinanceManager({
+  initialInvoices,
+  emailConfigured = false,
+}: {
+  initialInvoices: Invoice[];
+  emailConfigured?: boolean;
+}) {
   const [invoices, setInvoices] = useState(initialInvoices);
   const [adding, setAdding] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -164,14 +171,17 @@ export function ClientFinanceManager({ initialInvoices }: { initialInvoices: Inv
                       <option value="OVERDUE" className="bg-void text-platinum">OVERDUE</option>
                     </select>
                   </td>
-                  <td className="px-6 py-4 text-right flex items-center justify-end space-x-1">
-                    <InvoicePdfGenerator invoice={invoice} />
-                    <button 
-                      onClick={() => handleDelete(invoice.id)}
-                      className="p-2 text-slate hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors opacity-0 group-hover:opacity-100"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+                  <td className="px-6 py-4 text-right">
+                    <div className="relative flex items-center justify-end space-x-1">
+                      <InvoicePdfGenerator invoice={invoice} />
+                      <InvoiceEmailButton invoice={invoice} emailConfigured={emailConfigured} />
+                      <button
+                        onClick={() => handleDelete(invoice.id)}
+                        className="p-2 text-slate hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors opacity-0 group-hover:opacity-100"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

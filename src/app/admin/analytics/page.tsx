@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
 import { ClientAnalyticsDashboard } from "./ClientAnalyticsDashboard";
+import { HealthScoreCard } from "./HealthScoreCard";
+import { captureAndGetTrend, type HealthScore, type TrendPoint } from "@/lib/healthScore";
 
 export const dynamic = "force-dynamic";
 
@@ -69,6 +71,17 @@ export default async function AnalyticsHubPage() {
     console.error("Analytics DB query failed:", e);
   }
 
+  // Aura Health Score (live, with a persisted daily trend).
+  let health: HealthScore | null = null;
+  let trend: TrendPoint[] = [];
+  try {
+    const res = await captureAndGetTrend();
+    health = res.current;
+    trend = res.trend;
+  } catch (e) {
+    console.error("Health score computation failed:", e);
+  }
+
   return (
     <div className="p-10">
       <div className="flex items-center justify-between mb-8">
@@ -77,6 +90,8 @@ export default async function AnalyticsHubPage() {
           <p className="text-slate">A bird&apos;s-eye view of your business health across all Aura modules.</p>
         </div>
       </div>
+
+      {health && <HealthScoreCard health={health} trend={trend} />}
 
       <ClientAnalyticsDashboard data={data} />
     </div>

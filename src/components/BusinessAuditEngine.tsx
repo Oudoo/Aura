@@ -8,12 +8,13 @@ import {
 } from "recharts";
 import {
   ChevronRight, ArrowRight, ShieldCheck, Loader2, Boxes, Landmark, Users,
-  Headphones, BarChart3, Shield, AlertTriangle, CheckCircle2,
+  Headphones, BarChart3, Shield, AlertTriangle, CheckCircle2, Download,
 } from "lucide-react";
 import {
   AUDIT_DIMENSIONS, MAX_SCORE_PER_DIMENSION, TOTAL_QUESTIONS, tierForScore,
 } from "@/data/auditFramework";
 import { submitAuditForm } from "@/app/audit/actions";
+import { generateAuditPdf } from "@/lib/auditPdf";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   Boxes, Landmark, Users, Headphones, BarChart3, Shield,
@@ -30,6 +31,8 @@ export function BusinessAuditEngine() {
   const [answers, setAnswers] = useState<Record<string, number[]>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lead, setLead] = useState<{ name?: string; company?: string; email?: string }>({});
+  const [downloading, setDownloading] = useState(false);
 
   const LEAD_STEP = FLAT.length;
   const RESULT_STEP = FLAT.length + 1;
@@ -65,6 +68,12 @@ export function BusinessAuditEngine() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
+    // Remember who this report is for so the downloadable PDF can be personalised.
+    setLead({
+      name: (formData.get("name") as string) || undefined,
+      company: (formData.get("company") as string) || undefined,
+      email: (formData.get("email") as string) || undefined,
+    });
     const breakdown = dimensionScores.map((d) => `  • ${d.label}: ${d.percent}%`).join("\n");
     formData.set(
       "message",
@@ -88,6 +97,28 @@ export function BusinessAuditEngine() {
       setError("We couldn't reach our servers. Please try again in a moment.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleDownloadPdf() {
+    setDownloading(true);
+    try {
+      await generateAuditPdf({
+        overall,
+        tierLabel: tier.label,
+        tierBlurb: tier.blurb,
+        dimensions: dimensionScores.map((d) => ({ label: d.label, percent: d.percent })),
+        gaps: gaps.map((g) => ({
+          label: g.label,
+          percent: g.percent,
+          recommends: g.recommends.map((p) => ({ name: p.name })),
+        })),
+        lead,
+      });
+    } catch (err) {
+      console.error("Audit PDF generation failed:", err);
+    } finally {
+      setDownloading(false);
     }
   }
 
@@ -256,11 +287,16 @@ export function BusinessAuditEngine() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link href="/products" className="inline-flex justify-center px-8 py-3 bg-cyan text-void font-bold rounded-full hover:bg-cyan/90 transition-colors">
+              <button
+                onClick={handleDownloadPdf}
+                disabled={downloading}
+                className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-cyan text-void font-bold rounded-full hover:bg-cyan/90 transition-colors disabled:opacity-50"
+              >
+                {downloading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+                {downloading ? "Preparing…" : "Download PDF Report"}
+              </button>
+              <Link href="/products" className="inline-flex justify-center px-8 py-3 bg-fg/5 hover:bg-fg/10 border border-fg/10 rounded-full text-platinum font-bold transition-colors">
                 Explore the Ecosystem
-              </Link>
-              <Link href="/" className="inline-flex justify-center px-8 py-3 bg-fg/5 hover:bg-fg/10 border border-fg/10 rounded-full text-platinum font-bold transition-colors">
-                Return Home
               </Link>
             </div>
           </motion.div>
