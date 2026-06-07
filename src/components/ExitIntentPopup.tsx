@@ -36,10 +36,10 @@ export function ExitIntentPopup() {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="w-full max-w-lg bg-obsidian border border-amethyst/30 rounded-2xl shadow-[0_0_100px_rgba(139,92,246,0.15)] relative overflow-hidden p-8 text-center"
+            className="w-full max-w-lg bg-void border border-amethyst/30 rounded-2xl shadow-[0_20px_80px_rgba(10,86,214,0.12)] relative overflow-hidden p-8 text-center"
           >
             {/* Glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-amethyst/20 blur-[60px] pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-amethyst/10 blur-[60px] pointer-events-none" />
 
             <button 
               onClick={() => setIsVisible(false)}
@@ -48,7 +48,7 @@ export function ExitIntentPopup() {
               <X className="w-5 h-5" />
             </button>
 
-            <AlertTriangle className="w-16 h-16 text-amethyst mx-auto mb-6 drop-shadow-[0_0_15px_rgba(139,92,246,0.5)]" />
+            <AlertTriangle className="w-16 h-16 text-amethyst mx-auto mb-6 drop-shadow-[0_0_15px_rgba(10,86,214,0.35)]" />
             
             <h2 className="text-3xl font-heading font-bold text-platinum mb-4">
               Wait! The Cost of Inaction is High.
@@ -62,7 +62,7 @@ export function ExitIntentPopup() {
               <Link
                 href="/audit-quiz"
                 onClick={() => setIsVisible(false)}
-                className="w-full py-4 bg-amethyst hover:bg-amethyst/90 text-void font-bold rounded-xl transition-colors flex items-center justify-center text-lg"
+                className="w-full py-4 bg-amethyst hover:bg-cyan text-white font-bold rounded-xl transition-colors flex items-center justify-center text-lg"
               >
                 Take the Free Diagnostic
                 <ArrowRight className="w-5 h-5 ml-2" />

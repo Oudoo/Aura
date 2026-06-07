@@ -61,9 +61,9 @@ export function HeroDiagnosisForm() {
           className="w-full flex-1 bg-transparent border-none px-4 py-3 text-platinum placeholder-slate/50 focus:outline-none focus:ring-0 text-sm"
         />
         
-        <button 
-          type="submit" 
-          className={`w-full sm:w-auto bg-cyan hover:bg-cyan/90 text-void px-6 py-3 sm:p-3 rounded-full flex items-center justify-center transition-colors shadow-[0_0_15px_rgba(0,229,255,0.4)] flex-shrink-0 mt-2 sm:mt-0 ${language === "ar" ? "sm:mr-2" : "sm:ml-2"}`}
+        <button
+          type="submit"
+          className={`w-full sm:w-auto bg-cyan hover:bg-amethyst text-white px-6 py-3 sm:p-3 rounded-full flex items-center justify-center transition-colors shadow-[0_0_15px_rgba(10,132,255,0.35)] flex-shrink-0 mt-2 sm:mt-0 ${language === "ar" ? "sm:mr-2" : "sm:ml-2"}`}
         >
           <Search className="w-5 h-5" />
           <span className={`sm:hidden font-bold ${language === "ar" ? "mr-2" : "ml-2"}`}>{t("hero.diagnose.btn")}</span>
