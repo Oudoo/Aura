@@ -170,3 +170,28 @@ export async function deleteSuiteAction(suiteSlug: string) {
   revalidatePath("/suites");
   revalidatePath("/");
 }
+
+export async function seedEcosystemAction() {
+  await assertAuthenticated();
+  const { ecosystem } = await import("@/data/ecosystem");
+
+  for (const suiteData of ecosystem) {
+    const { products, ...suiteFields } = suiteData;
+    const suite = await prisma.suite.upsert({
+      where: { slug: suiteFields.slug },
+      update: suiteFields,
+      create: suiteFields,
+    });
+
+    for (const p of products) {
+      await prisma.product.upsert({
+        where: { slug: p.slug },
+        update: { ...p, suiteId: suite.id },
+        create: { ...p, suiteId: suite.id, nameAr: p.nameAr ?? p.name, descAr: p.descAr ?? p.description },
+      });
+    }
+  }
+
+  revalidatePath("/admin/products");
+  revalidatePath("/");
+}

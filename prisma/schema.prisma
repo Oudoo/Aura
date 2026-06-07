@@ -123,3 +123,33 @@ model Ticket {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+// IAM – Admin Users
+model AdminUser {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         String   @default("VIEWER") // SUPER_ADMIN, ADMIN, VIEWER
+  permissions  String?  @db.Text // JSON array: ["crm","finance","products","projects","support","analytics","iam"]
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// White-label / Tenant config
+model TenantConfig {
+  id             String   @id @default("default")
+  companyName    String   @default("Aura")
+  tagline        String?
+  primaryColor   String   @default("#00E5FF")
+  secondaryColor String   @default("#8B5CF6")
+  logoUrl        String?
+  fontHeading    String   @default("Plus Jakarta Sans")
+  fontBody       String   @default("Inter")
+  contactEmail   String?
+  contactPhone   String?
+  address        String?
+  isDemo         Boolean  @default(false)
+  updatedAt      DateTime @updatedAt
+}

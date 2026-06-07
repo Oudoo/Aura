@@ -6,19 +6,23 @@ import { headers } from "next/headers";
 import xss from "xss";
 import { getClientIp, rateLimit } from "@/lib/rateLimit";
 
-const RATE_LIMIT_MAX = 5;
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
+const RATE_LIMIT_MAX = 5; // max 5 submissions
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ALLOWED_PRIORITY = ["HOT", "WARM", "COLD", "MEDIUM"];
+const ALLOWED_SOURCE = ["Website", "Referral", "LinkedIn", "WhatsApp", "Direct", "Audit"];
 
 export type AuditFormResult = { success: boolean; error?: string };
 
 export async function submitAuditForm(formData: FormData): Promise<AuditFormResult> {
   try {
+    // 1. Rate limiting
     const ip = getClientIp(await headers());
     if (!rateLimit(`audit:${ip}`, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW_MS).allowed) {
-      return { success: false, error: "Too many requests. Please try again later." };
+      return { success: false, error: "Too many requests. Please try again in a few minutes." };
     }
 
+    // 2. Validation & sanitisation
     const sanitize = (val: FormDataEntryValue | null) => xss(String(val ?? "").trim());
     const name = sanitize(formData.get("name"));
     const email = sanitize(formData.get("email"));
@@ -32,13 +36,21 @@ export async function submitAuditForm(formData: FormData): Promise<AuditFormResu
       return { success: false, error: "Please provide a valid email address." };
     }
 
+    const rawPriority = sanitize(formData.get("priority"));
+    const rawSource = sanitize(formData.get("source"));
+    const priority = ALLOWED_PRIORITY.includes(rawPriority) ? rawPriority : "MEDIUM";
+    const source = ALLOWED_SOURCE.includes(rawSource) ? rawSource : "Website";
+
+    // 3. Persist
     await prisma.submission.create({
       data: {
         name,
         email,
         company,
         message,
-        status: sanitize(formData.get("status")) || "new",
+        status: "new",
+        priority,
+        source,
       },
     });
 
@@ -46,6 +58,9 @@ export async function submitAuditForm(formData: FormData): Promise<AuditFormResu
     return { success: true };
   } catch (e) {
     console.error("submitAuditForm failed:", e);
-    return { success: false, error: "We couldn't save your request right now. Please try again shortly." };
+    return {
+      success: false,
+      error: "We couldn't save your request right now. Please try again shortly.",
+    };
   }
 }

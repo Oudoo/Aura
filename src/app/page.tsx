@@ -28,10 +28,10 @@ export default function Home() {
     const formData = new FormData(e.currentTarget);
     try {
       const res = await submitAuditForm(formData);
-      if (res.success) {
+      if (res?.success) {
         setFormSubmitted(true);
       } else {
-        setFormError(res.error ?? "Something went wrong. Please try again.");
+        setFormError(res?.error ?? "Something went wrong. Please try again.");
       }
     } catch {
       setFormError("Something went wrong. Please try again.");
