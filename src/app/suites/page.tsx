@@ -197,7 +197,7 @@ export default function SuitesPage() {
               Not sure where to start?
             </h2>
             <p className="text-slate text-lg mb-10 leading-relaxed">
-              Take our Digital Maturity Assessment and we'll map the right modules to your specific operational gaps.
+              Take our Digital Maturity Assessment and we&apos;ll map the right modules to your specific operational gaps.
             </p>
             <Link
               href="/audit"
