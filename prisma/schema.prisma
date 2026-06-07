@@ -50,6 +50,7 @@ model Project {
   id          String   @id @default(uuid())
   title       String
   description String?  @db.Text
+  clientName  String?  // links a project to a Client for the white-label portal
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   tasks       Task[]
@@ -61,6 +62,7 @@ model Task {
   description String?      @db.Text
   assignee    String       @default("Unassigned")
   status      String       @default("PENDING") // PENDING, IN_PROGRESS, DONE
+  dueDate     DateTime?    // milestone deadline; powers "missed milestone" alerts
   projectId   String
   project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   subTasks    SubTask[]
@@ -135,6 +137,29 @@ model AdminUser {
   isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+// Client Portal — white-label, read-only access for enterprise clients
+model Client {
+  id          String   @id @default(uuid())
+  name        String   // must match Project.clientName / Invoice.clientName
+  company     String?
+  email       String?
+  accessToken String   @unique // unguessable token used in the portal URL
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// Aura Health Score — daily operational health snapshots for trend analysis
+model HealthSnapshot {
+  id         String   @id @default(uuid())
+  scope      String   @default("company") // "company" or a client name
+  score      Int      // 0-100 overall
+  breakdown  String   @db.Text // JSON: { delivery, finance, support, pipeline }
+  capturedAt DateTime @default(now())
+
+  @@index([scope, capturedAt])
 }
 
 // White-label / Tenant config

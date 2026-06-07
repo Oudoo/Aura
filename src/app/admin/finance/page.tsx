@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/db";
 import { ClientFinanceManager } from "./ClientFinanceManager";
+import { ProposalComposer } from "./ProposalComposer";
+import { isEmailConfigured } from "@/lib/email";
 import type { Invoice } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +34,9 @@ export default async function FinanceHubPage() {
         </div>
       </div>
 
-      <ClientFinanceManager initialInvoices={invoices} />
+      <ProposalComposer emailConfigured={isEmailConfigured()} />
+
+      <ClientFinanceManager initialInvoices={invoices} emailConfigured={isEmailConfigured()} />
     </div>
   );
 }

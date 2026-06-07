@@ -6,6 +6,7 @@ import { ArrowRight, Activity } from "lucide-react";
 
 import { LegacyVsAuraSlider } from "@/components/LegacyVsAuraSlider";
 import { InteractiveArchitectureBuilder } from "@/components/InteractiveArchitectureBuilder";
+import { HealthScoreShowcase } from "@/components/HealthScoreShowcase";
 import { HeroDiagnosisForm } from "@/components/HeroDiagnosisForm";
 import { submitAuditForm } from "@/app/audit/actions";
 import { motion } from "framer-motion";
@@ -187,6 +188,9 @@ export default function Home() {
       <section className="w-full py-10 bg-void relative overflow-hidden border-t border-fg/5">
         <InteractiveArchitectureBuilder />
       </section>
+
+      {/* Aura Health Score Showcase */}
+      <HealthScoreShowcase language={language} />
 
       {/* Dashboard Command Center Showcase Section */}
       <section className="w-full py-32 bg-gradient-to-b from-void to-obsidian relative overflow-hidden">

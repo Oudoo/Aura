@@ -53,14 +53,22 @@ export default async function ProjectsDashboard() {
             </div>
             <div>
               <label className="block text-xs font-bold text-slate mb-1 uppercase tracking-wider">Description</label>
-              <textarea 
-                name="description" 
+              <textarea
+                name="description"
                 rows={3}
                 className="w-full bg-void border border-fg/10 rounded-xl px-4 py-2 text-platinum focus:border-cyan outline-none transition-colors resize-none"
                 placeholder="Brief project description..."
               />
             </div>
-            <button 
+            <div>
+              <label className="block text-xs font-bold text-slate mb-1 uppercase tracking-wider">Client Name</label>
+              <input
+                name="clientName"
+                className="w-full bg-void border border-fg/10 rounded-xl px-4 py-2 text-platinum focus:border-cyan outline-none transition-colors"
+                placeholder="Optional — links to the client portal"
+              />
+            </div>
+            <button
               type="submit"
               className="w-full bg-cyan/10 text-cyan hover:bg-cyan hover:text-void font-bold py-2 rounded-xl transition-colors"
             >

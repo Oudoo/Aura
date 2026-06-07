@@ -86,6 +86,15 @@ export function ClientProjectBoard({ project }: { project: ProjectWithTasks }) {
               <select name="assignee" className="w-full bg-void text-slate text-xs border border-fg/10 rounded-lg p-2 mb-3 outline-none">
                 {TEAM_MEMBERS.map(m => <option key={m} value={m}>{m}</option>)}
               </select>
+              <div className="mb-3">
+                <label className="block text-[10px] font-bold text-slate/70 uppercase tracking-wider mb-1">Due date (optional)</label>
+                <input
+                  name="dueDate"
+                  type="date"
+                  title="Milestone due date — powers Smart Alerts"
+                  className="w-full bg-void text-slate text-xs border border-fg/10 rounded-lg p-2 outline-none focus:border-cyan"
+                />
+              </div>
               <button type="submit" className="w-full bg-cyan/10 text-cyan hover:bg-cyan hover:text-void text-xs font-bold py-1.5 rounded-lg transition-colors flex items-center justify-center gap-1">
                 <Plus className="w-3 h-3" /> Add Task
               </button>
