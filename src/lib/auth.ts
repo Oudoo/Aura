@@ -26,6 +26,28 @@ function getSecret(): string {
 
 const encoder = new TextEncoder();
 
+/**
+ * Resolve a SubtleCrypto implementation that works across runtimes:
+ *  - Edge runtime (Next.js middleware) and Node 20+ expose global Web Crypto.
+ *  - Older Node (e.g. 18 without --experimental-global-webcrypto, as on some
+ *    shared hosts) does NOT, so we lazily fall back to node:crypto's webcrypto.
+ * The fallback uses a computed specifier so bundlers never statically pull
+ * node:crypto into the Edge bundle — that branch never runs on Edge.
+ */
+let cachedSubtle: SubtleCrypto | null = null;
+async function getSubtle(): Promise<SubtleCrypto> {
+  if (cachedSubtle) return cachedSubtle;
+  const g = globalThis as unknown as { crypto?: Crypto };
+  if (g.crypto?.subtle) {
+    cachedSubtle = g.crypto.subtle;
+    return cachedSubtle;
+  }
+  const spec = 'node:' + 'crypto';
+  const nodeCrypto = (await import(/* webpackIgnore: true */ /* turbopackIgnore: true */ spec)) as typeof import('node:crypto');
+  cachedSubtle = nodeCrypto.webcrypto.subtle as unknown as SubtleCrypto;
+  return cachedSubtle;
+}
+
 // ---- base64url helpers (edge + node safe) ----
 function bytesToBase64Url(bytes: Uint8Array): string {
   let bin = '';
@@ -60,7 +82,8 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 // ---- Signed session tokens (HMAC-SHA256 via Web Crypto) ----
 async function importHmacKey(secret: string): Promise<CryptoKey> {
-  return crypto.subtle.importKey(
+  const subtle = await getSubtle();
+  return subtle.importKey(
     'raw',
     encoder.encode(secret),
     { name: 'HMAC', hash: 'SHA-256' },
@@ -72,7 +95,7 @@ async function importHmacKey(secret: string): Promise<CryptoKey> {
 async function signSession(expSeconds: number): Promise<string> {
   const data = strToBase64Url(JSON.stringify({ exp: expSeconds }));
   const key = await importHmacKey(getSecret());
-  const sigBuf = await crypto.subtle.sign('HMAC', key, encoder.encode(data));
+  const sigBuf = await (await getSubtle()).sign('HMAC', key, encoder.encode(data));
   return `${data}.${bytesToBase64Url(new Uint8Array(sigBuf))}`;
 }
 
@@ -83,7 +106,7 @@ async function verifySession(token: string | undefined): Promise<boolean> {
   const [data, sig] = parts;
 
   const key = await importHmacKey(getSecret());
-  const expectedBuf = await crypto.subtle.sign('HMAC', key, encoder.encode(data));
+  const expectedBuf = await (await getSubtle()).sign('HMAC', key, encoder.encode(data));
   const expected = bytesToBase64Url(new Uint8Array(expectedBuf));
   if (!timingSafeEqual(sig, expected)) return false;
 
@@ -98,14 +121,15 @@ async function verifySession(token: string | undefined): Promise<boolean> {
 
 // ---- Password verification (PBKDF2 via Web Crypto — edge-safe, no node:crypto) ----
 async function pbkdf2(password: string, salt: Uint8Array, iterations: number): Promise<Uint8Array> {
-  const baseKey = await crypto.subtle.importKey(
+  const subtle = await getSubtle();
+  const baseKey = await subtle.importKey(
     'raw',
     encoder.encode(password),
     'PBKDF2',
     false,
     ['deriveBits']
   );
-  const bits = await crypto.subtle.deriveBits(
+  const bits = await subtle.deriveBits(
     // Copy into a fresh ArrayBuffer-backed view to satisfy the strict BufferSource type.
     { name: 'PBKDF2', salt: new Uint8Array(salt), iterations, hash: 'SHA-256' },
     baseKey,
