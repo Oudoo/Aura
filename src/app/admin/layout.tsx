@@ -17,9 +17,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setMounted(true); }, []);
 
-  // Hide sidebar on the login page (keep the dark admin aesthetic)
+  // Hide sidebar on the login page
   if (pathname === "/admin/login") {
-    return <div className="dark bg-void min-h-screen">{children}</div>;
+    return <>{children}</>;
   }
 
   const links = [
@@ -34,7 +34,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="dark flex h-screen bg-void w-full overflow-hidden absolute inset-0 z-50">
+    <div className="flex h-screen bg-void w-full overflow-hidden absolute inset-0 z-50">
       {/* Sidebar */}
       <aside className="w-64 bg-obsidian border-r border-fg/5 flex flex-col">
         <div className="h-20 flex items-center justify-center px-6 border-b border-fg/5 relative overflow-hidden">

@@ -15,19 +15,17 @@ export default function AuditPage() {
   };
 
   return (
-    <main className="flex-1 flex flex-col items-center py-20 md:py-28 bg-void relative min-h-screen">
+    <main className="flex-1 flex flex-col items-center py-24 md:py-28 bg-void relative overflow-hidden min-h-screen">
+      <div className="absolute top-0 right-0 -mr-[400px] -mt-[400px] w-[800px] h-[800px] bg-cyan/10 blur-[120px] rounded-full pointer-events-none" />
+      <div className="absolute bottom-0 left-0 -ml-[400px] -mb-[400px] w-[700px] h-[700px] bg-amethyst/10 blur-[120px] rounded-full pointer-events-none" />
+
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12 max-w-2xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <span className="eyebrow text-cyan">(Business Audit)</span>
-            <h1 className="display text-5xl md:text-7xl text-platinum mt-4 mb-5">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <h1 className="font-heading text-4xl md:text-5xl font-bold text-platinum mb-4 text-glow">
               {t.title}
             </h1>
-            <p className="text-slate text-lg leading-relaxed">{t.subtitle}</p>
+            <p className="text-slate text-lg">{t.subtitle}</p>
           </motion.div>
         </div>
 

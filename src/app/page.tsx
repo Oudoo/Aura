@@ -1,23 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Send, CheckCircle2, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Activity } from "lucide-react";
+
+
 import { LegacyVsAuraSlider } from "@/components/LegacyVsAuraSlider";
 import { InteractiveArchitectureBuilder } from "@/components/InteractiveArchitectureBuilder";
 import { HeroDiagnosisForm } from "@/components/HeroDiagnosisForm";
 import { submitAuditForm } from "@/app/audit/actions";
 import { motion } from "framer-motion";
+import { Cpu, Zap, Send, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { Card } from "@/components/ui/Card";
 import { useLanguage } from "@/components/LanguageContext";
-
-const reveal = {
-  hidden: { opacity: 0, y: 24 },
-  show: (delay = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, delay, ease: "easeOut" as const },
-  }),
-};
 
 export default function Home() {
   const { t, language } = useLanguage();
@@ -46,8 +41,8 @@ export default function Home() {
 
   const formT = {
     title: language === "ar" ? "اطلب تقييماً مؤسسياً" : "Request a Business Audit",
-    subtitle: language === "ar"
-      ? "تحدث مع خبرائنا لتشخيص معوقاتك التشغيلية وتصميم خارطة طريق استراتيجية لمنصة أورا."
+    subtitle: language === "ar" 
+      ? "تحدث مع خبرائنا لتشخيص معوقاتك التشغيلية وتصميم خارطة طريق استراتيجية لمنصة أورا." 
       : "Speak with our experts to diagnose your operational bottlenecks and design your strategic Aura roadmap.",
     name: language === "ar" ? "الاسم الكامل" : "Full Name",
     email: language === "ar" ? "البريد الإلكتروني للعمل" : "Work Email",
@@ -56,197 +51,286 @@ export default function Home() {
     submit: language === "ar" ? "إرسال الطلب" : "Submit Request",
     submitting: language === "ar" ? "جاري الإرسال..." : "Submitting...",
     successTitle: language === "ar" ? "تم استلام الطلب بنجاح" : "Request Received",
-    successMsg: language === "ar"
-      ? "سيقوم أحد كبار مهندسينا بالتواصل معك قريباً لتحديد موعد التقييم المبدئي."
+    successMsg: language === "ar" 
+      ? "سيقوم أحد كبار مهندسينا بالتواصل معك قريباً لتحديد موعد التقييم المبدئي." 
       : "One of our senior engineers will contact you shortly to schedule your initial diagnostic.",
   };
 
-  const inputClass =
-    "w-full px-4 py-3 bg-void border border-fg/15 rounded-md text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors";
-  const labelClass = "text-xs font-bold text-slate uppercase tracking-wider";
-
   return (
     <main className="flex-1 flex flex-col items-center">
-      {/* ===================== HERO ===================== */}
-      <section className="relative w-full pt-16 pb-24 md:pt-24 md:pb-28 overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(60%_45%_at_50%_0%,color-mix(in_srgb,var(--cyan)_10%,transparent),transparent)]" />
-        <div className="container mx-auto px-6 max-w-6xl text-center">
-          <motion.p
-            variants={reveal} initial="hidden" animate="show" custom={0}
-            className="eyebrow text-cyan mb-6"
-          >
-            (Enterprise Operating System)
-          </motion.p>
-          <motion.h1
-            variants={reveal} initial="hidden" animate="show" custom={0.08}
-            className="display-xl text-platinum mx-auto max-w-5xl"
-            style={{ fontSize: "clamp(2.75rem, 8.5vw, 6.75rem)" }}
-          >
-            {t("hero.title")}
-          </motion.h1>
-          <motion.p
-            variants={reveal} initial="hidden" animate="show" custom={0.16}
-            className="mt-8 text-lg md:text-2xl text-slate max-w-2xl mx-auto"
-          >
-            {t("hero.subtitle")}{" "}
-            <span className="text-cyan font-semibold">{t("hero.subtitle.highlight")}</span>.
-          </motion.p>
+      {/* Hero Section */}
+      <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden">
+        {/* Abstract Background Light Trails */}
+        <div className="absolute inset-0 z-0 opacity-40">
+          <svg className="absolute w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <motion.path
+              d="M0,50 Q25,25 50,50 T100,50"
+              stroke="url(#cyan-grad)"
+              strokeWidth="0.5"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.5 }}
+              transition={{ duration: 4, ease: "easeInOut", repeat: Infinity, repeatType: "mirror" }}
+            />
+            <motion.path
+              d="M0,70 Q25,95 50,70 T100,70"
+              stroke="url(#amethyst-grad)"
+              strokeWidth="0.5"
+              fill="none"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.5 }}
+              transition={{ duration: 5, ease: "easeInOut", repeat: Infinity, repeatType: "mirror", delay: 1 }}
+            />
+            <defs>
+              <linearGradient id="cyan-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="var(--obsidian)" />
+                <stop offset="50%" stopColor="var(--cyan)" />
+                <stop offset="100%" stopColor="var(--obsidian)" />
+              </linearGradient>
+              <linearGradient id="amethyst-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="var(--obsidian)" />
+                <stop offset="50%" stopColor="var(--amethyst)" />
+                <stop offset="100%" stopColor="var(--obsidian)" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
 
+        <div className="relative z-10 container mx-auto px-4 text-center">
           <motion.div
-            variants={reveal} initial="hidden" animate="show" custom={0.24}
-            className="pt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mx-auto space-y-6"
           >
-            <Link
-              href="/suites"
-              className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 font-semibold text-white bg-cyan rounded-md hover:bg-amethyst transition-colors"
-            >
-              {t("hero.explore")}
-              <ArrowRight className={`w-4 h-4 transition-transform ${language === "ar" ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
-            </Link>
-            <Link
-              href="https://wa.me/201066221112"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 font-semibold text-platinum bg-transparent border border-fg/15 rounded-md hover:bg-fg/5 transition-colors"
-            >
-              {t("hero.contact")}
-            </Link>
-          </motion.div>
+            <h1 className="font-heading text-5xl md:text-7xl font-bold tracking-tighter text-platinum text-glow leading-tight">
+              {t("hero.title")}
+            </h1>
+            <p className="text-xl md:text-2xl text-slate font-body max-w-2xl mx-auto">
+              {t("hero.subtitle")}{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan to-amethyst font-semibold">
+                {t("hero.subtitle.highlight")}
+              </span>.
+            </p>
 
-          <motion.div variants={reveal} initial="hidden" animate="show" custom={0.32}>
+            <div className="pt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/suites"
+                className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-void transition-all duration-200 bg-cyan border border-transparent rounded-full hover:bg-cyan/90 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)]"
+              >
+                {t("hero.explore")}
+                <ArrowRight className={`w-5 h-5 transition-transform ${language === "ar" ? "mr-2 group-hover:-translate-x-1 rotate-180" : "ml-2 group-hover:translate-x-1"}`} />
+              </Link>
+              <Link
+                href="https://wa.me/201066221112"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-4 font-bold text-platinum transition-all duration-200 bg-transparent border border-fg/10 rounded-full hover:bg-fg/5"
+              >
+                {t("hero.contact")}
+              </Link>
+            </div>
+
             <HeroDiagnosisForm />
           </motion.div>
         </div>
       </section>
 
-      {/* ===================== LEGACY VS AURA ===================== */}
-      <section className="w-full py-16 md:py-20 bg-obsidian border-y border-fg/10">
+      {/* Interactive Slider Section */}
+      <section className="w-full py-20 bg-void relative overflow-hidden">
         <LegacyVsAuraSlider />
       </section>
 
-      {/* ===================== METHODOLOGY ===================== */}
-      <section className="w-full py-20 md:py-28 bg-void">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <motion.div
-            variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="mb-14 max-w-3xl"
-          >
-            <p className="eyebrow text-cyan mb-4">(Methodology)</p>
-            <h2 className="display text-4xl md:text-6xl text-platinum">{t("methodology.title")}</h2>
-            <p className="mt-5 text-slate text-lg">{t("methodology.subtitle")}</p>
-          </motion.div>
+      {/* Methodology Section */}
+      <section className="w-full py-24 bg-void relative">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum">{t("methodology.title")}</h2>
+            <p className="text-slate text-lg max-w-2xl mx-auto">{t("methodology.subtitle")}</p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-px bg-fg/10 border border-fg/10 rounded-2xl overflow-hidden">
-            {["1", "2", "3"].map((n, i) => (
-              <motion.div
-                key={n}
-                variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }} custom={i * 0.1}
-                className="bg-void p-8 md:p-10 group"
-              >
-                <span className="display text-5xl md:text-6xl text-cyan">0{n}/</span>
-                <h3 className="mt-6 text-2xl font-bold text-platinum">{t(`methodology.${n}.title`)}</h3>
-                <p className="mt-3 text-slate leading-relaxed">{t(`methodology.${n}.desc`)}</p>
-              </motion.div>
-            ))}
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <Card className="p-8 group hover:border-cyan/30 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-cyan/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Activity className="w-6 h-6 text-cyan" />
+              </div>
+              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">{t("methodology.1.title")}</h3>
+              <p className="text-slate leading-relaxed">
+                {t("methodology.1.desc")}
+              </p>
+            </Card>
+
+            <Card className="p-8 group hover:border-amethyst/30 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-amethyst/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Cpu className="w-6 h-6 text-amethyst" />
+              </div>
+              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">{t("methodology.2.title")}</h3>
+              <p className="text-slate leading-relaxed">
+                {t("methodology.2.desc")}
+              </p>
+            </Card>
+
+            <Card className="p-8 group hover:border-fg/30 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-fg/5 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Zap className="w-6 h-6 text-platinum" />
+              </div>
+              <h3 className="text-2xl font-heading font-bold text-platinum mb-3">{t("methodology.3.title")}</h3>
+              <p className="text-slate leading-relaxed">
+                {t("methodology.3.desc")}
+              </p>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* ===================== ARCHITECTURE BUILDER ===================== */}
-      <section className="w-full py-16 md:py-20 bg-obsidian border-y border-fg/10 overflow-hidden">
+      {/* Architecture Builder Section */}
+      <section className="w-full py-10 bg-void relative overflow-hidden border-t border-fg/5">
         <InteractiveArchitectureBuilder />
       </section>
 
-      {/* ===================== INTELLIGENCE / CONVERGENCE ===================== */}
-      <section className="w-full py-20 md:py-28 bg-void">
-        <div className="container mx-auto px-6 max-w-7xl">
-          <motion.div
-            variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="mb-14 max-w-3xl"
-          >
-            <p className="eyebrow text-cyan mb-4">(Unified Intelligence)</p>
-            <h2 className="display text-4xl md:text-6xl text-platinum">{t("dashboard.title")}</h2>
-            <p className="mt-5 text-slate text-lg">{t("dashboard.subtitle")}</p>
-          </motion.div>
+      {/* Dashboard Command Center Showcase Section */}
+      <section className="w-full py-32 bg-gradient-to-b from-void to-obsidian relative overflow-hidden">
+        {/* Glow behind dashboard */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-amethyst/10 blur-[150px] rounded-full pointer-events-none" />
+
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow">{t("dashboard.title")}</h2>
+            <p className="text-slate text-lg max-w-2xl mx-auto">{t("dashboard.subtitle")}</p>
+          </div>
 
           <motion.div
-            variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true }}
-            className="rounded-2xl border border-fg/10 bg-void overflow-hidden shadow-sm"
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="max-w-6xl mx-auto"
           >
-            {/* KPI bar */}
-            <div className="grid grid-cols-3 border-b border-fg/10">
-              {[
-                { label: t("dashboard.kpi1.label"), value: t("dashboard.kpi1.value"), color: "text-cyan" },
-                { label: t("dashboard.kpi2.label"), value: t("dashboard.kpi2.value"), color: "text-platinum" },
-                { label: t("dashboard.kpi3.label"), value: t("dashboard.kpi3.value"), color: "text-amethyst" },
-              ].map((kpi, i) => (
-                <div key={i} className={`p-6 text-center ${i < 2 ? (language === "ar" ? "border-l" : "border-r") : ""} border-fg/10`}>
-                  <div className="text-xs font-medium text-slate uppercase tracking-wider mb-1">{kpi.label}</div>
-                  <div className={`text-2xl md:text-3xl font-extrabold ${kpi.color}`} dir="ltr">{kpi.value}</div>
+            <div className="rounded-xl border border-fg/10 bg-obsidian/60 backdrop-blur-2xl shadow-[0_0_50px_rgba(139,92,246,0.15)] overflow-hidden">
+              
+              {/* Top KPI Bar */}
+              <div className="grid grid-cols-3 border-b border-fg/5 bg-fg/[0.02]">
+                <div className={`p-6 border-fg/5 text-center ${language === "ar" ? "border-l" : "border-r"}`}>
+                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">{t("dashboard.kpi1.label")}</div>
+                  <div className="text-3xl font-bold text-cyan text-glow" dir="ltr">{t("dashboard.kpi1.value")}</div>
                 </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3">
-              {/* Convergence map */}
-              <div className={`md:col-span-2 p-8 md:p-12 flex items-center justify-center border-fg/10 ${language === "ar" ? "md:border-l" : "md:border-r"}`}>
-                <div className="relative w-full max-w-md aspect-video" dir="ltr">
-                  <svg className="w-full h-full overflow-visible" viewBox="0 0 400 200">
-                    <defs>
-                      <linearGradient id="hr-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.3" />
-                      </linearGradient>
-                      <linearGradient id="log-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#F43F5E" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.3" />
-                      </linearGradient>
-                      <linearGradient id="fin-grad" x1="0%" y1="50%" x2="100%" y2="50%">
-                        <stop offset="0%" stopColor="#10B981" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.3" />
-                      </linearGradient>
-                    </defs>
-
-                    <motion.path d="M 50,40 Q 150,40 250,100" fill="none" stroke="url(#hr-grad)" strokeWidth="2.5"
-                      initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2, repeat: Infinity, ease: "linear" }} />
-                    <motion.path d="M 50,100 Q 150,100 250,100" fill="none" stroke="url(#fin-grad)" strokeWidth="2.5"
-                      initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }} />
-                    <motion.path d="M 50,160 Q 150,160 250,100" fill="none" stroke="url(#log-grad)" strokeWidth="2.5"
-                      initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} />
-
-                    <circle cx="50" cy="40" r="5" fill="var(--cyan)" />
-                    <text x="35" y="44" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">HR_API</text>
-                    <circle cx="50" cy="100" r="5" fill="#10B981" />
-                    <text x="35" y="104" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">FIN_DB</text>
-                    <circle cx="50" cy="160" r="5" fill="#F43F5E" />
-                    <text x="35" y="164" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">LOG_SYS</text>
-
-                    <motion.circle cx="250" cy="100" r="18" fill="var(--cyan)" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 2, repeat: Infinity }} />
-                    <circle cx="250" cy="100" r="9" fill="var(--void)" />
-                    <text x="278" y="104" fill="var(--platinum)" fontSize="13" fontWeight="bold">AURA CORE</text>
-                  </svg>
+                <div className={`p-6 border-fg/5 text-center ${language === "ar" ? "border-l" : "border-r"}`}>
+                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">{t("dashboard.kpi2.label")}</div>
+                  <div className="text-3xl font-bold text-platinum text-glow" dir="ltr">{t("dashboard.kpi2.value")}</div>
+                </div>
+                <div className="p-6 text-center">
+                  <div className="text-sm font-medium text-slate uppercase tracking-wider mb-1">{t("dashboard.kpi3.label")}</div>
+                  <div className="text-3xl font-bold text-amethyst text-glow" dir="ltr">{t("dashboard.kpi3.value")}</div>
                 </div>
               </div>
 
-              {/* Live feed */}
-              <div className="md:col-span-1 p-6 flex flex-col bg-obsidian">
-                <h3 className="text-sm font-semibold text-platinum mb-4 flex items-center">
-                  <span className={`w-2 h-2 rounded-full bg-cyan animate-pulse ${language === "ar" ? "ml-2" : "mr-2"}`} />
-                  {t("dashboard.live_feed")}
-                </h3>
-                <div className="flex-1 overflow-hidden relative min-h-[260px]">
-                  <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-transparent to-obsidian z-10 pointer-events-none" />
-                  <motion.div
-                    className="space-y-3 text-xs absolute w-full"
-                    animate={{ y: ["0%", "-50%"] }}
-                    transition={{ duration: 20, ease: "linear", repeat: Infinity }}
-                  >
-                    {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item, idx) => (
-                      <div key={idx} className={`p-3 rounded-md border ${idx % 2 === 0 ? "bg-void border-fg/10 text-slate" : "bg-cyan/5 border-cyan/20 text-platinum"}`}>
-                        <span className="text-cyan font-bold" dir="ltr">[14:0{item + 2}:{10 + item * 3}]</span> {t(`dashboard.feed.${item}`)}
-                      </div>
-                    ))}
-                  </motion.div>
+              {/* Main Content Area */}
+              <div className="grid grid-cols-1 md:grid-cols-3 min-h-[400px]">
+                
+                {/* Center Widget: The Convergence Map */}
+                <div className={`col-span-2 p-8 relative flex items-center justify-center border-fg/5 ${language === "ar" ? "border-l" : "border-r"}`}>
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-cyan/5 via-transparent to-transparent pointer-events-none" />
+                  
+                  {/* SVG Convergence Node Graph */}
+                  <div className="relative w-full max-w-md aspect-video" dir="ltr">
+                    <svg className="w-full h-full overflow-visible" viewBox="0 0 400 200">
+                      <defs>
+                        <linearGradient id="hr-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="var(--cyan)" stopOpacity="0.8" />
+                          <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.2" />
+                        </linearGradient>
+                        <linearGradient id="log-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#F43F5E" stopOpacity="0.8" />
+                          <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.2" />
+                        </linearGradient>
+                        <linearGradient id="fin-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+                          <stop offset="0%" stopColor="#10B981" stopOpacity="0.8" />
+                          <stop offset="100%" stopColor="var(--amethyst)" stopOpacity="0.2" />
+                        </linearGradient>
+                        <filter id="glow">
+                          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                          <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                          </feMerge>
+                        </filter>
+                      </defs>
+
+                      {/* Paths converging to center */}
+                      <motion.path 
+                        d="M 50,40 Q 150,40 250,100" 
+                        fill="none" 
+                        stroke="url(#hr-grad)" 
+                        strokeWidth="3"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                      />
+                      <motion.path 
+                        d="M 50,100 Q 150,100 250,100" 
+                        fill="none" 
+                        stroke="url(#fin-grad)" 
+                        strokeWidth="3"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+                      />
+                      <motion.path 
+                        d="M 50,160 Q 150,160 250,100" 
+                        fill="none" 
+                        stroke="url(#log-grad)" 
+                        strokeWidth="3"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: 1 }}
+                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                      />
+
+                      {/* Origin Nodes */}
+                      <circle cx="50" cy="40" r="6" fill="var(--cyan)" filter="url(#glow)" />
+                      <text x="35" y="44" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">HR_API</text>
+                      
+                      <circle cx="50" cy="100" r="6" fill="#10B981" filter="url(#glow)" />
+                      <text x="35" y="104" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">FIN_DB</text>
+                      
+                      <circle cx="50" cy="160" r="6" fill="#F43F5E" filter="url(#glow)" />
+                      <text x="35" y="164" fill="var(--slate)" fontSize="10" fontFamily="monospace" textAnchor="end">LOG_SYS</text>
+
+                      {/* Central Core */}
+                      <motion.circle 
+                        cx="250" cy="100" r="20" 
+                        fill="var(--amethyst)" 
+                        filter="url(#glow)"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      <circle cx="250" cy="100" r="10" fill="var(--platinum)" />
+                      <text x="285" y="104" fill="var(--platinum)" fontSize="14" fontWeight="bold" filter="url(#glow)">AURA CORE</text>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Right Sidebar: Live AI Feed */}
+                <div className="col-span-1 p-6 flex flex-col bg-void/50">
+                  <h3 className="text-sm font-semibold text-platinum mb-4 flex items-center">
+                    <div className={`w-2 h-2 rounded-full bg-cyan animate-pulse ${language === "ar" ? "ml-2" : "mr-2"}`} />
+                    {t("dashboard.live_feed")}
+                  </h3>
+                  
+                  <div className="flex-1 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-gradient-to-b from-void via-transparent to-void z-10 pointer-events-none" />
+                    
+                    <motion.div 
+                      className="space-y-4 font-body text-xs absolute w-full"
+                      animate={{ y: ["0%", "-50%"] }}
+                      transition={{ duration: 20, ease: "linear", repeat: Infinity }}
+                    >
+                      {[1, 2, 3, 4, 5, 1, 2, 3, 4, 5].map((item, idx) => (
+                        <div key={idx} className={`p-3 rounded border ${idx % 2 === 0 ? "bg-fg/5 border-fg/5 text-slate" : "bg-cyan/5 border-cyan/10 text-cyan/90"}`}>
+                          <span className={`${idx % 2 === 0 ? "text-amethyst" : "text-cyan"} font-bold`} dir="ltr">[{14}:0{item + 2}:{10 + item * 3}]</span> {t(`dashboard.feed.${item}`)}
+                        </div>
+                      ))}
+                    </motion.div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -254,48 +338,109 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===================== CONTACT FORM ===================== */}
-      <section className="w-full py-20 md:py-28 bg-obsidian border-t border-fg/10">
-        <div className="container mx-auto px-6 max-w-3xl">
-          <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-100px" }}>
+      {/* Embedded Contact Form Section */}
+      <section className="w-full py-24 bg-void relative overflow-hidden">
+        {/* Animated glow accents */}
+        <motion.div 
+          className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan/8 rounded-full blur-[120px] pointer-events-none"
+          animate={{ x: [0, 50, 0], y: [0, -30, 0] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amethyst/8 rounded-full blur-[100px] pointer-events-none"
+          animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        />
+        
+        <div className="container mx-auto px-4 max-w-3xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+          >
+            {/* Section Header */}
             <div className="text-center mb-12">
-              <p className="eyebrow text-cyan mb-4">(Get Started)</p>
-              <h2 className="display text-4xl md:text-6xl text-platinum mb-5">{formT.title}</h2>
-              <p className="text-slate text-lg max-w-xl mx-auto">{formT.subtitle}</p>
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-cyan/10 border border-cyan/20 mb-6"
+              >
+                <Send className="w-7 h-7 text-cyan" />
+              </motion.div>
+              <h2 className="font-heading text-3xl md:text-5xl font-bold text-platinum text-glow mb-4">
+                {formT.title}
+              </h2>
+              <p className="text-slate text-lg max-w-xl mx-auto">
+                {formT.subtitle}
+              </p>
             </div>
 
-            <div className="p-8 md:p-10 bg-void border border-fg/10 rounded-2xl">
+            {/* Form Card */}
+            <Card className="p-8 md:p-10 border-cyan/10 bg-obsidian/80 backdrop-blur-xl relative overflow-hidden">
+              {/* Subtle animated border glow */}
+              <div className="absolute inset-0 rounded-2xl border border-cyan/20 pointer-events-none" />
+              
               {formSubmitted ? (
-                <motion.div initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="py-12 flex flex-col items-center text-center">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="py-12 flex flex-col items-center text-center"
+                >
                   <div className="w-20 h-20 bg-cyan/10 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 className="w-10 h-10 text-cyan" />
                   </div>
-                  <h3 className="text-2xl font-bold text-platinum mb-2">{formT.successTitle}</h3>
+                  <h2 className="text-2xl font-bold text-platinum mb-2">{formT.successTitle}</h2>
                   <p className="text-slate">{formT.successMsg}</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleFormSubmit} className="space-y-6">
+                <form onSubmit={handleFormSubmit} className="space-y-6 relative z-10">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <label className={labelClass}>{formT.name}</label>
-                      <input name="name" required className={inputClass} placeholder="Jane Doe" />
+                      <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.name}</label>
+                      <input 
+                        name="name"
+                        required
+                        className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors"
+                        placeholder="Jane Doe"
+                      />
                     </div>
                     <div className="space-y-2">
-                      <label className={labelClass}>{formT.email}</label>
-                      <input name="email" type="email" required className={inputClass} placeholder="jane@company.com" />
+                      <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.email}</label>
+                      <input 
+                        name="email"
+                        type="email"
+                        required
+                        className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors"
+                        placeholder="jane@company.com"
+                      />
                     </div>
                   </div>
+
                   <div className="space-y-2">
-                    <label className={labelClass}>{formT.company}</label>
-                    <input name="company" required className={inputClass} placeholder="Acme Corp" />
+                    <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.company}</label>
+                    <input 
+                      name="company"
+                      required
+                      className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors"
+                      placeholder="Acme Corp"
+                    />
                   </div>
+
                   <div className="space-y-2">
-                    <label className={labelClass}>{formT.message}</label>
-                    <textarea name="message" rows={4} className={`${inputClass} resize-none`} placeholder="..." />
+                    <label className="text-sm font-bold text-slate uppercase tracking-wider">{formT.message}</label>
+                    <textarea 
+                      name="message"
+                      rows={4}
+                      className="w-full px-4 py-3 bg-void border border-fg/10 rounded-xl text-platinum placeholder-slate/50 focus:outline-none focus:border-cyan transition-colors resize-none"
+                      placeholder="..."
+                    />
                   </div>
 
                   {formError && (
-                    <p className="text-sm text-red-500 text-center" role="alert">{formError}</p>
+                    <p className="text-sm text-red-400 text-center" role="alert">
+                      {formError}
+                    </p>
                   )}
 
                   <motion.button
@@ -303,21 +448,14 @@ export default function Home() {
                     disabled={formLoading}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="w-full py-4 bg-cyan text-white font-semibold rounded-md hover:bg-amethyst transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full py-4 bg-cyan text-void font-bold rounded-xl hover:bg-cyan/90 transition-colors flex items-center justify-center disabled:opacity-50"
                   >
                     {formLoading ? formT.submitting : formT.submit}
-                    {!formLoading && <Send className={`w-4 h-4 ${language === "ar" ? "rotate-180" : ""}`} />}
+                    {!formLoading && <Send className={`w-4 h-4 ${language === "ar" ? "mr-2 rotate-180" : "ml-2"}`} />}
                   </motion.button>
                 </form>
               )}
-            </div>
-
-            <div className="mt-8 text-center">
-              <Link href="/audit" className="inline-flex items-center gap-1.5 text-sm font-semibold text-cyan hover:text-amethyst transition-colors">
-                Prefer a guided assessment? Take the Digital Maturity Audit
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-            </div>
+            </Card>
           </motion.div>
         </div>
       </section>

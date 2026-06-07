@@ -91,7 +91,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="font-body bg-void text-platinum antialiased min-h-screen flex flex-col transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           <LanguageProvider initialEcosystem={ecosystemData}>
             <Navbar />
             <div className="flex-1 flex flex-col">

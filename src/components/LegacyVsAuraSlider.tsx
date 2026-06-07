@@ -33,16 +33,16 @@ export function LegacyVsAuraSlider() {
               {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="relative z-10">
                   {i === 3 ? (
-                    <motion.div
-                      animate={{ boxShadow: ["0 0 40px rgba(10, 132, 255, 0.12)", "0 0 80px rgba(10, 86, 214, 0.22)", "0 0 40px rgba(10, 132, 255, 0.12)"] }}
+                    <motion.div 
+                      animate={{ boxShadow: ["0 0 40px rgba(0, 229, 255, 0.2)", "0 0 80px rgba(139, 92, 246, 0.4)", "0 0 40px rgba(0, 229, 255, 0.2)"] }}
                       transition={{ repeat: Infinity, duration: 4 }}
-                      className="w-20 h-20 md:w-32 md:h-32 bg-void rounded-full border border-cyan/50 flex items-center justify-center relative shadow-[0_0_30px_rgba(10,132,255,0.12)]"
+                      className="w-20 h-20 md:w-32 md:h-32 bg-void rounded-full border border-cyan/50 flex items-center justify-center relative shadow-[0_0_30px_rgba(0,229,255,0.15)]"
                     >
                       <Cpu className="w-10 h-10 md:w-12 md:h-12 text-cyan" />
                       <div className="absolute inset-0 rounded-full border border-cyan animate-ping opacity-20"></div>
                     </motion.div>
                   ) : (
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-void border border-amethyst/50 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(10,86,214,0.12)]">
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-void border border-amethyst/50 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(139,92,246,0.2)]">
                       <Network className="w-6 h-6 md:w-8 md:h-8 text-amethyst" />
                     </div>
                   )}
@@ -55,12 +55,12 @@ export function LegacyVsAuraSlider() {
         </div>
 
         {/* Foreground Layer: Legacy State (The "Before") clipped by slider */}
-        <div
-          className="absolute inset-0 bg-obsidian flex items-center justify-center overflow-hidden border-r-2 border-fg/15"
+        <div 
+          className="absolute inset-0 bg-[#1A1A1A] flex items-center justify-center overflow-hidden border-r-2 border-white"
           style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
         >
           {/* Messy Red Network */}
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/noise-lines.png')] opacity-[0.04]"></div>
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/noise-lines.png')] opacity-10"></div>
           <div className="relative z-10 w-full h-full flex flex-col justify-center">
             
             <div className="flex justify-between items-center w-full px-8 md:px-24 relative">
@@ -73,12 +73,12 @@ export function LegacyVsAuraSlider() {
               {[1, 2, 3, 4, 5].map((i) => (
                 <div key={i} className="relative z-10">
                   {i === 3 ? (
-                    <div className="w-20 h-20 md:w-32 md:h-32 bg-void rounded-full border border-red-500/40 flex items-center justify-center relative shadow-[0_0_20px_rgba(239,68,68,0.15)]">
+                    <div className="w-20 h-20 md:w-32 md:h-32 bg-[#1A1A1A] rounded-full border border-red-500/30 flex items-center justify-center relative shadow-[0_0_20px_rgba(239,68,68,0.2)]">
                       <ServerCrash className="w-10 h-10 md:w-12 md:h-12 text-red-500" />
                     </div>
                   ) : (
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-void border border-red-500/40 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-                      <ServerCrash className="w-6 h-6 md:w-8 md:h-8 text-red-500 opacity-90" />
+                    <div className="w-12 h-12 md:w-16 md:h-16 bg-[#1A1A1A] border border-red-500/30 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(239,68,68,0.1)]">
+                      <ServerCrash className="w-6 h-6 md:w-8 md:h-8 text-red-400 opacity-80" />
                     </div>
                   )}
                 </div>
@@ -100,14 +100,14 @@ export function LegacyVsAuraSlider() {
         />
 
         {/* Slider Handle Visual */}
-        <div
-          className="absolute top-0 bottom-0 w-1 bg-cyan z-10 pointer-events-none flex items-center justify-center"
+        <div 
+          className="absolute top-0 bottom-0 w-1 bg-white z-10 pointer-events-none flex items-center justify-center"
           style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
         >
-          <div className="w-8 h-8 bg-cyan rounded-full shadow-[0_0_20px_rgba(10,132,255,0.4)] flex items-center justify-center">
+          <div className="w-8 h-8 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)] flex items-center justify-center">
             <div className="flex gap-1">
-              <div className="w-0.5 h-3 bg-white rounded"></div>
-              <div className="w-0.5 h-3 bg-white rounded"></div>
+              <div className="w-0.5 h-3 bg-obsidian rounded"></div>
+              <div className="w-0.5 h-3 bg-obsidian rounded"></div>
             </div>
           </div>
         </div>

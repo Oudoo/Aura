@@ -6,8 +6,8 @@ import { Database, Truck, Users, PieChart, Shield, Bot, Factory, Server, Chevron
 import { useLanguage } from "./LanguageContext";
 
 const icons = [Database, Truck, Users, PieChart, Shield, Bot, Factory, Server, LayoutGrid];
-const colors = ["text-blue-600", "text-green-600", "text-yellow-600", "text-cyan", "text-amethyst", "text-red-500", "text-orange-500", "text-pink-600", "text-emerald-600"];
-const borders = ["border-blue-600/40", "border-green-600/40", "border-yellow-600/40", "border-cyan/40", "border-amethyst/40", "border-red-500/40", "border-orange-500/40", "border-pink-600/40", "border-emerald-600/40"];
+const colors = ["text-blue-400", "text-green-400", "text-yellow-400", "text-cyan", "text-amethyst", "text-red-400", "text-orange-400", "text-pink-400", "text-emerald-400"];
+const borders = ["border-blue-400/30", "border-green-400/30", "border-yellow-400/30", "border-cyan/30", "border-amethyst/30", "border-red-400/30", "border-orange-400/30", "border-pink-400/30", "border-emerald-400/30"];
 
 export function InteractiveArchitectureBuilder() {
   const { ecosystem, language } = useLanguage();
@@ -53,9 +53,9 @@ export function InteractiveArchitectureBuilder() {
                 key={suite.slug}
                 onClick={() => toggleNode(suite.slug)}
                 className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all duration-300 ${
-                  isActive
-                    ? `bg-void ${borderClass} shadow-[0_4px_16px_rgba(0,0,0,0.06)]`
-                    : "bg-void border-fg/10 hover:border-fg/20 opacity-70 hover:opacity-100"
+                  isActive 
+                    ? `bg-void ${borderClass} shadow-[0_0_15px_rgba(255,255,255,0.05)]` 
+                    : "bg-void border-fg/5 hover:border-fg/20 opacity-60 hover:opacity-100"
                 }`}
               >
                 <div className="flex items-center gap-4 text-left">
