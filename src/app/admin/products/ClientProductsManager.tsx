@@ -24,6 +24,7 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
   const [editingProduct, setEditingProduct] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [seeding, startSeed] = useTransition();
+  const [seedError, setSeedError] = useState<string | null>(null);
 
   // ---------- PRODUCT ACTIONS ----------
   async function handleAddProduct(e: React.FormEvent<HTMLFormElement>) {
@@ -184,8 +185,21 @@ export function ClientProductsManager({ initialEcosystem }: { initialEcosystem: 
           <h3 className="text-2xl font-bold text-platinum mb-2">Database is empty</h3>
           <p className="text-slate max-w-md">No suites or products found. Click below to seed the database with the default Aura ecosystem catalog.</p>
         </div>
+        {seedError && (
+          <p className="text-sm text-red-400 max-w-sm">{seedError}</p>
+        )}
         <button
-          onClick={() => startSeed(async () => { await seedEcosystemAction(); window.location.reload(); })}
+          onClick={() => {
+            setSeedError(null);
+            startSeed(async () => {
+              const result = await seedEcosystemAction();
+              if (result.success) {
+                window.location.reload();
+              } else {
+                setSeedError(result.error ?? "Seeding failed. Please try again.");
+              }
+            });
+          }}
           disabled={seeding}
           className="px-8 py-3 bg-cyan text-void font-bold rounded-xl hover:bg-cyan/90 disabled:opacity-50 flex items-center gap-2"
         >

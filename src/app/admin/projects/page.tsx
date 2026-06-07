@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/db";
 import Link from "next/link";
 import { Plus, Briefcase, ChevronRight, Calendar, CheckCircle2 } from "lucide-react";
-import { createProjectAction, seedProjectsAction } from "./actions";
+import { createProjectAction } from "./actions";
+import { SeedProjectsButton } from "./SeedProjectsButton";
 import type { Project, Task } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -73,11 +74,7 @@ export default async function ProjectsDashboard() {
           {projects.length === 0 ? (
             <div className="text-center py-12 border border-fg/5 border-dashed rounded-2xl text-slate space-y-4">
               <p>No projects found. Create one above or seed the default launch checklist.</p>
-              <form action={seedProjectsAction}>
-                <button type="submit" className="px-6 py-2 bg-cyan/10 text-cyan border border-cyan/20 hover:bg-cyan hover:text-void font-bold rounded-xl transition-colors">
-                  Seed Default Project
-                </button>
-              </form>
+              <SeedProjectsButton />
             </div>
           ) : (
             projects.map((project) => {

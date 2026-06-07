@@ -175,26 +175,38 @@ export async function deleteAttachmentAction(id: string, projectId: string) {
   revalidatePath(`/admin/projects/${projectId}`);
 }
 
-export async function seedProjectsAction() {
-  await assertAuthenticated();
-  const { launchProjectData } = await import("@/data/seedProjects");
-
-  const existing = await prisma.project.findFirst({ where: { title: launchProjectData.title } });
-  const project = existing ?? await prisma.project.create({
-    data: { title: launchProjectData.title, description: launchProjectData.description },
-  });
-
-  for (const taskData of launchProjectData.tasks) {
-    const task = await prisma.task.findFirst({ where: { title: taskData.title, projectId: project.id } })
-      ?? await prisma.task.create({
-        data: { title: taskData.title, status: taskData.status, assignee: taskData.assignee, projectId: project.id },
-      });
-
-    for (const subTitle of taskData.subTasks) {
-      const exists = await prisma.subTask.findFirst({ where: { title: subTitle, taskId: task.id } });
-      if (!exists) await prisma.subTask.create({ data: { title: subTitle, taskId: task.id } });
-    }
+export async function seedProjectsAction(): Promise<{ success: boolean; error?: string }> {
+  try {
+    await assertAuthenticated();
+  } catch {
+    return { success: false, error: "Not authenticated. Please log in and try again." };
   }
 
-  revalidatePath("/admin/projects");
+  try {
+    const { launchProjectData } = await import("@/data/seedProjects");
+
+    const existing = await prisma.project.findFirst({ where: { title: launchProjectData.title } });
+    const project = existing ?? await prisma.project.create({
+      data: { title: launchProjectData.title, description: launchProjectData.description },
+    });
+
+    for (const taskData of launchProjectData.tasks) {
+      const task =
+        (await prisma.task.findFirst({ where: { title: taskData.title, projectId: project.id } })) ??
+        (await prisma.task.create({
+          data: { title: taskData.title, status: taskData.status, assignee: taskData.assignee, projectId: project.id },
+        }));
+
+      for (const subTitle of taskData.subTasks) {
+        const exists = await prisma.subTask.findFirst({ where: { title: subTitle, taskId: task.id } });
+        if (!exists) await prisma.subTask.create({ data: { title: subTitle, taskId: task.id } });
+      }
+    }
+
+    revalidatePath("/admin/projects");
+    return { success: true };
+  } catch (e) {
+    console.error("[seedProjectsAction] failed:", e);
+    return { success: false, error: e instanceof Error ? e.message : "Seeding failed. Check server logs." };
+  }
 }

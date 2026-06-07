@@ -171,27 +171,47 @@ export async function deleteSuiteAction(suiteSlug: string) {
   revalidatePath("/");
 }
 
-export async function seedEcosystemAction() {
-  await assertAuthenticated();
-  const { ecosystem } = await import("@/data/ecosystem");
-
-  for (const suiteData of ecosystem) {
-    const { products, ...suiteFields } = suiteData;
-    const suite = await prisma.suite.upsert({
-      where: { slug: suiteFields.slug },
-      update: suiteFields,
-      create: suiteFields,
-    });
-
-    for (const p of products) {
-      await prisma.product.upsert({
-        where: { slug: p.slug },
-        update: { ...p, suiteId: suite.id },
-        create: { ...p, suiteId: suite.id, nameAr: p.nameAr ?? p.name, descAr: p.descAr ?? p.description },
-      });
-    }
+export async function seedEcosystemAction(): Promise<{ success: boolean; error?: string }> {
+  try {
+    await assertAuthenticated();
+  } catch {
+    return { success: false, error: "Not authenticated. Please log in and try again." };
   }
 
-  revalidatePath("/admin/products");
-  revalidatePath("/");
+  try {
+    const { ecosystem } = await import("@/data/ecosystem");
+
+    for (const suiteData of ecosystem) {
+      const { products, slug, ...suiteUpdateFields } = suiteData;
+      const suite = await prisma.suite.upsert({
+        where: { slug },
+        // Don't include slug in update — it's the unique key and re-sending it
+        // can trigger a unique constraint error on some MySQL versions.
+        update: suiteUpdateFields,
+        create: { slug, ...suiteUpdateFields },
+      });
+
+      for (const p of products) {
+        const { slug: productSlug, ...productUpdateFields } = p;
+        await prisma.product.upsert({
+          where: { slug: productSlug },
+          update: { ...productUpdateFields, suiteId: suite.id },
+          create: {
+            slug: productSlug,
+            ...productUpdateFields,
+            nameAr: p.nameAr ?? p.name,
+            descAr: p.descAr ?? p.description,
+            suiteId: suite.id,
+          },
+        });
+      }
+    }
+
+    revalidatePath("/admin/products");
+    revalidatePath("/");
+    return { success: true };
+  } catch (e) {
+    console.error("[seedEcosystemAction] failed:", e);
+    return { success: false, error: e instanceof Error ? e.message : "Seeding failed. Check server logs." };
+  }
 }
