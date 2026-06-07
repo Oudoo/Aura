@@ -66,19 +66,6 @@ export default function AuditQuizPage() {
       formData.append("message", `[DIGITAL MATURITY AUDIT]\nScore: ${totalScore}/120\nNeeds comprehensive review.`);
       
       await submitAuditForm(formData);
-      
-      // Simulate webhook
-      await fetch('/api/webhooks/whatsapp', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.get("name"),
-          email: formData.get("email"),
-          company: formData.get("company"),
-          message: `AUDIT COMPLETED. Score: ${totalScore}/120`
-        })
-      });
-
       setStep(4);
     } catch (error) {
       console.error("Audit submission error:", error);

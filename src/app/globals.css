@@ -8,7 +8,7 @@
   --color-platinum: var(--platinum);
   --color-slate: var(--slate);
   --color-fg: var(--fg);
-  
+
   --font-heading: var(--font-plus-jakarta-sans);
   --font-body: var(--font-inter);
   --font-arabic: var(--font-cairo);
@@ -22,14 +22,14 @@
 
 :root {
   /* Light mode palette */
-  --obsidian: #F1F5F9; /* slate-100 */
-  --void: #FFFFFF; /* white */
-  --cyan: #0284C7; /* sky-600 */
-  --amethyst: #7C3AED; /* violet-600 */
-  --platinum: #0F172A; /* slate-900 */
-  --slate: #475569; /* slate-600 */
+  --obsidian: #F1F5F9;
+  --void: #FFFFFF;
+  --cyan: #0284C7;
+  --amethyst: #7C3AED;
+  --platinum: #0F172A;
+  --slate: #475569;
   --fg: #000000;
-  
+
   --background: var(--void);
   --foreground: var(--platinum);
 }
@@ -52,7 +52,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Glassmorphism utilities */
+/* Glassmorphism */
 @utility glass {
   background: color-mix(in srgb, var(--obsidian) 60%, transparent);
   backdrop-filter: blur(24px);
@@ -61,10 +61,33 @@ body {
 }
 
 @utility text-glow {
-  text-shadow: 0 0 20px color-mix(in srgb, currentColor 50%, transparent);
+  text-shadow: 0 0 30px color-mix(in srgb, currentColor 40%, transparent);
 }
 
 @utility heading {
   font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.04em;
+}
+
+/* Bold editorial heading utility */
+@utility heading-editorial {
+  font-family: var(--font-heading);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  font-weight: 900;
+}
+
+/* Gradient text */
+@utility text-gradient {
+  background: linear-gradient(135deg, var(--cyan) 0%, var(--amethyst) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Surface cards */
+@utility surface {
+  background: color-mix(in srgb, var(--obsidian) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--fg) 8%, transparent);
+  border-radius: 1.5rem;
 }

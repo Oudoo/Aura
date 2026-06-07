@@ -8,43 +8,52 @@ claude/serene-knuth-tSERc
 (see git log — top of branch)
 
 ## UPDATED
-2026-06-06T00:00:00+03:00
+2026-06-07T00:00:00+03:00
 
 ## GOAL
-Full hardening pass (P0→P2) following a project assessment: fix the broken
-admin auth model, stop site-wide DB crashes, and clean up security, types,
-docs, and tooling.
+Phase 1 public marketing website hot-upgrade: bolder, premium editorial redesign.
+Keep all existing section ideas and content; change only the visual design to be
+premium and human-crafted (not AI-template-looking), inspired by Framer sites.
 
 ## CURRENT_STATE
-All P0–P2 work implemented, verified, and committed (4 commits on this branch).
-- Typecheck: clean. Lint: 0 errors (4 intentional <img> warnings). Build:
-  succeeds even with no DATABASE_URL (graceful fallback proven).
-- P0: HMAC-signed expiring sessions (Web Crypto, edge-safe), PBKDF2 password
-  hashing, removed hardcoded password/secret, assertAuthenticated() on every
-  admin server action, root layout DB call guarded with static fallback.
-- P1: shared rate limiter; public ticket form sanitized + throttled; audit
-  email validation; login brute-force throttle; landing form error handling;
-  removed unused @prisma/adapter-mariadb + mariadb deps.
-- P2: replaced all 'any' with Prisma/shared types; README + .env.example;
-  password-hash script; robots.ts + sitemap.ts; expanded SEO metadata; real
-  (env-gated) Twilio WhatsApp webhook; GitHub Actions CI; MASTER.md aligned to
-  the dark theme; removed replace.py / root handoff.md / data/db.json.
+Full Phase 1 redesign committed and building cleanly (0 errors, 8/8 tests).
+
+Changes in this session:
+- globals.css: new `heading-editorial`, `text-gradient`, `surface` utilities;
+  removed the invalid `surface-hover:hover` @utility.
+- Navbar.tsx: premium minimal redesign — transparent on top, blurred on scroll,
+  mobile hamburger menu, bold logo, cleaner mega-menu with number labels.
+- Footer.tsx: multi-column layout — brand + tagline, Platform links, Company links,
+  contact email + WhatsApp, proper copyright row.
+- src/app/page.tsx: editorial hero (massive responsive headline, eyebrow chip,
+  bold CTA hierarchy), numbered methodology section, two-column intelligence
+  features section replacing the complex animated dashboard.
+- src/app/about/page.tsx: full-bleed editorial hero, numbered process phases,
+  flashlight-spotlight philosophy section, team cards with LinkedIn overlay,
+  dark gradient CTA (removed jarring white background).
+- src/app/suites/page.tsx: editorial header, prominent bundle spotlight card,
+  cleaner suite grid with module count + hover states, bottom assessment CTA.
+- src/app/audit/actions.ts: fixed to return {success, error?} instead of
+  throwing — resolves the Server Component render crash in production.
+- src/app/audit-quiz/page.tsx: removed WhatsApp webhook fetch call (user
+  explicitly requested no WhatsApp API usage).
+
+Build: ✓ clean (Turbopack). TypeCheck: ✓. Tests: 8/8 passing.
 
 ## BLOCKER
-None. ACTION REQUIRED before deploy: set AUTH_SECRET and ADMIN_PASSWORD_HASH
-(or ADMIN_PASSWORD) in the Hostinger environment, or admin login will be
-disabled. Use `node scripts/hash-password.mjs "<password>"`.
+None. Env vars must still be set on Hostinger (see previous handoff).
 
 ## NEXT_STEP
-Open/await PR review for branch claude/serene-knuth-tSERc, then set the new env
-vars on Hostinger and deploy. Optional future work: upgrade Prisma 5 -> 6,
-migrate rate limiting to a shared store if scaling horizontally, convert the
-4 remaining <img> tags to next/image.
+Phase 2: admin dashboard / ERP console hot-upgrade.
+Also pending: make IAM permissions actually gate admin routes; make White-Label
+config re-theme the live site.
 
 ## FILES
-- src/lib/auth.ts
-- src/lib/rateLimit.ts
-- src/lib/types.ts
-- src/app/layout.tsx
-- .env.example
-- scripts/hash-password.mjs
+- src/app/globals.css
+- src/components/Navbar.tsx
+- src/components/Footer.tsx
+- src/app/page.tsx
+- src/app/about/page.tsx
+- src/app/suites/page.tsx
+- src/app/audit/actions.ts
+- src/app/audit-quiz/page.tsx
